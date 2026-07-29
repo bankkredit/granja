@@ -1,6 +1,7 @@
 /**
  * app.js - Módulo principal
  * Inicializa Firebase, maneja autenticación, navegación, temas y carga de vistas.
+ * Versión 2.0 - Añadido soporte para Ventas y Clientes
  */
 
 const firebaseConfig = {
@@ -35,10 +36,14 @@ const pageTitle = document.getElementById('pageTitle');
 const menuItems = document.querySelectorAll('.menu li[data-view]');
 const menuConfig = document.getElementById('menuConfig');
 const menuUsuarios = document.getElementById('menuUsuarios');
+const menuVentas = document.getElementById('menuVentas');
+const menuClientes = document.getElementById('menuClientes');
 const views = {
     dashboard: document.getElementById('view-dashboard'),
     animales: document.getElementById('view-animales'),
     eventos: document.getElementById('view-eventos'),
+    ventas: document.getElementById('view-ventas'),
+    clientes: document.getElementById('view-clientes'),
     reportes: document.getElementById('view-reportes'),
     genealogia: document.getElementById('view-genealogia'),
     usuarios: document.getElementById('view-usuarios'),
@@ -82,8 +87,19 @@ auth.onAuthStateChanged(async user => {
             const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
             if (menuConfig) menuConfig.style.display = isAdmin ? 'flex' : 'none';
             if (menuUsuarios) menuUsuarios.style.display = isAdmin ? 'flex' : 'none';
+            if (menuVentas) menuVentas.style.display = isAdmin ? 'flex' : 'none';
+            if (menuClientes) menuClientes.style.display = isAdmin ? 'flex' : 'none';
             
             await cargarConfiguraciones();
+            
+            // Cargar módulos en segundo plano
+            if (typeof cargarClientes === 'function') {
+                cargarClientes();
+            }
+            if (typeof cargarVentas === 'function') {
+                cargarVentas();
+            }
+            
             mostrarVista('dashboard');
             
         } catch (error) {
@@ -417,11 +433,15 @@ function mostrarVista(viewName) {
     }
     
     const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-    if ((viewName === 'configuracion' || viewName === 'usuarios') && !isAdmin) {
+    
+    // Verificar permisos para vistas administrativas
+    if ((viewName === 'configuracion' || viewName === 'usuarios' || viewName === 'ventas' || viewName === 'clientes') && !isAdmin) {
         if (viewName === 'configuracion') {
             mostrarToast('Acceso restringido a administradores', 'warning');
             return;
         }
+        mostrarToast('Acceso restringido a administradores', 'warning');
+        return;
     }
     
     Object.keys(views).forEach(key => {
@@ -436,6 +456,8 @@ function mostrarVista(viewName) {
             dashboard: 'Dashboard',
             animales: 'Animales',
             eventos: 'Eventos',
+            ventas: 'Ventas',
+            clientes: 'Clientes',
             reportes: 'Reportes',
             genealogia: 'Genealogía',
             usuarios: 'Usuarios',
@@ -456,6 +478,14 @@ function mostrarVista(viewName) {
             case 'eventos':
                 if (typeof window.cargarEventos === 'function') window.cargarEventos();
                 else mostrarToast('Módulo Eventos no disponible', 'error');
+                break;
+            case 'ventas':
+                if (typeof window.cargarVentas === 'function') window.cargarVentas();
+                else mostrarToast('Módulo Ventas no disponible', 'error');
+                break;
+            case 'clientes':
+                if (typeof window.cargarClientes === 'function') window.cargarClientes();
+                else mostrarToast('Módulo Clientes no disponible', 'error');
                 break;
             case 'reportes':
                 if (typeof window.cargarReportes === 'function') window.cargarReportes();
@@ -487,7 +517,7 @@ menuItems.forEach(item => {
             return;
         }
         const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-        if ((view === 'configuracion') && !isAdmin) {
+        if ((view === 'configuracion' || view === 'usuarios' || view === 'ventas' || view === 'clientes') && !isAdmin) {
             mostrarToast('Acceso restringido a administradores', 'warning');
             return;
         }
@@ -532,6 +562,17 @@ async function cargarDashboard() {
         const eventos = eventosSnap.val() || {};
         const listaEventos = Object.values(eventos).reverse();
 
+        // Obtener ventas y clientes para el dashboard
+        const ventasSnap = await db.ref('ventas').once('value');
+        const ventas = ventasSnap.val() || {};
+        const listaVentas = Object.values(ventas);
+        const totalVentas = listaVentas.length;
+        const totalIngresos = listaVentas.reduce((sum, v) => sum + (v.total || 0), 0);
+        
+        const clientesSnap = await db.ref('clientes').once('value');
+        const clientes = clientesSnap.val() || {};
+        const totalClientes = Object.keys(clientes).length;
+
         const total = listaAnimales.length;
         const activos = listaAnimales.filter(a => a.status === 'activo').length;
         const hembras = listaAnimales.filter(a => a.sexo === 'Hembra').length;
@@ -552,6 +593,8 @@ async function cargarDashboard() {
             .slice(0, 5);
 
         const ultimosEventos = listaEventos.slice(0, 5);
+        
+        const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
 
         const html = `
             <div class="dashboard-grid">
@@ -603,6 +646,20 @@ async function cargarDashboard() {
                     <div class="card-label">Muertos</div>
                     <div class="card-change negative"><i class="fas fa-arrow-down"></i> Bajas</div>
                 </div>
+                ${isAdmin ? `
+                <div class="dashboard-card">
+                    <div class="card-icon teal"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="card-value">${totalVentas}</div>
+                    <div class="card-label">Ventas</div>
+                    <div class="card-change positive"><i class="fas fa-arrow-up"></i> ${formatearMoneda(totalIngresos)}</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-icon purple"><i class="fas fa-users"></i></div>
+                    <div class="card-value">${totalClientes}</div>
+                    <div class="card-label">Clientes</div>
+                    <div class="card-change neutral"><i class="fas fa-user-plus"></i> Registrados</div>
+                </div>
+                ` : ''}
             </div>
 
             <div class="quick-modules">
@@ -616,6 +673,18 @@ async function cargarDashboard() {
                     <div class="module-name">Eventos</div>
                     <div class="module-desc">Vacunas, pesajes, partos</div>
                 </div>
+                ${isAdmin ? `
+                <div class="quick-module" onclick="mostrarVista('ventas')">
+                    <span class="module-icon">💰</span>
+                    <div class="module-name">Ventas</div>
+                    <div class="module-desc">Gestionar ventas y facturas</div>
+                </div>
+                <div class="quick-module" onclick="mostrarVista('clientes')">
+                    <span class="module-icon">👥</span>
+                    <div class="module-name">Clientes</div>
+                    <div class="module-desc">Administrar clientes</div>
+                </div>
+                ` : ''}
                 <div class="quick-module" onclick="mostrarVista('reportes')">
                     <span class="module-icon">📊</span>
                     <div class="module-name">Reportes</div>
@@ -626,7 +695,7 @@ async function cargarDashboard() {
                     <div class="module-name">Genealogía</div>
                     <div class="module-desc">Árbol genealógico</div>
                 </div>
-                <div class="quick-module" onclick="mostrarVista('configuracion')" id="quickConfig" style="${currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se' ? '' : 'display:none;'}">
+                <div class="quick-module" onclick="mostrarVista('configuracion')" id="quickConfig" style="${isAdmin ? '' : 'display:none;'}">
                     <span class="module-icon">⚙️</span>
                     <div class="module-name">Configuración</div>
                     <div class="module-desc">Ajustes del sistema</div>
@@ -703,7 +772,7 @@ async function cargarDashboard() {
 
         const quickConfig = document.getElementById('quickConfig');
         if (quickConfig) {
-            quickConfig.style.display = currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se' ? '' : 'none';
+            quickConfig.style.display = isAdmin ? '' : 'none';
         }
 
     } catch (error) {
