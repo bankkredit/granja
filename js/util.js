@@ -1,20 +1,36 @@
 /**
  * util.js - Funciones auxiliares y helpers
+ * Versión mejorada con sistema de modales basado en callbacks
  */
 
 // ===== TOAST NOTIFICATIONS =====
-function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
+function mostrarToast(mensaje, tipo = 'info', duracion = 4000) {
     const container = document.getElementById('toastContainer');
+    if (!container) {
+        console.warn('Toast container no encontrado');
+        return;
+    }
+    
     const iconos = {
         success: 'fa-check-circle',
         error: 'fa-exclamation-circle',
         warning: 'fa-exclamation-triangle',
         info: 'fa-info-circle'
     };
+    
+    const colores = {
+        success: '#22c55e',
+        error: '#ef4444',
+        warning: '#f59e0b',
+        info: '#3b82f6'
+    };
+    
     const toast = document.createElement('div');
     toast.className = `toast ${tipo}`;
-    toast.innerHTML = `<i class="fas ${iconos[tipo] || iconos.info}"></i> ${mensaje}`;
+    toast.style.borderLeftColor = colores[tipo] || colores.info;
+    toast.innerHTML = `<i class="fas ${iconos[tipo] || iconos.info}" style="color:${colores[tipo] || colores.info};"></i> <span>${mensaje}</span>`;
     container.appendChild(toast);
+    
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
@@ -22,52 +38,117 @@ function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
     }, duracion);
 }
 
-// ===== MODAL =====
-let modalResolve = null;
+// ===== SISTEMA DE MODALES CON CALLBACKS =====
+let modalCallbacks = {};
 
-function mostrarModal(titulo, contenidoHTML, textoConfirmar = 'Aceptar', accionConfirmar = null, textoCancelar = 'Cancelar', accionCancelar = null) {
+function mostrarModal(titulo, contenidoHTML, opciones = {}) {
     return new Promise((resolve) => {
         const overlay = document.getElementById('modalOverlay');
-        document.getElementById('modalTitle').textContent = titulo;
-        document.getElementById('modalBody').innerHTML = contenidoHTML;
+        const titleEl = document.getElementById('modalTitle');
+        const bodyEl = document.getElementById('modalBody');
+        const footerEl = document.getElementById('modalFooter');
         const confirmBtn = document.getElementById('modalConfirm');
         const cancelBtn = document.getElementById('modalCancel');
         const closeBtn = document.getElementById('modalClose');
+        
+        if (!overlay || !titleEl || !bodyEl) {
+            console.error('Elementos del modal no encontrados');
+            resolve(false);
+            return;
+        }
 
-        confirmBtn.textContent = textoConfirmar;
-        cancelBtn.textContent = textoCancelar;
-        const newConfirm = confirmBtn.cloneNode(true);
-        const newCancel = cancelBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
-        cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+        // Configurar título y contenido
+        titleEl.textContent = titulo;
+        bodyEl.innerHTML = contenidoHTML;
 
-        overlay.style.display = 'flex';
-        modalResolve = resolve;
+        // Configurar botones
+        const textoConfirmar = opciones.confirmText || 'Aceptar';
+        const textoCancelar = opciones.cancelText || 'Cancelar';
+        const mostrarConfirm = opciones.showConfirm !== false;
+        const mostrarCancel = opciones.showCancel !== false;
 
-        const cerrar = (resultado) => {
-            overlay.style.display = 'none';
-            if (modalResolve) modalResolve(resultado);
+        if (confirmBtn) {
+            confirmBtn.textContent = textoConfirmar;
+            confirmBtn.style.display = mostrarConfirm ? 'inline-flex' : 'none';
+        }
+        if (cancelBtn) {
+            cancelBtn.textContent = textoCancelar;
+            cancelBtn.style.display = mostrarCancel ? 'inline-flex' : 'none';
+        }
+        footerEl.style.display = (mostrarConfirm || mostrarCancel) ? 'flex' : 'none';
+
+        // Guardar callbacks
+        modalCallbacks = {
+            onConfirm: opciones.onConfirm || null,
+            onCancel: opciones.onCancel || null,
+            resolve: resolve
         };
 
-        newConfirm.addEventListener('click', () => {
-            if (accionConfirmar) accionConfirmar();
-            cerrar(true);
-        });
-        newCancel.addEventListener('click', () => {
-            if (accionCancelar) accionCancelar();
-            cerrar(false);
-        });
-        closeBtn.addEventListener('click', () => cerrar(false));
-        overlay.addEventListener('click', (e) => {
+        // Función para cerrar el modal
+        const cerrar = (resultado) => {
+            overlay.style.display = 'none';
+            if (modalCallbacks.resolve) {
+                modalCallbacks.resolve(resultado);
+                modalCallbacks = {};
+            }
+        };
+
+        // Remover eventos anteriores clonando los botones
+        if (confirmBtn) {
+            const newConfirm = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+            newConfirm.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (modalCallbacks.onConfirm && typeof modalCallbacks.onConfirm === 'function') {
+                    modalCallbacks.onConfirm();
+                } else {
+                    cerrar(true);
+                }
+            });
+        }
+
+        if (cancelBtn) {
+            const newCancel = cancelBtn.cloneNode(true);
+            cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+            newCancel.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (modalCallbacks.onCancel && typeof modalCallbacks.onCancel === 'function') {
+                    modalCallbacks.onCancel();
+                }
+                cerrar(false);
+            });
+        }
+
+        if (closeBtn) {
+            const newClose = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newClose, closeBtn);
+            newClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                cerrar(false);
+            });
+        }
+
+        // Cerrar al hacer clic fuera
+        overlay.onclick = function(e) {
             if (e.target === overlay) cerrar(false);
-        });
+        };
+
+        // Mostrar el modal
+        overlay.style.display = 'flex';
+        overlay.style.animation = 'fadeIn 0.3s ease';
     });
 }
 
-function cerrarModal() {
+function cerrarModal(resultado = false) {
     const overlay = document.getElementById('modalOverlay');
-    overlay.style.display = 'none';
-    if (modalResolve) modalResolve(false);
+    if (overlay) overlay.style.display = 'none';
+    if (modalCallbacks.resolve) {
+        modalCallbacks.resolve(resultado);
+        modalCallbacks = {};
+    }
 }
 
 // ===== FORMATEO DE FECHAS =====
@@ -76,10 +157,17 @@ function formatearFecha(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+
 function formatearFechaHora(timestamp) {
     if (!timestamp) return 'N/A';
     const date = new Date(timestamp);
     return date.toLocaleString('es-ES', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function formatearFechaInput(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
 }
 
 // ===== CÁLCULO DE EDAD =====
@@ -93,20 +181,26 @@ function calcularEdad(fechaNacimiento) {
         años--;
         meses += 12;
     }
-    if (años > 0) return `${años} año${años>1?'s':''}`;
-    else if (meses > 0) return `${meses} mes${meses>1?'es':''}`;
+    if (años > 0) return `${años} año${años > 1 ? 's' : ''}`;
+    else if (meses > 0) return `${meses} mes${meses > 1 ? 'es' : ''}`;
     else return 'Recién nacido';
 }
 
 // ===== GENERACIÓN DE ID =====
 async function generarId(prefix) {
-    const counterRef = firebase.database().ref('contadores/' + prefix);
-    const snapshot = await counterRef.once('value');
-    let count = snapshot.val() || 0;
-    count++;
-    await counterRef.set(count);
-    const padded = String(count).padStart(6, '0');
-    return prefix + padded;
+    try {
+        const counterRef = firebase.database().ref('contadores/' + prefix);
+        const snapshot = await counterRef.once('value');
+        let count = snapshot.val() || 0;
+        count++;
+        await counterRef.set(count);
+        const padded = String(count).padStart(6, '0');
+        return prefix + padded;
+    } catch (error) {
+        console.error('Error generando ID:', error);
+        // Fallback: usar timestamp
+        return prefix + Date.now().toString().slice(-6);
+    }
 }
 
 // ===== VALIDACIÓN DE FORMULARIOS =====
@@ -130,14 +224,19 @@ function validarCampos(data, rules) {
     return errors;
 }
 
-// ===== SUBIR A CLOUDINARY (CONFIGURACIÓN REAL) =====
+// ===== SUBIR A CLOUDINARY =====
 function subirArchivoCloudinary(file, carpeta = 'granja') {
     return new Promise((resolve, reject) => {
+        if (!file) {
+            reject(new Error('No se seleccionó ningún archivo'));
+            return;
+        }
+        
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'granja_preset');
         formData.append('folder', carpeta);
-        // Cloud name: cn4gurem
+        
         fetch('https://api.cloudinary.com/v1_1/cn4gurem/image/upload', {
             method: 'POST',
             body: formData
@@ -160,54 +259,67 @@ function generarQR(texto, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return resolve(null);
         container.innerHTML = '';
-        const qr = new QRCode(container, {
-            text: texto,
-            width: 128,
-            height: 128,
-            colorDark: '#000000',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        setTimeout(() => {
-            const canvas = container.querySelector('canvas');
-            if (canvas) resolve(canvas.toDataURL('image/png'));
-            else resolve(null);
-        }, 300);
+        try {
+            const qr = new QRCode(container, {
+                text: texto,
+                width: 128,
+                height: 128,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            setTimeout(() => {
+                const canvas = container.querySelector('canvas');
+                if (canvas) resolve(canvas.toDataURL('image/png'));
+                else resolve(null);
+            }, 300);
+        } catch (error) {
+            console.error('Error generando QR:', error);
+            resolve(null);
+        }
     });
 }
 
-// ===== EXPORTAR EXCEL (SheetJS) =====
+// ===== EXPORTAR EXCEL =====
 function exportarExcel(elemento, nombreArchivo = 'export') {
     if (typeof XLSX === 'undefined') {
         mostrarToast('SheetJS no cargado', 'error');
         return;
     }
-    let datos;
-    if (elemento.tagName === 'TABLE') {
-        datos = XLSX.utils.table_to_sheet(elemento);
-    } else {
-        const tabla = elemento.querySelector('table');
-        if (tabla) datos = XLSX.utils.table_to_sheet(tabla);
-        else {
-            const texto = elemento.innerText;
-            const filas = texto.split('\n').filter(f => f.trim());
-            datos = [filas];
+    try {
+        let datos;
+        if (elemento.tagName === 'TABLE') {
+            datos = XLSX.utils.table_to_sheet(elemento);
+        } else {
+            const tabla = elemento.querySelector('table');
+            if (tabla) datos = XLSX.utils.table_to_sheet(tabla);
+            else {
+                const texto = elemento.innerText;
+                const filas = texto.split('\n').filter(f => f.trim());
+                datos = XLSX.utils.aoa_to_sheet([filas]);
+            }
         }
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, datos, 'Datos');
+        XLSX.writeFile(workbook, `${nombreArchivo}.xlsx`);
+        mostrarToast('✅ Exportado a Excel', 'success');
+    } catch (error) {
+        mostrarToast('❌ Error al exportar: ' + error.message, 'error');
     }
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, datos, 'Datos');
-    XLSX.writeFile(workbook, `${nombreArchivo}.xlsx`);
-    mostrarToast('Exportado a Excel', 'success');
 }
 
-// ===== EXPORTAR PDF (jsPDF + html2canvas) =====
+// ===== EXPORTAR PDF =====
 async function exportarPDF(elemento, nombreArchivo = 'export') {
     if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
         mostrarToast('Librerías PDF no cargadas', 'error');
         return;
     }
     try {
-        const canvas = await html2canvas(elemento, { scale: 2, useCORS: true });
+        const canvas = await html2canvas(elemento, { 
+            scale: 2, 
+            useCORS: true,
+            backgroundColor: '#ffffff'
+        });
         const imgData = canvas.toDataURL('image/png');
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
@@ -215,16 +327,31 @@ async function exportarPDF(elemento, nombreArchivo = 'export') {
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
         pdf.save(`${nombreArchivo}.pdf`);
-        mostrarToast('Exportado a PDF', 'success');
+        mostrarToast('✅ Exportado a PDF', 'success');
     } catch (error) {
-        mostrarToast('Error al generar PDF: ' + error.message, 'error');
+        mostrarToast('❌ Error al generar PDF: ' + error.message, 'error');
     }
 }
 
-// ===== OTRAS UTILIDADES =====
+// ===== CAPITALIZAR =====
 function capitalize(str) {
     if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+// ===== FORMATEAR MONEDA =====
+function formatearMoneda(cantidad, moneda = 'USD') {
+    return new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: moneda
+    }).format(cantidad);
+}
+
+// ===== TRUNCAR TEXTO =====
+function truncarTexto(texto, longitud = 50) {
+    if (!texto) return '';
+    if (texto.length <= longitud) return texto;
+    return texto.substring(0, longitud) + '...';
 }
 
 // ===== EXPOSICIÓN GLOBAL =====
@@ -233,6 +360,7 @@ window.mostrarModal = mostrarModal;
 window.cerrarModal = cerrarModal;
 window.formatearFecha = formatearFecha;
 window.formatearFechaHora = formatearFechaHora;
+window.formatearFechaInput = formatearFechaInput;
 window.calcularEdad = calcularEdad;
 window.generarId = generarId;
 window.validarCampos = validarCampos;
@@ -241,3 +369,5 @@ window.generarQR = generarQR;
 window.exportarExcel = exportarExcel;
 window.exportarPDF = exportarPDF;
 window.capitalize = capitalize;
+window.formatearMoneda = formatearMoneda;
+window.truncarTexto = truncarTexto;
