@@ -1,6 +1,6 @@
 /**
  * util.js - Funciones auxiliares y helpers
- * Versión mejorada con sistema de modales basado en callbacks
+ * Versión completa con todas las utilidades necesarias
  */
 
 // ===== TOAST NOTIFICATIONS =====
@@ -57,11 +57,9 @@ function mostrarModal(titulo, contenidoHTML, opciones = {}) {
             return;
         }
 
-        // Configurar título y contenido
         titleEl.textContent = titulo;
         bodyEl.innerHTML = contenidoHTML;
 
-        // Configurar botones
         const textoConfirmar = opciones.confirmText || 'Aceptar';
         const textoCancelar = opciones.cancelText || 'Cancelar';
         const mostrarConfirm = opciones.showConfirm !== false;
@@ -77,14 +75,12 @@ function mostrarModal(titulo, contenidoHTML, opciones = {}) {
         }
         footerEl.style.display = (mostrarConfirm || mostrarCancel) ? 'flex' : 'none';
 
-        // Guardar callbacks
         modalCallbacks = {
             onConfirm: opciones.onConfirm || null,
             onCancel: opciones.onCancel || null,
             resolve: resolve
         };
 
-        // Función para cerrar el modal
         const cerrar = (resultado) => {
             overlay.style.display = 'none';
             if (modalCallbacks.resolve) {
@@ -93,7 +89,6 @@ function mostrarModal(titulo, contenidoHTML, opciones = {}) {
             }
         };
 
-        // Remover eventos anteriores clonando los botones
         if (confirmBtn) {
             const newConfirm = confirmBtn.cloneNode(true);
             confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
@@ -131,12 +126,10 @@ function mostrarModal(titulo, contenidoHTML, opciones = {}) {
             });
         }
 
-        // Cerrar al hacer clic fuera
         overlay.onclick = function(e) {
             if (e.target === overlay) cerrar(false);
         };
 
-        // Mostrar el modal
         overlay.style.display = 'flex';
         overlay.style.animation = 'fadeIn 0.3s ease';
     });
@@ -170,7 +163,6 @@ function formatearFechaInput(dateString) {
     return date.toISOString().split('T')[0];
 }
 
-// ===== CÁLCULO DE EDAD =====
 function calcularEdad(fechaNacimiento) {
     if (!fechaNacimiento) return 'Desconocida';
     const nac = new Date(fechaNacimiento);
@@ -198,7 +190,6 @@ async function generarId(prefix) {
         return prefix + padded;
     } catch (error) {
         console.error('Error generando ID:', error);
-        // Fallback: usar timestamp
         return prefix + Date.now().toString().slice(-6);
     }
 }
@@ -225,31 +216,58 @@ function validarCampos(data, rules) {
 }
 
 // ===== SUBIR A CLOUDINARY =====
-function subirArchivoCloudinary(file, carpeta = 'granja') {
+function subirImagenCloudinary(file, carpeta = 'granja') {
     return new Promise((resolve, reject) => {
         if (!file) {
             reject(new Error('No se seleccionó ningún archivo'));
             return;
         }
-        
+
+        const tiposValidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
+        if (!tiposValidos.includes(file.type)) {
+            reject(new Error('Formato no soportado. Usa JPG, PNG, GIF o WEBP.'));
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            reject(new Error('El archivo es demasiado grande. Máximo 5MB.'));
+            return;
+        }
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'granja_preset');
         formData.append('folder', carpeta);
-        
-        fetch('https://api.cloudinary.com/v1_1/cn4gurem/image/upload', {
+
+        const url = `https://api.cloudinary.com/v1_1/cn4gurem/image/upload`;
+
+        console.log('📤 Subiendo a Cloudinary:', file.name, `(${(file.size / 1024).toFixed(1)}KB)`);
+
+        fetch(url, {
             method: 'POST',
             body: formData
         })
         .then(res => res.json())
         .then(data => {
+            console.log('📤 Respuesta Cloudinary:', data);
             if (data.secure_url) {
-                resolve({ url: data.secure_url, public_id: data.public_id });
+                console.log('✅ Subida exitosa:', data.secure_url);
+                resolve({ 
+                    url: data.secure_url, 
+                    public_id: data.public_id,
+                    format: data.format,
+                    bytes: data.bytes
+                });
+            } else if (data.error && data.error.message && data.error.message.includes('Upload preset not found')) {
+                reject(new Error('❌ El upload preset "granja_preset" no existe en Cloudinary. Debes crearlo.'));
             } else {
-                reject(new Error('Error al subir: ' + (data.error?.message || 'desconocido')));
+                reject(new Error('❌ Error al subir: ' + (data.error?.message || 'desconocido')));
             }
         })
-        .catch(reject);
+        .catch(error => {
+            console.error('❌ Error de red:', error);
+            reject(new Error('Error de conexión: ' + error.message));
+        });
     });
 }
 
@@ -339,7 +357,6 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-// ===== FORMATEAR MONEDA =====
 function formatearMoneda(cantidad, moneda = 'USD') {
     return new Intl.NumberFormat('es-ES', {
         style: 'currency',
@@ -347,14 +364,12 @@ function formatearMoneda(cantidad, moneda = 'USD') {
     }).format(cantidad);
 }
 
-// ===== TRUNCAR TEXTO =====
 function truncarTexto(texto, longitud = 50) {
     if (!texto) return '';
     if (texto.length <= longitud) return texto;
     return texto.substring(0, longitud) + '...';
 }
 
-// ===== EXPOSICIÓN GLOBAL =====
 window.mostrarToast = mostrarToast;
 window.mostrarModal = mostrarModal;
 window.cerrarModal = cerrarModal;
@@ -364,10 +379,12 @@ window.formatearFechaInput = formatearFechaInput;
 window.calcularEdad = calcularEdad;
 window.generarId = generarId;
 window.validarCampos = validarCampos;
-window.subirArchivoCloudinary = subirArchivoCloudinary;
+window.subirImagenCloudinary = subirImagenCloudinary;
 window.generarQR = generarQR;
 window.exportarExcel = exportarExcel;
 window.exportarPDF = exportarPDF;
 window.capitalize = capitalize;
 window.formatearMoneda = formatearMoneda;
 window.truncarTexto = truncarTexto;
+
+console.log('[util.js] Módulo cargado correctamente');

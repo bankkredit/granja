@@ -1,10 +1,8 @@
 /**
  * animales.js - CRUD y gestión de animales
  * Versión completa con validaciones robustas, precarga de datos y selección de padres
- * CORREGIDO: Eliminada creación automática de eventos
  */
 
-// ===== VARIABLES LOCALES =====
 let animalesCache = {};
 let listenerAnimales = null;
 let formularioAbierto = false;
@@ -12,7 +10,6 @@ let modoEdicion = false;
 let animalEnEdicion = null;
 let animalIdEnEdicion = null;
 
-// ===== CONSTANTES =====
 const ESTADOS_ANIMAL = {
     ACTIVO: 'activo',
     INACTIVO: 'inactivo',
@@ -45,10 +42,6 @@ const VALORES_POR_DEFECTO = {
     estadoReproductivo: 'Activo',
     observaciones: ''
 };
-
-// ============================================================
-// 1. FUNCIONES DE UTILIDAD
-// ============================================================
 
 function esAdmin() {
     return currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se';
@@ -111,10 +104,6 @@ function generarOpciones(lista, valorSeleccionado, textoVacio = 'Seleccionar') {
     return options;
 }
 
-// ============================================================
-// 2. LISTENERS Y CACHÉ
-// ============================================================
-
 function obtenerAnimales(callback) {
     if (listenerAnimales) {
         console.log('[animales.js] Listener ya existe');
@@ -140,10 +129,6 @@ function cargarAnimales() {
         renderizarListaAnimales();
     }
 }
-
-// ============================================================
-// 3. RENDERIZAR LISTA
-// ============================================================
 
 function renderizarListaAnimales(filtro = '') {
     const container = document.getElementById('animalesContent');
@@ -262,10 +247,6 @@ function renderizarListaAnimales(filtro = '') {
     }
 }
 
-// ============================================================
-// 4. EXPORTAR EXCEL
-// ============================================================
-
 function exportarAnimalesExcel() {
     const lista = Object.values(animalesCache).filter(a => a.status !== 'inactivo');
     if (lista.length === 0) {
@@ -319,10 +300,6 @@ function exportarAnimalesExcel() {
     tabla.appendChild(tbody);
     exportarExcel(tabla, 'Animales_Granja');
 }
-
-// ============================================================
-// 5. VER DETALLE
-// ============================================================
 
 async function verDetalleAnimal(id) {
     console.log('[animales.js] Ver detalle - ID recibido:', id);
@@ -417,10 +394,6 @@ async function verDetalleAnimal(id) {
     }
 }
 
-// ============================================================
-// 6. QR
-// ============================================================
-
 function generarQrAnimal(id) {
     let animal = obtenerAnimalPorId(id);
     if (!animal) {
@@ -465,10 +438,6 @@ function descargarQR() {
         mostrarToast('Error al descargar QR', 'error');
     }
 }
-
-// ============================================================
-// 7. ABRIR FORMULARIO
-// ============================================================
 
 async function abrirFormularioAnimal(id = null) {
     if (formularioAbierto) {
@@ -738,10 +707,6 @@ async function abrirFormularioAnimal(id = null) {
     }
 }
 
-// ============================================================
-// 8. GUARDAR ANIMAL (SIN CREACIÓN AUTOMÁTICA DE EVENTOS)
-// ============================================================
-
 async function guardarAnimalDesdeFormulario() {
     console.log('[animales.js] guardarAnimalDesdeFormulario() iniciado');
     console.log('[animales.js] modoEdicion:', modoEdicion, 'animalIdEnEdicion:', animalIdEnEdicion);
@@ -815,14 +780,28 @@ async function guardarAnimalDesdeFormulario() {
         }
 
         let fotoUrl = animalEnEdicion?.fotoPrincipal || '';
-        if (aFoto && aFoto.files.length > 0) {
+        if (aFoto && aFoto.files && aFoto.files.length > 0) {
             try {
-                mostrarToast('📤 Subiendo foto...', 'info');
-                const result = await subirImagenCloudinary(aFoto.files[0], 'animales');
-                fotoUrl = result.url;
-                mostrarToast('✅ Foto subida correctamente', 'success');
+                const file = aFoto.files[0];
+                console.log('[animales.js] Subiendo foto:', file.name, 'Tamaño:', file.size);
+                
+                const tiposValidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
+                if (!tiposValidos.includes(file.type)) {
+                    mostrarToast('⚠️ Formato no soportado. Usa JPG, PNG, GIF o WEBP.', 'warning');
+                } else if (file.size > 5 * 1024 * 1024) {
+                    mostrarToast('⚠️ El archivo es demasiado grande. Máximo 5MB.', 'warning');
+                } else {
+                    mostrarToast('📤 Subiendo foto...', 'info');
+                    const result = await subirImagenCloudinary(file, 'animales');
+                    if (result && result.url) {
+                        fotoUrl = result.url;
+                        console.log('[animales.js] Foto subida exitosamente:', fotoUrl);
+                        mostrarToast('✅ Foto subida correctamente', 'success');
+                    }
+                }
             } catch (error) {
-                mostrarToast('⚠️ No se pudo subir la foto. El animal se guardará sin imagen.', 'warning');
+                console.error('[animales.js] Error al subir foto:', error);
+                mostrarToast('⚠️ No se pudo subir la foto: ' + error.message, 'warning');
             }
         }
 
@@ -855,17 +834,9 @@ async function guardarAnimalDesdeFormulario() {
                 updatedByEmail: currentUser?.email || ''
             });
 
-            // ============================================================
-            // ELIMINADO: Ya no se crea evento de nacimiento automáticamente
-            // El usuario debe registrar el nacimiento manualmente desde el módulo Eventos
-            // ============================================================
-            // await db.ref('eventos').push({ ... }); // <-- ELIMINADO
-            // ============================================================
-
             mostrarToast(`✅ Animal ${nuevoId} creado exitosamente`, 'success');
             console.log('[animales.js] Animal creado:', nuevoId);
             
-            // Mostrar sugerencia para registrar evento de nacimiento
             setTimeout(() => {
                 mostrarToast('💡 Recuerda registrar el nacimiento en el módulo Eventos', 'info', 5000);
             }, 1500);
@@ -884,10 +855,6 @@ async function guardarAnimalDesdeFormulario() {
         return false;
     }
 }
-
-// ============================================================
-// 9. ELIMINAR ANIMAL
-// ============================================================
 
 async function eliminarAnimal(id) {
     console.log('[animales.js] eliminarAnimal() llamado para ID:', id);
@@ -997,10 +964,6 @@ async function eliminarAnimal(id) {
         mostrarToast('❌ Error al eliminar: ' + error.message, 'error');
     }
 }
-
-// ============================================================
-// 10. EXPOSICIÓN GLOBAL
-// ============================================================
 
 window.cargarAnimales = cargarAnimales;
 window.obtenerAnimales = obtenerAnimales;

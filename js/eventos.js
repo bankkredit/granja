@@ -4,7 +4,6 @@
  * Versión 4.0 - Correcto: solo eventos manuales, sin automatismos
  */
 
-// ===== VARIABLES LOCALES =====
 let eventosCache = {};
 let listenerEventos = null;
 let formularioEventoAbierto = false;
@@ -13,7 +12,6 @@ let modoEdicionEvento = false;
 let selectorEventoAbierto = false;
 let eventoIdParaEliminar = null;
 
-// ===== CONSTANTES =====
 const TIPOS_EVENTO = {
     PESAJE: 'pesaje',
     VACUNA: 'vacuna',
@@ -53,7 +51,6 @@ const ICONOS_EVENTO = {
     destete: '🐖'
 };
 
-// MAPEO DE CAMPOS PARA EL FORMULARIO
 const MAPEO_CAMPOS = {
     'Peso': 'peso',
     'Metodo': 'metodo',
@@ -86,10 +83,6 @@ const MAPEO_CAMPOS = {
     'Comprador': 'comprador'
 };
 
-// ============================================================
-// FUNCIONES AUXILIARES
-// ============================================================
-
 function esAdmin() {
     return currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se';
 }
@@ -117,10 +110,6 @@ function obtenerNumeroAnimal(animalId) {
     const animal = obtenerAnimalPorId(animalId);
     return animal ? animal.numero : animalId;
 }
-
-// ============================================================
-// RECOGER DATOS DEL FORMULARIO
-// ============================================================
 
 function recogerDatosFormularioEvento() {
     const datos = {};
@@ -150,10 +139,6 @@ function recogerDatosFormularioEvento() {
     return datos;
 }
 
-// ============================================================
-// OBTENER EVENTOS
-// ============================================================
-
 function obtenerEventos(animalId, callback) {
     if (listenerEventos) {
         listenerEventos.off();
@@ -169,10 +154,6 @@ function obtenerEventos(animalId, callback) {
     });
     return ref;
 }
-
-// ============================================================
-// VER DETALLE DEL EVENTO
-// ============================================================
 
 async function verDetalleEvento(eventoId) {
     try {
@@ -254,14 +235,9 @@ async function verDetalleEvento(eventoId) {
     }
 }
 
-// ============================================================
-// ABRIR FORMULARIO DE EVENTO
-// ============================================================
-
 async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
     console.log('[eventos.js] abrirFormularioEvento() llamado:', { animalId, tipo, eventoId });
 
-    // Si es edición, obtener el evento
     if (eventoId) {
         try {
             const snapshot = await db.ref(`eventos/${eventoId}`).once('value');
@@ -289,7 +265,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
         return;
     }
 
-    // Verificar que el animal existe
     const animal = obtenerAnimalPorId(animalId);
     if (!animal) {
         mostrarToast(`❌ Animal no encontrado: ${animalId}`, 'error');
@@ -297,7 +272,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
     }
 
     try {
-        // Cargar configuraciones si es necesario
         if (!configuraciones || Object.keys(configuraciones).length === 0) {
             await cargarConfiguraciones();
             if (!configuraciones || Object.keys(configuraciones).length === 0) {
@@ -307,7 +281,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
             }
         }
 
-        // Si no se pasa tipo, mostrar selector de tipos
         if (!tipo && !modoEdicionEvento) {
             selectorEventoAbierto = true;
             formularioEventoAbierto = true;
@@ -346,7 +319,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
 
         console.log('[eventos.js] Abriendo formulario completo para tipo:', tipo);
 
-        // Construir formulario según tipo
         let camposHTML = '';
         let tituloEvento = modoEdicionEvento ? '✏️ Editar Evento' : '📋 Nuevo Evento';
         const evento = eventoEnEdicion;
@@ -370,7 +342,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
             return new Date().toISOString().split('T')[0];
         };
 
-        // Construir campos según tipo
         switch (tipo) {
             case TIPOS_EVENTO.PESAJE:
                 tituloEvento = modoEdicionEvento ? '✏️ Editar Pesaje' : '⚖️ Registrar Pesaje';
@@ -691,10 +662,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
     }
 }
 
-// ============================================================
-// SELECCIONAR / CERRAR SELECTOR
-// ============================================================
-
 window.seleccionarTipoEvento = function(animalId, tipo) {
     cerrarModal();
     setTimeout(() => {
@@ -709,10 +676,6 @@ window.cerrarSelectorEvento = function() {
     formularioEventoAbierto = false;
     selectorEventoAbierto = false;
 };
-
-// ============================================================
-// GUARDAR EVENTO (SOLO MANUAL)
-// ============================================================
 
 async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
     console.log('[eventos.js] guardarEventoDesdeFormulario() iniciado');
@@ -795,7 +758,6 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
             return false;
         }
 
-        // Guardar evento en Firebase (SOLO MANUAL)
         const eventoRef = db.ref('eventos').push();
         await eventoRef.set({
             animalId: animalId,
@@ -813,7 +775,6 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
         mostrarToast(`✅ Evento ${capitalize(tipo)} registrado exitosamente`, 'success');
         console.log('[eventos.js] Evento creado:', eventoRef.key);
 
-        // Actualizar estado del animal (solo para eventos que afectan el estado)
         await actualizarEstadoAnimal(animalId, tipo, datos);
         
         cargarEventosRecientes();
@@ -825,10 +786,6 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
         return false;
     }
 }
-
-// ============================================================
-// ACTUALIZAR EVENTO
-// ============================================================
 
 async function actualizarEventoDesdeFormulario(animalId, tipo) {
     console.log('[eventos.js] actualizarEventoDesdeFormulario() iniciado');
@@ -879,10 +836,6 @@ async function actualizarEventoDesdeFormulario(animalId, tipo) {
         return false;
     }
 }
-
-// ============================================================
-// ELIMINAR EVENTO
-// ============================================================
 
 window.eliminarEvento = async function(eventoId) {
     console.log('[eventos.js] eliminarEvento() llamado para ID:', eventoId);
@@ -953,10 +906,6 @@ window.eliminarEvento = async function(eventoId) {
     }
 };
 
-// ============================================================
-// ACTUALIZAR ESTADO DEL ANIMAL (SOLO CUANDO EL EVENTO LO REQUIERE)
-// ============================================================
-
 async function actualizarEstadoAnimal(animalId, tipo, datos) {
     try {
         const animalRef = db.ref(`animales/${animalId}`);
@@ -1008,10 +957,6 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
         console.error('[eventos.js] Error actualizando estado:', error);
     }
 }
-
-// ============================================================
-// CARGAR VISTA DE EVENTOS
-// ============================================================
 
 function cargarEventos() {
     const container = document.getElementById('eventosContent');
@@ -1075,10 +1020,6 @@ function cargarEventos() {
     container.innerHTML = html;
     cargarEventosRecientes();
 }
-
-// ============================================================
-// CARGAR EVENTOS RECIENTES
-// ============================================================
 
 async function cargarEventosRecientes() {
     const container = document.getElementById('eventosRecientesLista');
@@ -1169,10 +1110,6 @@ async function cargarEventosRecientes() {
     }
 }
 
-// ============================================================
-// REGISTRAR EVENTO RÁPIDO
-// ============================================================
-
 window.registrarEventoRapido = function() {
     const animalSelect = document.getElementById('eventoAnimalSelect');
     const tipoSelect = document.getElementById('eventoTipoSelect');
@@ -1195,10 +1132,6 @@ window.registrarEventoRapido = function() {
     selectorEventoAbierto = false;
     abrirFormularioEvento(animalId, tipo);
 };
-
-// ============================================================
-// EXPOSICIÓN GLOBAL
-// ============================================================
 
 window.cargarEventos = cargarEventos;
 window.obtenerEventos = obtenerEventos;

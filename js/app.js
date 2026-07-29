@@ -3,7 +3,6 @@
  * Inicializa Firebase, maneja autenticación, navegación, temas y carga de vistas.
  */
 
-// ===== CONFIGURACIÓN DE FIREBASE =====
 const firebaseConfig = {
     apiKey: "AIzaSyBI4O0d_Mec38FDiuhirujCnX99PFKiXW4",
     authDomain: "projekt-pc.firebaseapp.com",
@@ -15,12 +14,10 @@ const firebaseConfig = {
     measurementId: "G-59YH8W8W1L"
 };
 
-// ===== INICIALIZACIÓN =====
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// Variables globales
 let currentUser = null;
 let currentView = 'dashboard';
 let configuraciones = {};
@@ -28,7 +25,6 @@ let theme = localStorage.getItem('theme') || 'light';
 let charts = {};
 let loginModalMostrado = false;
 
-// ===== REFERENCIAS DOM =====
 const sidebar = document.getElementById('sidebar');
 const menuToggle = document.getElementById('menuToggle');
 const themeToggle = document.getElementById('themeToggle');
@@ -49,7 +45,6 @@ const views = {
     configuracion: document.getElementById('view-configuracion')
 };
 
-// ===== AUTENTICACIÓN =====
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 auth.onAuthStateChanged(async user => {
@@ -84,20 +79,9 @@ auth.onAuthStateChanged(async user => {
                 userAvatar.innerHTML = currentUser.nombre.charAt(0).toUpperCase();
             }
             
-            // Mostrar/ocultar menús según rol
             const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-            
-            // Configuración: solo admin
-            if (menuConfig) {
-                menuConfig.style.display = isAdmin ? 'flex' : 'none';
-                console.log('[app.js] menuConfig display:', menuConfig.style.display);
-            }
-            
-            // Usuarios: visible para todos, pero las acciones solo admin
-            if (menuUsuarios) {
-                menuUsuarios.style.display = 'flex';
-                console.log('[app.js] menuUsuarios display:', menuUsuarios.style.display);
-            }
+            if (menuConfig) menuConfig.style.display = isAdmin ? 'flex' : 'none';
+            if (menuUsuarios) menuUsuarios.style.display = isAdmin ? 'flex' : 'none';
             
             await cargarConfiguraciones();
             mostrarVista('dashboard');
@@ -114,7 +98,6 @@ auth.onAuthStateChanged(async user => {
     }
 });
 
-// ===== MODAL DE LOGIN =====
 function mostrarLoginModal() {
     console.log('[app.js] mostrarLoginModal() llamado');
     
@@ -124,12 +107,10 @@ function mostrarLoginModal() {
         return;
     }
 
-    // Ocultar todas las vistas
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.remove('active');
     });
 
-    // Activar la vista dashboard
     const dashboardView = document.getElementById('view-dashboard');
     if (dashboardView) {
         dashboardView.classList.add('active');
@@ -172,7 +153,6 @@ function mostrarLoginModal() {
         </div>
     `;
 
-    // Manejar eventos del login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         const newForm = loginForm.cloneNode(true);
@@ -248,7 +228,6 @@ function mostrarLoginModal() {
     }
 }
 
-// ===== MODAL DE REGISTRO =====
 function mostrarRegistroModal() {
     const container = document.getElementById('dashboardContent');
     if (!container) return;
@@ -349,14 +328,12 @@ function mostrarRegistroModal() {
     });
 }
 
-// ===== LOGOUT =====
 logoutBtn.addEventListener('click', () => {
     auth.signOut();
     loginModalMostrado = false;
     mostrarToast('Sesión cerrada', 'info');
 });
 
-// ===== CARGA DE CONFIGURACIONES =====
 async function cargarConfiguraciones() {
     try {
         console.log('[app.js] Cargando configuraciones...');
@@ -384,7 +361,6 @@ async function cargarConfiguraciones() {
     }
 }
 
-// ===== CREAR CONFIGURACIONES POR DEFECTO =====
 async function crearConfiguracionesPorDefecto() {
     const defaultConfig = {
         categorias: [
@@ -433,7 +409,6 @@ async function crearConfiguracionesPorDefecto() {
     }
 }
 
-// ===== NAVEGACIÓN =====
 function mostrarVista(viewName) {
     if (!currentUser) {
         console.log('[app.js] Usuario no autenticado, redirigiendo a login');
@@ -441,18 +416,12 @@ function mostrarVista(viewName) {
         return;
     }
     
-    // Verificar permisos para vistas restringidas
     const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-    if ((viewName === 'configuracion') && !isAdmin) {
-        mostrarToast('Acceso restringido a administradores', 'warning');
-        return;
-    }
-    
-    // Usuarios: visible para todos, pero solo admin puede gestionar
-    if (viewName === 'usuarios' && !isAdmin) {
-        // Mostrar mensaje de que solo admin puede gestionar, pero mostrar la vista con información básica
-        // Por ahora, permitimos el acceso pero con funciones limitadas
-        // No restringimos el acceso, solo mostramos un mensaje
+    if ((viewName === 'configuracion' || viewName === 'usuarios') && !isAdmin) {
+        if (viewName === 'configuracion') {
+            mostrarToast('Acceso restringido a administradores', 'warning');
+            return;
+        }
     }
     
     Object.keys(views).forEach(key => {
@@ -517,9 +486,8 @@ menuItems.forEach(item => {
             mostrarLoginModal();
             return;
         }
-        // Verificar permisos
         const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-        if (view === 'configuracion' && !isAdmin) {
+        if ((view === 'configuracion') && !isAdmin) {
             mostrarToast('Acceso restringido a administradores', 'warning');
             return;
         }
@@ -527,7 +495,6 @@ menuItems.forEach(item => {
     });
 });
 
-// ===== MENÚ TOGGLE =====
 menuToggle.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
         sidebar.classList.toggle('open');
@@ -536,7 +503,6 @@ menuToggle.addEventListener('click', () => {
     }
 });
 
-// ===== TEMA =====
 function setTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     theme = themeName;
@@ -546,7 +512,6 @@ function setTheme(themeName) {
 themeToggle.addEventListener('click', () => setTheme(theme === 'light' ? 'dark' : 'light'));
 setTheme(theme);
 
-// ===== DASHBOARD =====
 async function cargarDashboard() {
     const container = document.getElementById('dashboardContent');
     if (!container) return;
@@ -756,7 +721,6 @@ async function cargarDashboard() {
     }
 }
 
-// ===== USUARIOS =====
 async function cargarUsuarios() {
     const container = document.getElementById('usuariosContent');
     if (!container) return;
@@ -870,7 +834,6 @@ window.eliminarUsuario = async function(uid) {
     }
 };
 
-// ===== EXPOSICIÓN GLOBAL =====
 window.db = db;
 window.auth = auth;
 window.currentUser = currentUser;
