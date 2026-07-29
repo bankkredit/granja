@@ -1,7 +1,6 @@
 /**
  * app.js - Módulo principal
  * Inicializa Firebase, maneja autenticación, navegación, temas y carga de vistas.
- * Las funciones de configuración han sido movidas a configuracion.js
  */
 
 // ===== CONFIGURACIÓN DE FIREBASE =====
@@ -45,6 +44,7 @@ const views = {
     animales: document.getElementById('view-animales'),
     eventos: document.getElementById('view-eventos'),
     reportes: document.getElementById('view-reportes'),
+    genealogia: document.getElementById('view-genealogia'),
     usuarios: document.getElementById('view-usuarios'),
     configuracion: document.getElementById('view-configuracion')
 };
@@ -84,9 +84,20 @@ auth.onAuthStateChanged(async user => {
                 userAvatar.innerHTML = currentUser.nombre.charAt(0).toUpperCase();
             }
             
+            // Mostrar/ocultar menús según rol
             const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
-            if (menuConfig) menuConfig.style.display = isAdmin ? 'flex' : 'none';
-            if (menuUsuarios) menuUsuarios.style.display = isAdmin ? 'flex' : 'none';
+            
+            // Configuración: solo admin
+            if (menuConfig) {
+                menuConfig.style.display = isAdmin ? 'flex' : 'none';
+                console.log('[app.js] menuConfig display:', menuConfig.style.display);
+            }
+            
+            // Usuarios: visible para todos, pero las acciones solo admin
+            if (menuUsuarios) {
+                menuUsuarios.style.display = 'flex';
+                console.log('[app.js] menuUsuarios display:', menuUsuarios.style.display);
+            }
             
             await cargarConfiguraciones();
             mostrarVista('dashboard');
@@ -97,6 +108,7 @@ auth.onAuthStateChanged(async user => {
         }
     } else {
         currentUser = null;
+        loginModalMostrado = false;
         console.log('[app.js] Usuario no autenticado, mostrando login');
         mostrarLoginModal();
     }
@@ -104,117 +116,136 @@ auth.onAuthStateChanged(async user => {
 
 // ===== MODAL DE LOGIN =====
 function mostrarLoginModal() {
-    if (loginModalMostrado) {
-        console.log('[app.js] Login modal ya mostrado');
-        return;
-    }
-    
-    console.log('[app.js] Mostrando login modal');
-    loginModalMostrado = true;
+    console.log('[app.js] mostrarLoginModal() llamado');
     
     const container = document.getElementById('dashboardContent');
-    if (container) {
-        container.innerHTML = `
-            <div class="login-container" style="display:flex;align-items:center;justify-content:center;min-height:70vh;padding:20px;">
-                <div class="login-card" style="background:var(--bg-card);border-radius:var(--radius-lg);padding:40px;max-width:420px;width:100%;box-shadow:var(--shadow-xl);border:1px solid var(--border-color);">
-                    <div style="text-align:center;margin-bottom:30px;">
-                        <div style="font-size:3rem;display:block;margin-bottom:8px;">🐖</div>
-                        <h2 style="font-size:1.5rem;font-weight:700;color:var(--text-primary);">Granja Porcina</h2>
-                        <p style="color:var(--text-secondary);font-size:0.9rem;">Sistema de Gestión</p>
-                    </div>
-                    
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label>Correo electrónico</label>
-                            <input type="email" id="loginEmail" class="form-control" placeholder="usuario@ejemplo.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Contraseña</label>
-                            <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;">
-                            <i class="fas fa-sign-in-alt"></i> Iniciar sesión
-                        </button>
-                    </form>
-                    
-                    <div style="margin-top:16px;text-align:center;">
-                        <span style="color:var(--text-secondary);font-size:0.85rem;">¿No tienes cuenta? </span>
-                        <a href="#" id="showRegisterLink" style="color:var(--color-primary);font-weight:500;text-decoration:none;">Regístrate</a>
-                        <br>
-                        <a href="#" id="showResetLink" style="color:var(--text-light);font-size:0.8rem;text-decoration:none;">¿Olvidaste tu contraseña?</a>
-                    </div>
-                    
-                    <div id="loginMessage" style="margin-top:12px;display:none;"></div>
-                </div>
-            </div>
-        `;
+    if (!container) {
+        console.error('[app.js] Contenedor dashboardContent no encontrado');
+        return;
     }
-    
+
+    // Ocultar todas las vistas
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.remove('active');
     });
-    
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        const msgDiv = document.getElementById('loginMessage');
+
+    // Activar la vista dashboard
+    const dashboardView = document.getElementById('view-dashboard');
+    if (dashboardView) {
+        dashboardView.classList.add('active');
+    }
+    currentView = 'dashboard';
+    pageTitle.textContent = 'Dashboard';
+
+    container.innerHTML = `
+        <div class="login-container" style="display:flex;align-items:center;justify-content:center;min-height:70vh;padding:20px;">
+            <div class="login-card" style="background:var(--bg-card);border-radius:var(--radius-lg);padding:40px;max-width:420px;width:100%;box-shadow:var(--shadow-xl);border:1px solid var(--border-color);">
+                <div style="text-align:center;margin-bottom:30px;">
+                    <div style="font-size:3rem;display:block;margin-bottom:8px;">🐖</div>
+                    <h2 style="font-size:1.5rem;font-weight:700;color:var(--text-primary);">Granja Porcina</h2>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;">Sistema de Gestión</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="usuario@ejemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;width:100%;">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                    </button>
+                </form>
+                
+                <div style="margin-top:16px;text-align:center;">
+                    <span style="color:var(--text-secondary);font-size:0.85rem;">¿No tienes cuenta? </span>
+                    <a href="#" id="showRegisterLink" style="color:var(--color-primary);font-weight:500;text-decoration:none;">Regístrate</a>
+                    <br>
+                    <a href="#" id="showResetLink" style="color:var(--text-light);font-size:0.8rem;text-decoration:none;">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <div id="loginMessage" style="margin-top:12px;display:none;"></div>
+            </div>
+        </div>
+    `;
+
+    // Manejar eventos del login
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        const newForm = loginForm.cloneNode(true);
+        loginForm.parentNode.replaceChild(newForm, loginForm);
         
-        if (!email || !password) {
-            msgDiv.style.display = 'block';
-            msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:10px;border-radius:var(--radius-sm);">
-                <i class="fas fa-exclamation-circle"></i> Completa todos los campos
-            </div>`;
-            return;
-        }
-        
-        try {
-            msgDiv.style.display = 'block';
-            msgDiv.innerHTML = `<div style="background:var(--color-info);color:white;padding:10px;border-radius:var(--radius-sm);">
-                <i class="fas fa-spinner fa-spin"></i> Iniciando sesión...
-            </div>`;
+        newForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const msgDiv = document.getElementById('loginMessage');
             
-            await auth.signInWithEmailAndPassword(email, password);
-            loginModalMostrado = false;
-            mostrarToast('✅ Bienvenido', 'success');
-            
-        } catch (error) {
-            console.error('[app.js] Error de login:', error);
-            let mensaje = 'Error al iniciar sesión';
-            if (error.code === 'auth/user-not-found') {
-                mensaje = 'Usuario no encontrado. ¿Necesitas registrarte?';
-            } else if (error.code === 'auth/wrong-password') {
-                mensaje = 'Contraseña incorrecta. Intenta de nuevo.';
-            } else if (error.code === 'auth/invalid-email') {
-                mensaje = 'Correo electrónico inválido.';
-            } else if (error.code === 'auth/too-many-requests') {
-                mensaje = 'Demasiados intentos. Espera un momento.';
+            if (!email || !password) {
+                msgDiv.style.display = 'block';
+                msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:10px;border-radius:var(--radius-sm);">
+                    <i class="fas fa-exclamation-circle"></i> Completa todos los campos
+                </div>`;
+                return;
             }
-            msgDiv.style.display = 'block';
-            msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:10px;border-radius:var(--radius-sm);">
-                <i class="fas fa-exclamation-circle"></i> ${mensaje}
-            </div>`;
-        }
-    });
-    
-    document.getElementById('showRegisterLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        mostrarRegistroModal();
-    });
-    
-    document.getElementById('showResetLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        const email = prompt('Ingresa tu correo electrónico para restablecer la contraseña:');
-        if (email) {
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    mostrarToast('📧 Correo de restablecimiento enviado', 'success');
-                })
-                .catch(err => {
-                    mostrarToast('Error: ' + err.message, 'error');
-                });
-        }
-    });
+            
+            try {
+                msgDiv.style.display = 'block';
+                msgDiv.innerHTML = `<div style="background:var(--color-info);color:white;padding:10px;border-radius:var(--radius-sm);">
+                    <i class="fas fa-spinner fa-spin"></i> Iniciando sesión...
+                </div>`;
+                
+                await auth.signInWithEmailAndPassword(email, password);
+                loginModalMostrado = false;
+                mostrarToast('✅ Bienvenido', 'success');
+                
+            } catch (error) {
+                console.error('[app.js] Error de login:', error);
+                let mensaje = 'Error al iniciar sesión';
+                if (error.code === 'auth/user-not-found') {
+                    mensaje = 'Usuario no encontrado. ¿Necesitas registrarte?';
+                } else if (error.code === 'auth/wrong-password') {
+                    mensaje = 'Contraseña incorrecta. Intenta de nuevo.';
+                } else if (error.code === 'auth/invalid-email') {
+                    mensaje = 'Correo electrónico inválido.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    mensaje = 'Demasiados intentos. Espera un momento.';
+                }
+                msgDiv.style.display = 'block';
+                msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:10px;border-radius:var(--radius-sm);">
+                    <i class="fas fa-exclamation-circle"></i> ${mensaje}
+                </div>`;
+            }
+        });
+    }
+
+    const showRegisterLink = document.getElementById('showRegisterLink');
+    if (showRegisterLink) {
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            mostrarRegistroModal();
+        });
+    }
+
+    const showResetLink = document.getElementById('showResetLink');
+    if (showResetLink) {
+        showResetLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = prompt('Ingresa tu correo electrónico para restablecer la contraseña:');
+            if (email) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => {
+                        mostrarToast('📧 Correo de restablecimiento enviado', 'success');
+                    })
+                    .catch(err => {
+                        mostrarToast('Error: ' + err.message, 'error');
+                    });
+            }
+        });
+    }
 }
 
 // ===== MODAL DE REGISTRO =====
@@ -244,7 +275,7 @@ function mostrarRegistroModal() {
                         <label>Contraseña (mínimo 6 caracteres)</label>
                         <input type="password" id="regPassword" class="form-control" placeholder="••••••••" required minlength="6">
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:8px;width:100%;">
                         <i class="fas fa-user-plus"></i> Registrarse
                     </button>
                 </form>
@@ -328,6 +359,7 @@ logoutBtn.addEventListener('click', () => {
 // ===== CARGA DE CONFIGURACIONES =====
 async function cargarConfiguraciones() {
     try {
+        console.log('[app.js] Cargando configuraciones...');
         const snapshot = await db.ref('configuraciones').once('value');
         let data = snapshot.val() || {};
         if (Object.keys(data).length === 0) {
@@ -335,6 +367,7 @@ async function cargarConfiguraciones() {
         }
         configuraciones = data;
         window.configuraciones = configuraciones;
+        console.log('[app.js] Configuraciones cargadas:', Object.keys(configuraciones));
         
         db.ref('configuraciones').on('value', snap => {
             configuraciones = snap.val() || {};
@@ -392,6 +425,7 @@ async function crearConfiguracionesPorDefecto() {
     };
     try {
         await db.ref('configuraciones').set(defaultConfig);
+        console.log('[app.js] Configuraciones por defecto creadas');
         return defaultConfig;
     } catch (error) {
         console.error('[app.js] Error creando configuraciones:', error);
@@ -407,6 +441,20 @@ function mostrarVista(viewName) {
         return;
     }
     
+    // Verificar permisos para vistas restringidas
+    const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
+    if ((viewName === 'configuracion') && !isAdmin) {
+        mostrarToast('Acceso restringido a administradores', 'warning');
+        return;
+    }
+    
+    // Usuarios: visible para todos, pero solo admin puede gestionar
+    if (viewName === 'usuarios' && !isAdmin) {
+        // Mostrar mensaje de que solo admin puede gestionar, pero mostrar la vista con información básica
+        // Por ahora, permitimos el acceso pero con funciones limitadas
+        // No restringimos el acceso, solo mostramos un mensaje
+    }
+    
     Object.keys(views).forEach(key => {
         if (views[key]) views[key].classList.remove('active');
     });
@@ -420,6 +468,7 @@ function mostrarVista(viewName) {
             animales: 'Animales',
             eventos: 'Eventos',
             reportes: 'Reportes',
+            genealogia: 'Genealogía',
             usuarios: 'Usuarios',
             configuracion: 'Configuración'
         };
@@ -443,6 +492,10 @@ function mostrarVista(viewName) {
                 if (typeof window.cargarReportes === 'function') window.cargarReportes();
                 else mostrarToast('Módulo Reportes no disponible', 'error');
                 break;
+            case 'genealogia':
+                if (typeof window.cargarGenealogia === 'function') window.cargarGenealogia();
+                else mostrarToast('Módulo Genealogía no disponible', 'error');
+                break;
             case 'usuarios': 
                 if (typeof window.cargarUsuarios === 'function') window.cargarUsuarios();
                 else mostrarToast('Módulo Usuarios no disponible', 'error');
@@ -464,8 +517,9 @@ menuItems.forEach(item => {
             mostrarLoginModal();
             return;
         }
-        if ((view === 'usuarios' || view === 'configuracion') && 
-            currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+        // Verificar permisos
+        const isAdmin = currentUser.rol === 'admin' || currentUser.email === 'vinicio@geomira.se';
+        if (view === 'configuracion' && !isAdmin) {
             mostrarToast('Acceso restringido a administradores', 'warning');
             return;
         }
@@ -535,7 +589,6 @@ async function cargarDashboard() {
         const ultimosEventos = listaEventos.slice(0, 5);
 
         const html = `
-            <!-- Tarjetas de estadísticas -->
             <div class="dashboard-grid">
                 <div class="dashboard-card">
                     <div class="card-icon blue"><i class="fas fa-paw"></i></div>
@@ -587,7 +640,6 @@ async function cargarDashboard() {
                 </div>
             </div>
 
-            <!-- Módulos rápidos -->
             <div class="quick-modules">
                 <div class="quick-module" onclick="mostrarVista('animales')">
                     <span class="module-icon">🐖</span>
@@ -604,6 +656,11 @@ async function cargarDashboard() {
                     <div class="module-name">Reportes</div>
                     <div class="module-desc">Análisis y exportaciones</div>
                 </div>
+                <div class="quick-module" onclick="mostrarVista('genealogia')">
+                    <span class="module-icon">🌳</span>
+                    <div class="module-name">Genealogía</div>
+                    <div class="module-desc">Árbol genealógico</div>
+                </div>
                 <div class="quick-module" onclick="mostrarVista('configuracion')" id="quickConfig" style="${currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se' ? '' : 'display:none;'}">
                     <span class="module-icon">⚙️</span>
                     <div class="module-name">Configuración</div>
@@ -611,7 +668,6 @@ async function cargarDashboard() {
                 </div>
             </div>
 
-            <!-- Actividad reciente -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title"><i class="fas fa-clock"></i> Actividad Reciente</span>
@@ -653,7 +709,7 @@ async function cargarDashboard() {
                             venta: '💰',
                             muerte: '⚰️',
                             diagnostico: '🔬',
-                            destete: '👶'
+                            destete: '🐖'
                         };
                         return `
                             <div class="activity-item">
@@ -702,18 +758,28 @@ async function cargarDashboard() {
 
 // ===== USUARIOS =====
 async function cargarUsuarios() {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
-        document.getElementById('usuariosContent').innerHTML = `
+    const container = document.getElementById('usuariosContent');
+    if (!container) return;
+    
+    const isAdmin = currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se';
+    
+    if (!isAdmin) {
+        container.innerHTML = `
             <div class="card" style="text-align:center;padding:40px;">
-                <i class="fas fa-lock" style="font-size:2rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
-                <h3>Acceso Restringido</h3>
-                <p style="color:var(--text-secondary);">Solo administradores pueden acceder a esta sección.</p>
+                <i class="fas fa-user" style="font-size:3rem;color:var(--color-primary);display:block;margin-bottom:16px;"></i>
+                <h3>Mi Perfil</h3>
+                <div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin:16px 0;text-align:left;max-width:400px;margin:16px auto;">
+                    <p><strong>Nombre:</strong> ${currentUser?.nombre || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${currentUser?.email || 'N/A'}</p>
+                    <p><strong>Rol:</strong> ${currentUser?.rol || 'empleado'}</p>
+                    <p><strong>UID:</strong> ${currentUser?.uid || 'N/A'}</p>
+                </div>
+                <p style="color:var(--text-secondary);">Para gestionar usuarios, necesitas permisos de administrador.</p>
             </div>
         `;
         return;
     }
     
-    const container = document.getElementById('usuariosContent');
     container.innerHTML = '<div style="display:flex;justify-content:center;padding:40px;"><div class="loader"></div></div>';
     
     try {
@@ -771,8 +837,11 @@ async function cargarUsuarios() {
     }
 }
 
-// ===== FUNCIONES DE USUARIOS =====
 window.cambiarRolUsuario = async function(uid) {
+    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+        mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
+        return;
+    }
     const nuevoRol = prompt('Ingresa el nuevo rol (admin o empleado):');
     if (!nuevoRol || !['admin','empleado'].includes(nuevoRol.toLowerCase())) {
         return mostrarToast('Rol inválido. Debe ser admin o empleado.', 'warning');
@@ -787,6 +856,10 @@ window.cambiarRolUsuario = async function(uid) {
 };
 
 window.eliminarUsuario = async function(uid) {
+    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+        mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
+        return;
+    }
     if (!confirm('¿Eliminar este usuario? Esta acción no se puede deshacer.')) return;
     try {
         await db.ref(`users/${uid}`).remove();

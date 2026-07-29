@@ -75,6 +75,10 @@
                 <i class="fas fa-chart-bar"></i>
                 <span>Reportes</span>
             </li>
+            <li data-view="genealogia">
+                <i class="fas fa-tree"></i>
+                <span>Genealogía</span>
+            </li>
             <li data-view="usuarios" id="menuUsuarios">
                 <i class="fas fa-users-cog"></i>
                 <span>Usuarios</span>
@@ -100,9 +104,7 @@
     <main id="mainContent">
         <!-- ===== DASHBOARD ===== -->
         <section id="view-dashboard" class="view active">
-            <div id="dashboardContent">
-                <!-- Contenido dinámico -->
-            </div>
+            <div id="dashboardContent"></div>
         </section>
 
         <!-- ===== ANIMALES ===== -->
@@ -118,6 +120,11 @@
         <!-- ===== REPORTES ===== -->
         <section id="view-reportes" class="view">
             <div id="reportesContent"></div>
+        </section>
+
+        <!-- ===== GENEALOGÍA ===== -->
+        <section id="view-genealogia" class="view">
+            <div id="genealogiaContent"></div>
         </section>
 
         <!-- ===== USUARIOS ===== -->
@@ -138,9 +145,7 @@
                 <h3 id="modalTitle">Título</h3>
                 <button class="modal-close" id="modalClose">&times;</button>
             </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Contenido dinámico -->
-            </div>
+            <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer" id="modalFooter">
                 <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
                 <button class="btn btn-primary" id="modalConfirm">Aceptar</button>
@@ -161,12 +166,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-	<!-- M��dulos propios -->
-	<script src="js/util.js"></script>
-	<script src="js/app.js"></script>
-	<script src="js/animales.js"></script>
-	<script src="js/eventos.js"></script>
-	<script src="js/reportes.js"></script>
-	<script src="js/configuracion.js"></script>
+    <!-- ===== MÓDULOS PROPIOS ===== -->
+    <script src="js/util.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/animales.js"></script>
+    <script src="js/eventos.js"></script>
+    <script src="js/reportes.js"></script>
+    <script src="js/configuracion.js"></script>
+    <script src="js/genealogia.js"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
 /**
- * eventos.js - Gestión avanzada de eventos para animales
- * Versión completa con edición, eliminación y sincronización
- * CORREGIDO: Captura correcta de todos los campos del formulario
- * FIX: Problema con mayúsculas/minúsculas en nombres de campos
+ * eventos.js - Gestión de eventos para animales
+ * Sistema de registro manual de eventos (vacunas, pesajes, partos, ventas, etc.)
+ * Versión 3.1 - CORREGIDO: Mapeo de campos para capturar datos correctamente
  */
 
 // ===== VARIABLES LOCALES =====
@@ -28,24 +27,37 @@ const TIPOS_EVENTO = {
 };
 
 const COLORES_EVENTO = {
-    pesaje: 'var(--color-warning)',
-    vacuna: 'var(--color-info)',
-    tratamiento: 'var(--color-purple)',
-    inseminacion: 'var(--color-primary)',
-    parto: 'var(--color-success)',
-    cambioCorral: 'var(--color-secondary)',
-    venta: 'var(--color-danger)',
-    muerte: 'var(--color-danger)',
-    diagnostico: 'var(--color-warning)',
-    destete: 'var(--color-success)',
-    nacimiento: 'var(--color-success)',
-    eliminacion: 'var(--color-danger)'
+    pesaje: '#f59e0b',
+    vacuna: '#3b82f6',
+    tratamiento: '#8b5cf6',
+    inseminacion: '#6366f1',
+    parto: '#22c55e',
+    cambioCorral: '#64748b',
+    venta: '#ef4444',
+    muerte: '#dc2626',
+    diagnostico: '#f59e0b',
+    destete: '#22c55e',
+    nacimiento: '#22c55e',
+    eliminacion: '#dc2626'
 };
 
-// ===== MAPEO DE NOMBRES DE CAMPOS (CORREGIDO) =====
+const ICONOS_EVENTO = {
+    pesaje: '⚖️',
+    vacuna: '💉',
+    tratamiento: '💊',
+    inseminacion: '🧬',
+    parto: '🐷',
+    cambioCorral: '🏠',
+    venta: '💰',
+    muerte: '⚰️',
+    diagnostico: '🔬',
+    destete: '🐖',
+    nacimiento: '🐖',
+    eliminacion: '🗑️'
+};
+
+// MAPEO DE CAMPOS - CORREGIDO
 const MAPEO_CAMPOS = {
-    'Precio': 'precio',
-    'Comprador': 'comprador',
     'Peso': 'peso',
     'Metodo': 'metodo',
     'Vacuna': 'vacuna',
@@ -73,18 +85,84 @@ const MAPEO_CAMPOS = {
     'TratamientoRecomendado': 'tratamientoRecomendado',
     'NumeroCrias': 'numeroCrias',
     'PesoDestete': 'pesoDestete',
-    'ObservacionesPesaje': 'observaciones',
-    'ObservacionesVacuna': 'observaciones',
-    'ObservacionesTrat': 'observaciones',
-    'ObservacionesIns': 'observaciones',
-    'ObservacionesParto': 'observaciones',
-    'ObservacionesVenta': 'observaciones',
-    'ObservacionesDiag': 'observaciones',
-    'ObservacionesDestete': 'observaciones',
-    'ObsMuerte': 'observaciones'
+    'Precio': 'precio',
+    'Comprador': 'comprador'
 };
 
-// ===== OBTENER EVENTOS DE UN ANIMAL =====
+// ============================================================
+// 1. FUNCIONES AUXILIARES
+// ============================================================
+
+function esAdmin() {
+    return currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se';
+}
+
+function obtenerAnimalPorId(animalId) {
+    if (!animalId) return null;
+    if (animalesCache && animalesCache[animalId]) {
+        return animalesCache[animalId];
+    }
+    if (animalesCache) {
+        const animal = Object.values(animalesCache).find(a => a.id === animalId || a.numero === animalId);
+        if (animal) return animal;
+    }
+    return null;
+}
+
+function obtenerNombreAnimal(animalId) {
+    if (!animalId) return 'N/A';
+    const animal = obtenerAnimalPorId(animalId);
+    return animal ? `${animal.numero} - ${animal.nombre || 'Sin nombre'}` : animalId;
+}
+
+function obtenerNumeroAnimal(animalId) {
+    if (!animalId) return 'N/A';
+    const animal = obtenerAnimalPorId(animalId);
+    return animal ? animal.numero : animalId;
+}
+
+function recogerDatosFormularioEvento() {
+    const datos = {};
+    const elementos = document.querySelectorAll('#formEvento input, #formEvento select, #formEvento textarea');
+    
+    elementos.forEach(el => {
+        // Excluir campos especiales
+        if (el.id === 'eFecha' || el.id === 'eCorralAnterior' || el.id === 'eventoIdEdit') {
+            return;
+        }
+        
+        if (el.id && el.id.startsWith('e')) {
+            let key = el.id.slice(1); // Remover la 'e' inicial
+            let value = el.value;
+            
+            // Si es número, convertir a número
+            if (el.type === 'number') {
+                value = parseFloat(value);
+                if (isNaN(value)) value = '';
+            } else {
+                value = value.trim();
+            }
+            
+            // Mapear el nombre del campo (CORREGIDO: ahora mapea correctamente)
+            if (MAPEO_CAMPOS[key]) {
+                key = MAPEO_CAMPOS[key];
+            }
+            
+            // Guardar solo si tiene valor
+            if (value !== '' && value !== null && value !== undefined) {
+                datos[key] = value;
+            }
+        }
+    });
+    
+    console.log('[eventos.js] Datos recogidos (crudos):', datos);
+    return datos;
+}
+
+// ============================================================
+// 2. OBTENER EVENTOS
+// ============================================================
+
 function obtenerEventos(animalId, callback) {
     if (listenerEventos) {
         listenerEventos.off();
@@ -102,104 +180,99 @@ function obtenerEventos(animalId, callback) {
     return ref;
 }
 
-// ===== OBTENER ANIMAL POR ID =====
-function obtenerAnimalPorId(animalId) {
-    if (!animalId) return null;
-    if (animalesCache && animalesCache[animalId]) {
-        return animalesCache[animalId];
-    }
-    if (animalesCache) {
-        const animal = Object.values(animalesCache).find(a => a.id === animalId || a.numero === animalId);
-        if (animal) return animal;
-    }
-    return null;
-}
+// ============================================================
+// 3. VER DETALLE DEL EVENTO
+// ============================================================
 
-// ===== VERIFICAR ANIMAL =====
-async function verificarAnimal(animalId) {
-    if (!animalId) {
-        mostrarToast('❌ ID de animal no proporcionado', 'error');
-        return null;
-    }
-    
-    let animal = obtenerAnimalPorId(animalId);
-    if (animal) return animal;
-    
+async function verDetalleEvento(eventoId) {
     try {
-        const snapshot = await db.ref(`animales/${animalId}`).once('value');
-        const data = snapshot.val();
-        if (data) {
-            animalesCache[animalId] = data;
-            return data;
-        }
-    } catch (error) {
-        console.error('Error verificando animal:', error);
-    }
-    
-    mostrarToast(`❌ Animal no encontrado: ${animalId}`, 'error');
-    return null;
-}
-
-// ===== SELECCIONAR TIPO DE EVENTO =====
-window.seleccionarTipoEvento = function(animalId, tipo) {
-    console.log('[eventos.js] seleccionarTipoEvento() llamado:', { animalId, tipo });
-    cerrarModal();
-    setTimeout(() => {
-        formularioEventoAbierto = false;
-        selectorEventoAbierto = false;
-        abrirFormularioEvento(animalId, tipo);
-    }, 300);
-};
-
-// ===== CERRAR SELECTOR DE EVENTOS =====
-window.cerrarSelectorEvento = function() {
-    console.log('[eventos.js] cerrarSelectorEvento() llamado');
-    cerrarModal();
-    formularioEventoAbierto = false;
-    selectorEventoAbierto = false;
-};
-
-// ===== RECOGER DATOS DEL FORMULARIO (VERSIÓN CORREGIDA) =====
-function recogerDatosFormularioEvento() {
-    const datos = {};
-    const elementos = document.querySelectorAll('#formEvento input, #formEvento select, #formEvento textarea');
-    
-    elementos.forEach(el => {
-        // Excluir campos especiales
-        if (el.id === 'eFecha' || el.id === 'eCorralAnterior' || el.id === 'eventoIdEdit') {
+        const snapshot = await db.ref(`eventos/${eventoId}`).once('value');
+        const evento = snapshot.val();
+        if (!evento) {
+            mostrarToast('❌ Evento no encontrado', 'error');
             return;
         }
-        
-        // Si el campo tiene id y comienza con 'e'
-        if (el.id && el.id.startsWith('e')) {
-            let key = el.id.slice(1); // Remover la 'e' inicial
-            let value = el.value;
-            
-            // Si es número, convertir a número
-            if (el.type === 'number') {
-                value = parseFloat(value);
-                if (isNaN(value)) value = '';
-            } else {
-                value = value.trim();
-            }
-            
-            // Mapear el nombre del campo si existe en el mapeo
-            if (MAPEO_CAMPOS[key]) {
-                key = MAPEO_CAMPOS[key];
-            }
-            
-            // Guardar solo si tiene valor y no está vacío
-            if (value !== '' && value !== null && value !== undefined) {
-                datos[key] = value;
+
+        const nombreAnimal = obtenerNombreAnimal(evento.animalId);
+        const color = COLORES_EVENTO[evento.tipoEvento] || '#3b82f6';
+        const icono = ICONOS_EVENTO[evento.tipoEvento] || '📋';
+
+        let detalleHTML = '';
+        if (evento.datos) {
+            const entries = Object.entries(evento.datos).filter(([k, v]) => v && v !== '');
+            if (entries.length > 0) {
+                detalleHTML = entries.map(([k, v]) => 
+                    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border-color);">
+                        <span style="font-weight:500;color:var(--text-secondary);">${k}:</span>
+                        <span style="font-weight:600;">${v}</span>
+                    </div>`
+                ).join('');
             }
         }
-    });
-    
-    console.log('[eventos.js] Datos recogidos del formulario (crudos):', datos);
-    return datos;
+
+        const isAdmin = esAdmin();
+
+        const html = `
+            <div style="padding:10px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:12px;background:${color}15;border-radius:8px;border-left:4px solid ${color};">
+                    <span style="font-size:2rem;">${icono}</span>
+                    <div>
+                        <div style="font-size:1.1rem;font-weight:700;">${capitalize(evento.tipoEvento)}</div>
+                        <div style="font-size:0.9rem;color:var(--text-secondary);">${nombreAnimal}</div>
+                    </div>
+                    <span style="margin-left:auto;font-size:0.8rem;color:var(--text-light);">${formatearFecha(evento.fecha || evento.createdAt)}</span>
+                </div>
+                
+                <div style="background:var(--bg-primary);border-radius:8px;padding:12px;margin-bottom:12px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <div><strong>ID:</strong> ${eventoId.substring(0, 12)}...</div>
+                        <div><strong>Fecha:</strong> ${formatearFecha(evento.fecha || evento.createdAt)}</div>
+                        <div><strong>Animal:</strong> ${nombreAnimal}</div>
+                        <div><strong>Tipo:</strong> ${capitalize(evento.tipoEvento)}</div>
+                        ${evento.createdByEmail ? `<div><strong>Registrado por:</strong> ${evento.createdByEmail}</div>` : ''}
+                        ${evento.updatedByEmail && evento.updatedByEmail !== evento.createdByEmail ? `<div><strong>Actualizado por:</strong> ${evento.updatedByEmail}</div>` : ''}
+                    </div>
+                </div>
+                
+                ${detalleHTML ? `
+                    <div style="background:var(--bg-primary);border-radius:8px;padding:12px;">
+                        <div style="font-weight:600;margin-bottom:8px;">📋 Detalles</div>
+                        ${detalleHTML}
+                    </div>
+                ` : ''}
+                
+                <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+                    <button class="btn btn-secondary btn-sm" onclick="cerrarModal()">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                    ${isAdmin ? `
+                        <button class="btn btn-secondary btn-sm" onclick="abrirFormularioEvento('${evento.animalId}', '${evento.tipoEvento}', '${eventoId}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarEvento('${eventoId}')">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        await mostrarModal(`📋 Detalle del Evento`, html, {
+            confirmText: 'Cerrar',
+            showConfirm: true,
+            showCancel: false
+        });
+
+    } catch (error) {
+        console.error('[eventos.js] Error al ver detalle:', error);
+        mostrarToast('❌ Error al cargar detalle: ' + error.message, 'error');
+    }
 }
 
-// ===== ABRIR FORMULARIO DE EVENTO =====
+// ============================================================
+// 4. ABRIR FORMULARIO DE EVENTO
+// ============================================================
+
 async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
     console.log('[eventos.js] abrirFormularioEvento() llamado:', { animalId, tipo, eventoId });
 
@@ -226,18 +299,16 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
         modoEdicionEvento = false;
     }
 
-    // Verificar si hay un formulario abierto (excepto si es el selector)
+    // Verificar si hay un formulario abierto
     if (formularioEventoAbierto && !selectorEventoAbierto) {
-        console.log('[eventos.js] Formulario ya abierto, mostrando advertencia');
         mostrarToast('⚠️ Ya hay un formulario de evento abierto. Ciérralo primero.', 'warning');
         return;
     }
 
-    // Verificar animal
-    const animal = await verificarAnimal(animalId);
+    // Verificar que el animal existe
+    const animal = obtenerAnimalPorId(animalId);
     if (!animal) {
-        console.log('[eventos.js] Animal no encontrado:', animalId);
-        formularioEventoAbierto = false;
+        mostrarToast(`❌ Animal no encontrado: ${animalId}`, 'error');
         return;
     }
 
@@ -254,25 +325,10 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
 
         // Si no se pasa tipo, mostrar selector de tipos
         if (!tipo && !modoEdicionEvento) {
-            console.log('[eventos.js] Mostrando selector de tipos para:', animal.numero, animal.nombre);
-            
             selectorEventoAbierto = true;
             formularioEventoAbierto = true;
 
             const tipos = Object.values(TIPOS_EVENTO);
-            const iconos = {
-                pesaje: '⚖️',
-                vacuna: '💉',
-                tratamiento: '💊',
-                inseminacion: '🧬',
-                parto: '🐷',
-                cambioCorral: '🏠',
-                venta: '💰',
-                muerte: '⚰️',
-                diagnostico: '🔬',
-                destete: '👶'
-            };
-
             let html = `
                 <div style="text-align:center;margin-bottom:16px;">
                     <p style="font-size:1.1rem;font-weight:500;">Seleccione el tipo de evento para</p>
@@ -283,8 +339,9 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
             `;
             
             tipos.forEach(t => {
+                const icono = ICONOS_EVENTO[t] || '📋';
                 html += `<button class="btn btn-secondary" onclick="seleccionarTipoEvento('${animalId}','${t}')" style="justify-content:center;padding:10px;font-size:0.9rem;">
-                    ${iconos[t] || '📋'} ${capitalize(t)}
+                    ${icono} ${capitalize(t)}
                 </button>`;
             });
             html += `</div>
@@ -303,11 +360,9 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
             
             formularioEventoAbierto = false;
             selectorEventoAbierto = false;
-            console.log('[eventos.js] Selector cerrado, flags reseteados');
             return;
         }
 
-        // Si llegamos aquí, tenemos tipo definido (formulario completo)
         console.log('[eventos.js] Abriendo formulario completo para tipo:', tipo);
 
         // Construir formulario según tipo
@@ -315,9 +370,14 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
         let tituloEvento = modoEdicionEvento ? '✏️ Editar Evento' : '📋 Nuevo Evento';
         const evento = eventoEnEdicion;
 
-        // Función para obtener valor del evento o vacío
         const getVal = (key) => {
             if (evento && evento.datos) {
+                // Buscar en el mapeo inverso para obtener el valor
+                for (const [mapKey, mapValue] of Object.entries(MAPEO_CAMPOS)) {
+                    if (mapValue === key) {
+                        return evento.datos[mapValue] || '';
+                    }
+                }
                 return evento.datos[key] || '';
             }
             return '';
@@ -632,7 +692,7 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
             cancelText: '❌ Cancelar',
             showConfirm: true,
             showCancel: true,
-            onConfirm: async function() {
+            onConfirm: async function () {
                 if (modoEdicionEvento) {
                     await actualizarEventoDesdeFormulario(animalId, tipo);
                 } else {
@@ -651,9 +711,36 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
     }
 }
 
-// ===== GUARDAR EVENTO DESDE FORMULARIO =====
+// ============================================================
+// 5. SELECCIONAR / CERRAR SELECTOR
+// ============================================================
+
+window.seleccionarTipoEvento = function(animalId, tipo) {
+    cerrarModal();
+    setTimeout(() => {
+        formularioEventoAbierto = false;
+        selectorEventoAbierto = false;
+        abrirFormularioEvento(animalId, tipo);
+    }, 300);
+};
+
+window.cerrarSelectorEvento = function() {
+    cerrarModal();
+    formularioEventoAbierto = false;
+    selectorEventoAbierto = false;
+};
+
+// ============================================================
+// 6. GUARDAR EVENTO (MANUAL)
+// ============================================================
+
 async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
     console.log('[eventos.js] guardarEventoDesdeFormulario() iniciado');
+
+    if (!currentUser) {
+        mostrarToast('⛔ Debes iniciar sesión para registrar eventos.', 'error');
+        return false;
+    }
 
     try {
         const fecha = document.getElementById('eFecha')?.value;
@@ -662,11 +749,9 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
             return false;
         }
 
-        // Recoger datos del formulario
         const datos = recogerDatosFormularioEvento();
-        console.log('[eventos.js] Datos después del mapeo:', datos);
+        console.log('[eventos.js] Datos recogidos (después del mapeo):', datos);
 
-        // Validaciones específicas por tipo
         const errors = [];
         
         switch (tipo) {
@@ -761,17 +846,25 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
     }
 }
 
-// ===== ACTUALIZAR EVENTO DESDE FORMULARIO =====
+// ============================================================
+// 7. ACTUALIZAR EVENTO
+// ============================================================
+
 async function actualizarEventoDesdeFormulario(animalId, tipo) {
     console.log('[eventos.js] actualizarEventoDesdeFormulario() iniciado');
 
-    try {
-        const eventoId = document.getElementById('eventoIdEdit')?.value;
-        if (!eventoId) {
-            mostrarToast('❌ ID de evento no encontrado', 'error');
-            return false;
-        }
+    const eventoId = document.getElementById('eventoIdEdit')?.value;
+    if (!eventoId) {
+        mostrarToast('❌ ID de evento no encontrado', 'error');
+        return false;
+    }
 
+    if (!esAdmin()) {
+        mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
+        return false;
+    }
+
+    try {
         const fecha = document.getElementById('eFecha')?.value;
         if (!fecha) {
             mostrarToast('❌ La fecha es obligatoria', 'error');
@@ -807,9 +900,14 @@ async function actualizarEventoDesdeFormulario(animalId, tipo) {
     }
 }
 
-// ===== ELIMINAR EVENTO =====
-async function eliminarEvento(eventoId) {
-    if (currentUser?.rol !== 'admin') {
+// ============================================================
+// 8. ELIMINAR EVENTO
+// ============================================================
+
+window.eliminarEvento = async function(eventoId) {
+    console.log('[eventos.js] eliminarEvento() llamado para ID:', eventoId);
+
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
         return;
     }
@@ -822,12 +920,15 @@ async function eliminarEvento(eventoId) {
             return;
         }
 
+        const nombreAnimal = obtenerNombreAnimal(evento.animalId);
+
         const html = `
             <div style="text-align:center;padding:20px;">
                 <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
                 <p style="font-size:1.1rem;font-weight:500;">¿Estás seguro de eliminar este evento?</p>
                 <div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin:16px 0;text-align:left;">
-                    <p><strong>Tipo:</strong> ${evento.tipoEvento}</p>
+                    <p><strong>Tipo:</strong> ${capitalize(evento.tipoEvento)}</p>
+                    <p><strong>Animal:</strong> ${nombreAnimal}</p>
                     <p><strong>Fecha:</strong> ${formatearFecha(evento.fecha || evento.createdAt)}</p>
                     <p><strong>Detalle:</strong> ${Object.entries(evento.datos || {}).filter(([k,v]) => v).map(([k,v]) => `${k}: ${v}`).join(' | ') || 'Sin detalles'}</p>
                 </div>
@@ -845,15 +946,37 @@ async function eliminarEvento(eventoId) {
         if (!confirmar) return;
 
         await db.ref(`eventos/${eventoId}`).remove();
+        console.log('[eventos.js] Evento eliminado de Firebase:', eventoId);
+        
+        if (eventosCache && eventosCache[eventoId]) {
+            delete eventosCache[eventoId];
+        }
+        
         mostrarToast('✅ Evento eliminado correctamente', 'success');
         cargarEventosRecientes();
+        
+        if (listenerEventos) {
+            listenerEventos.off();
+            listenerEventos = null;
+            if (evento.animalId) {
+                obtenerEventos(evento.animalId);
+            }
+        }
+        
+        if (currentView === 'eventos') {
+            cargarEventos();
+        }
+        
     } catch (error) {
         console.error('[eventos.js] Error al eliminar:', error);
         mostrarToast('❌ Error al eliminar: ' + error.message, 'error');
     }
-}
+};
 
-// ===== ACTUALIZAR ESTADO DEL ANIMAL =====
+// ============================================================
+// 9. ACTUALIZAR ESTADO DEL ANIMAL
+// ============================================================
+
 async function actualizarEstadoAnimal(animalId, tipo, datos) {
     try {
         const animalRef = db.ref(`animales/${animalId}`);
@@ -894,13 +1017,16 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
                 }
                 break;
             case TIPOS_EVENTO.VENTA:
+                updates.status = 'inactivo';
+                updates.fechaSalida = new Date().toISOString().split('T')[0];
+                if (datos.precio) {
+                    updates.precioVenta = parseFloat(datos.precio) || 0;
+                }
+                break;
             case TIPOS_EVENTO.MUERTE:
                 updates.status = 'inactivo';
                 updates.fechaSalida = new Date().toISOString().split('T')[0];
-                if (tipo === TIPOS_EVENTO.VENTA && datos.precio) {
-                    updates.precioVenta = parseFloat(datos.precio) || 0;
-                }
-                if (tipo === TIPOS_EVENTO.MUERTE && datos.causa) {
+                if (datos.causa) {
                     updates.causaMuerte = datos.causa || '';
                 }
                 break;
@@ -921,7 +1047,10 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
     }
 }
 
-// ===== CARGAR VISTA DE EVENTOS =====
+// ============================================================
+// 10. CARGAR VISTA DE EVENTOS
+// ============================================================
+
 function cargarEventos() {
     const container = document.getElementById('eventosContent');
     if (!container) return;
@@ -931,10 +1060,13 @@ function cargarEventos() {
         animales.map(a => `<option value="${a.id}">${a.numero} - ${a.nombre || 'Sin nombre'}</option>`).join('') :
         '<option value="">No hay animales activos</option>';
 
+    const isAdmin = esAdmin();
+
     let html = `
         <div class="card" style="border-left:4px solid var(--color-primary);">
             <div class="card-header">
-                <span class="card-title">📋 Registro Rápido de Eventos</span>
+                <span class="card-title">📋 Registro Manual de Eventos</span>
+                <span class="badge badge-purple">Registro manual para cada animal</span>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div class="form-group">
@@ -948,31 +1080,30 @@ function cargarEventos() {
                     <label>Tipo de evento <span style="color:var(--color-danger);">*</span></label>
                     <select id="eventoTipoSelect" style="width:100%;">
                         <option value="">-- Elija un tipo --</option>
-                        <option value="pesaje">⚖️ Pesaje</option>
-                        <option value="vacuna">💉 Vacuna</option>
-                        <option value="tratamiento">💊 Tratamiento</option>
-                        <option value="inseminacion">🧬 Inseminación</option>
-                        <option value="parto">🐷 Parto</option>
-                        <option value="cambioCorral">🏠 Cambio de corral</option>
-                        <option value="venta">💰 Venta</option>
-                        <option value="muerte">⚰️ Muerte</option>
-                        <option value="diagnostico">🔬 Diagnóstico</option>
-                        <option value="destete">👶 Destete</option>
+                        ${Object.entries(TIPOS_EVENTO).map(([key, value]) => 
+                            `<option value="${value}">${ICONOS_EVENTO[value] || '📋'} ${capitalize(value)}</option>`
+                        ).join('')}
                     </select>
                 </div>
             </div>
-            <div style="margin-top:12px;">
-                <button class="btn btn-primary" onclick="registrarEventoRapido()" style="width:100%;">
+            <div style="margin-top:12px;display:flex;gap:8px;">
+                <button class="btn btn-primary" onclick="registrarEventoRapido()" style="flex:1;">
                     <i class="fas fa-plus"></i> Registrar Evento
                 </button>
+                <button class="btn btn-secondary" onclick="cargarEventosRecientes()" title="Actualizar lista">
+                    <i class="fas fa-sync"></i>
+                </button>
+            </div>
+            <div style="margin-top:8px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-secondary);">
+                <i class="fas fa-info-circle"></i> 
+                Los eventos se registran manualmente para cada animal. 
+                ${isAdmin ? 'Los administradores pueden editar y eliminar eventos.' : 'Solo los administradores pueden editar o eliminar eventos.'}
             </div>
         </div>
         <div class="card">
             <div class="card-header">
                 <span class="card-title">📊 Eventos Recientes</span>
-                <button class="btn btn-secondary btn-sm" onclick="cargarEventosRecientes()">
-                    <i class="fas fa-sync"></i> Actualizar
-                </button>
+                <span class="badge badge-outline" id="eventosCount">0</span>
             </div>
             <div id="eventosRecientesLista">
                 <div class="loader" style="margin:20px auto;"></div>
@@ -983,7 +1114,10 @@ function cargarEventos() {
     cargarEventosRecientes();
 }
 
-// ===== CARGAR EVENTOS RECIENTES =====
+// ============================================================
+// 11. CARGAR EVENTOS RECIENTES
+// ============================================================
+
 async function cargarEventosRecientes() {
     const container = document.getElementById('eventosRecientesLista');
     if (!container) return;
@@ -993,11 +1127,16 @@ async function cargarEventosRecientes() {
         const eventos = snap.val() || {};
         const entries = Object.entries(eventos);
         
+        const countBadge = document.getElementById('eventosCount');
+        if (countBadge) {
+            countBadge.textContent = entries.length;
+        }
+        
         if (entries.length === 0) {
             container.innerHTML = `
                 <div style="text-align:center;padding:40px;color:var(--text-light);">
                     <i class="fas fa-calendar" style="font-size:2rem;display:block;margin-bottom:10px;"></i>
-                    No hay eventos registrados
+                    No hay eventos registrados. ¡Registra el primer evento!
                 </div>
             `;
             return;
@@ -1005,23 +1144,25 @@ async function cargarEventosRecientes() {
 
         entries.sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
         const eventosMostrar = entries.slice(0, 30);
+        const isAdmin = esAdmin();
 
-        let html = `<div class="table-responsive"><table>
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Animal</th>
-                    <th>Tipo</th>
-                    <th>Detalle</th>
-                    <th>Registrado por</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>`;
+        let html = `
+            <div style="overflow-x:auto;">
+                <table style="width:100%;min-width:700px;">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Animal</th>
+                            <th>Tipo</th>
+                            <th>Detalle</th>
+                            <th>Registrado por</th>
+                            <th style="min-width:140px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
         
         for (const [key, e] of eventosMostrar) {
-            const animal = obtenerAnimalPorId(e.animalId);
-            const nombreAnimal = animal ? `${animal.numero} - ${animal.nombre || ''}` : e.animalId || 'N/A';
+            const nombreAnimal = obtenerNombreAnimal(e.animalId);
             
             let detalle = '';
             if (e.datos) {
@@ -1032,18 +1173,26 @@ async function cargarEventosRecientes() {
                 detalle = 'Sin detalles';
             }
             
-            const color = COLORES_EVENTO[e.tipoEvento] || 'var(--color-primary)';
+            const color = COLORES_EVENTO[e.tipoEvento] || '#3b82f6';
+            const icono = ICONOS_EVENTO[e.tipoEvento] || '📋';
             
             html += `<tr>
                 <td style="white-space:nowrap;">${formatearFecha(e.fecha || e.createdAt)}</td>
                 <td><strong>${nombreAnimal}</strong></td>
-                <td><span class="badge" style="background:${color};">${e.tipoEvento}</span></td>
-                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${detalle}</td>
+                <td><span class="badge" style="background:${color};">${icono} ${e.tipoEvento}</span></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${detalle}">${detalle}</td>
                 <td style="font-size:0.8rem;color:var(--text-secondary);">${e.createdByEmail || 'Sistema'}</td>
-                <td class="actions">
-                    ${currentUser?.rol === 'admin' ? `
-                        <button class="btn btn-sm btn-secondary" onclick="abrirFormularioEvento('${e.animalId}', '${e.tipoEvento}', '${key}')" title="Editar evento"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminarEvento('${key}')" title="Eliminar evento"><i class="fas fa-trash"></i></button>
+                <td class="actions" style="display:flex;gap:4px;flex-wrap:nowrap;justify-content:center;">
+                    <button class="btn btn-sm btn-primary" onclick="verDetalleEvento('${key}')" title="Ver detalle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    ${isAdmin ? `
+                        <button class="btn btn-sm btn-secondary" onclick="abrirFormularioEvento('${e.animalId}', '${e.tipoEvento}', '${key}')" title="Editar evento">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="eliminarEvento('${key}')" title="Eliminar evento">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     ` : ''}
                 </td>
             </tr>`;
@@ -1058,7 +1207,10 @@ async function cargarEventosRecientes() {
     }
 }
 
-// ===== REGISTRAR EVENTO RÁPIDO =====
+// ============================================================
+// 12. REGISTRAR EVENTO RÁPIDO
+// ============================================================
+
 window.registrarEventoRapido = function() {
     const animalSelect = document.getElementById('eventoAnimalSelect');
     const tipoSelect = document.getElementById('eventoTipoSelect');
@@ -1082,13 +1234,19 @@ window.registrarEventoRapido = function() {
     abrirFormularioEvento(animalId, tipo);
 };
 
-// ===== EXPOSICIÓN GLOBAL =====
+// ============================================================
+// 13. EXPOSICIÓN GLOBAL
+// ============================================================
+
 window.cargarEventos = cargarEventos;
 window.obtenerEventos = obtenerEventos;
 window.abrirFormularioEvento = abrirFormularioEvento;
 window.registrarEventoRapido = registrarEventoRapido;
 window.actualizarEstadoAnimal = actualizarEstadoAnimal;
 window.cargarEventosRecientes = cargarEventosRecientes;
-window.eliminarEvento = eliminarEvento;
+window.eliminarEvento = window.eliminarEvento;
+window.verDetalleEvento = verDetalleEvento;
+window.seleccionarTipoEvento = seleccionarTipoEvento;
+window.cerrarSelectorEvento = cerrarSelectorEvento;
 
 console.log('[eventos.js] Módulo cargado correctamente');

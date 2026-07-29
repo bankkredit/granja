@@ -1,13 +1,12 @@
 /**
  * configuracion.js - Módulo Avanzado de Configuración y Administración
  * Sistema completo para gestionar todos los parámetros configurables de la granja
- * Versión 3.0 - Enterprise
+ * Versión 3.2 - CORREGIDO (sin errores de await)
  */
 
 // ===== VARIABLES LOCALES =====
 let configuracionData = {};
 let configuracionListener = null;
-let configuracionEditando = null;
 let configuracionHistorial = [];
 let configuracionFiltro = '';
 
@@ -143,7 +142,6 @@ function cargarConfiguracion() {
         return;
     }
 
-    // Verificar permisos
     if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
         container.innerHTML = `
             <div class="card" style="text-align:center;padding:60px 20px;border:2px dashed var(--color-danger);">
@@ -254,17 +252,15 @@ function guardarHistorial(tipo, descripcion, datos = {}) {
     }
 }
 
-// ===== RENDERIZAR CONFIGURACIÓN AVANZADA =====
+// ===== RENDERIZAR CONFIGURACIÓN =====
 function renderizarConfiguracion() {
     const container = document.getElementById('configuracionContent');
     if (!container) return;
 
-    // Obtener todos los ítems
     const totalItems = Object.values(configuracionData).reduce((sum, list) => sum + (list ? list.length : 0), 0);
     const totalListas = Object.keys(configuracionData).length;
 
     let html = `
-        <!-- Encabezado -->
         <div class="config-header" style="margin-bottom:24px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
                 <div>
@@ -286,7 +282,6 @@ function renderizarConfiguracion() {
                 </div>
             </div>
             
-            <!-- Estadísticas rápidas -->
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:16px;padding:16px;background:var(--bg-primary);border-radius:var(--radius-sm);">
                 ${Object.entries(GRUPOS_CONFIG).map(([key, grupo]) => {
                     const count = Object.entries(LISTAS_CONFIG).filter(([k, v]) => v.grupo === key).length;
@@ -305,7 +300,6 @@ function renderizarConfiguracion() {
             </div>
         </div>
 
-        <!-- Barra de herramientas -->
         <div class="card" style="margin-bottom:16px;border:1px solid var(--border-color);">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                 <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;">
@@ -341,7 +335,6 @@ function renderizarConfiguracion() {
         </div>
     `;
 
-    // Renderizar listas por grupo
     const grupos = {};
     for (const [key, config] of Object.entries(LISTAS_CONFIG)) {
         const grupo = config.grupo || 'otros';
@@ -367,7 +360,6 @@ function renderizarConfiguracion() {
         `;
     }
 
-    // Footer
     html += `
         <div class="card" style="border:1px dashed var(--border-color);background:var(--bg-primary);">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
@@ -391,14 +383,12 @@ function renderizarConfiguracion() {
     container.innerHTML = html;
 }
 
-// ===== RENDERIZAR LISTA DE CONFIGURACIÓN =====
+// ===== RENDERIZAR LISTA =====
 function renderizarListaConfiguracion(key, config) {
     const items = configuracionData[key] || [];
     const color = config.color || '#3b82f6';
-    const grupo = GRUPOS_CONFIG[config.grupo] || { label: 'General' };
     const filtroActual = document.getElementById('configSearch')?.value?.toLowerCase() || '';
     
-    // Filtrar items
     const itemsFiltrados = filtroActual ? 
         items.filter(item => item.nombre.toLowerCase().includes(filtroActual)) : 
         items;
@@ -475,7 +465,6 @@ function filtrarConfiguracion(valor) {
     configuracionFiltro = valor;
     const grupoFilter = document.getElementById('configGrupoFilter')?.value || '';
     
-    // Mostrar/ocultar grupos según filtro
     document.querySelectorAll('[data-grupo]').forEach(grupoDiv => {
         const grupo = grupoDiv.dataset.grupo;
         if (grupoFilter && grupo !== grupoFilter) {
@@ -484,7 +473,6 @@ function filtrarConfiguracion(valor) {
         }
         grupoDiv.style.display = 'block';
         
-        // Filtrar listas dentro del grupo
         const listas = grupoDiv.querySelectorAll('.config-list');
         let visible = false;
         listas.forEach(lista => {
@@ -504,14 +492,13 @@ function filtrarConfiguracion(valor) {
             }
         });
         
-        // Si no hay listas visibles en el grupo, ocultar el grupo
         if (!visible && valor) {
             grupoDiv.style.display = 'none';
         }
     });
 }
 
-// ===== AGREGAR ITEM CON VALIDACIONES =====
+// ===== AGREGAR ITEM =====
 window.agregarItemConfig = async function(key) {
     if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
         mostrarToast('⛔ No autorizado', 'error');
@@ -529,7 +516,6 @@ window.agregarItemConfig = async function(key) {
         return;
     }
     
-    // Validaciones avanzadas
     if (valor.length < 2) {
         mostrarToast('⚠️ El valor debe tener al menos 2 caracteres', 'warning');
         input.focus();
@@ -542,14 +528,12 @@ window.agregarItemConfig = async function(key) {
         return;
     }
     
-    // Verificar caracteres especiales
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-\.]+$/.test(valor)) {
         mostrarToast('⚠️ Solo letras, números, espacios y guiones', 'warning');
         input.focus();
         return;
     }
     
-    // Verificar duplicados
     const lista = configuracionData[key] || [];
     const duplicado = lista.find(item => item.nombre.toLowerCase() === valor.toLowerCase());
     if (duplicado) {
@@ -612,33 +596,12 @@ window.eliminarItemConfig = async function(key, id) {
     const config = LISTAS_CONFIG[key];
     const label = config?.label || key;
     
-    // Verificar si la lista es requerida y tiene mínimo de elementos
     if (config?.required && lista.length <= 3) {
         mostrarToast(`⚠️ "${label}" debe tener al menos 3 elementos`, 'warning');
         return;
     }
     
-    const confirmar = await mostrarModal(
-        '⚠️ Confirmar eliminación',
-        `
-            <div style="text-align:center;padding:20px;">
-                <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
-                <p style="font-size:1.1rem;font-weight:500;">¿Eliminar este elemento?</p>
-                <div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin:16px 0;display:inline-block;min-width:150px;">
-                    <strong style="font-size:1.2rem;color:var(--color-primary);">${item.nombre}</strong>
-                    <div style="font-size:0.8rem;color:var(--text-secondary);">de ${label}</div>
-                </div>
-                ${config?.required ? '<p style="color:var(--color-warning);font-size:0.85rem;">⚠️ Esta lista es requerida.</p>' : ''}
-                <p style="color:var(--text-danger);font-size:0.9rem;">⚠️ Esta acción no se puede deshacer.</p>
-            </div>
-        `,
-        {
-            confirmText: '🗑️ Sí, eliminar',
-            cancelText: '❌ Cancelar',
-            showConfirm: true,
-            showCancel: true
-        }
-    );
+    const confirmar = confirm(`¿Estás seguro de eliminar "${item.nombre}" de ${label}?\n\nEsta acción no se puede deshacer.`);
     
     if (!confirmar) return;
     
@@ -706,31 +669,11 @@ window.restaurarLista = async function(key) {
         return;
     }
     
-    const confirmar = await mostrarModal(
-        '⚠️ Restaurar lista',
-        `
-            <div style="text-align:center;padding:20px;">
-                <i class="fas fa-undo" style="font-size:3rem;color:var(--color-warning);display:block;margin-bottom:12px;"></i>
-                <p style="font-size:1.1rem;font-weight:500;">¿Restaurar valores predeterminados?</p>
-                <p style="color:var(--text-secondary);">
-                    Esto reemplazará todos los elementos de <strong>${label}</strong> con los valores por defecto.
-                </p>
-                <div style="background:var(--bg-primary);border-radius:8px;padding:12px;margin:12px 0;text-align:left;">
-                    <div><strong>Actuales:</strong> ${itemsActuales.length} elementos</div>
-                    <div><strong>Predeterminados:</strong> ${config.defaultItems.length} elementos</div>
-                    <div style="margin-top:8px;font-size:0.8rem;color:var(--text-secondary);">
-                        ${config.defaultItems.join(', ')}
-                    </div>
-                </div>
-                <p style="color:var(--text-danger);font-size:0.9rem;margin-top:8px;">⚠️ Los cambios actuales se perderán.</p>
-            </div>
-        `,
-        {
-            confirmText: '🔄 Sí, restaurar',
-            cancelText: '❌ Cancelar',
-            showConfirm: true,
-            showCancel: true
-        }
+    const confirmar = confirm(
+        `¿Restaurar "${label}" a valores predeterminados?\n\n` +
+        `Actuales: ${itemsActuales.length} elementos\n` +
+        `Predeterminados: ${config.defaultItems.length} elementos\n\n` +
+        `Los cambios actuales se perderán.`
     );
     
     if (!confirmar) return;
@@ -760,7 +703,7 @@ window.exportarConfiguracion = function() {
     }
     
     const exportData = {
-        version: '3.0',
+        version: '3.2',
         fecha: new Date().toISOString(),
         exportadoPor: currentUser?.email || 'sistema',
         configuracion: configuracionData
@@ -795,7 +738,6 @@ window.importarConfiguracion = function() {
             const text = await file.text();
             const data = JSON.parse(text);
             
-            // Validar estructura
             const configData = data.configuracion || data;
             const keys = Object.keys(LISTAS_CONFIG);
             const hasValidKeys = keys.some(k => configData[k] !== undefined);
@@ -807,30 +749,12 @@ window.importarConfiguracion = function() {
             
             const totalItems = Object.values(configData).reduce((sum, list) => sum + (list ? list.length : 0), 0);
             
-            const confirmar = await mostrarModal(
-                '⚠️ Importar configuración',
-                `
-                    <div style="text-align:center;padding:20px;">
-                        <i class="fas fa-file-import" style="font-size:3rem;color:var(--color-warning);display:block;margin-bottom:12px;"></i>
-                        <p style="font-size:1.1rem;font-weight:500;">¿Importar configuración?</p>
-                        <p style="color:var(--text-secondary);">
-                            Se reemplazarán todas las listas con los valores del archivo.
-                        </p>
-                        <div style="background:var(--bg-primary);border-radius:8px;padding:12px;margin:12px 0;text-align:left;font-size:0.85rem;">
-                            <div><strong>Versión:</strong> ${data.version || 'desconocida'}</div>
-                            <div><strong>Exportado:</strong> ${data.fecha ? new Date(data.fecha).toLocaleString('es-ES') : 'desconocido'}</div>
-                            <div><strong>Total elementos:</strong> ${totalItems}</div>
-                            ${data.exportadoPor ? `<div><strong>Exportado por:</strong> ${data.exportadoPor}</div>` : ''}
-                        </div>
-                        <p style="color:var(--text-danger);font-size:0.9rem;">⚠️ Los cambios actuales se perderán.</p>
-                    </div>
-                `,
-                {
-                    confirmText: '📥 Sí, importar',
-                    cancelText: '❌ Cancelar',
-                    showConfirm: true,
-                    showCancel: true
-                }
+            const confirmar = confirm(
+                `¿Importar configuración?\n\n` +
+                `Versión: ${data.version || 'desconocida'}\n` +
+                `Exportado: ${data.fecha ? new Date(data.fecha).toLocaleString('es-ES') : 'desconocido'}\n` +
+                `Total elementos: ${totalItems}\n\n` +
+                `Los cambios actuales se perderán.`
             );
             
             if (!confirmar) return;
@@ -889,7 +813,7 @@ window.verHistorialConfiguracion = function() {
 };
 
 // ===== RESETEAR CONFIGURACIÓN =====
-window.resetearConfiguracion = function() {
+window.resetearConfiguracion = async function() {
     if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
         mostrarToast('⛔ No autorizado', 'error');
         return;
@@ -897,34 +821,15 @@ window.resetearConfiguracion = function() {
     
     const totalItems = Object.values(configuracionData).reduce((sum, list) => sum + (list ? list.length : 0), 0);
     
-    const confirmar = async () => {
-        const result = await mostrarModal(
-            '⚠️ Resetear configuración',
-            `
-                <div style="text-align:center;padding:20px;">
-                    <i class="fas fa-trash-alt" style="font-size:3rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
-                    <p style="font-size:1.1rem;font-weight:500;">¿Resetear toda la configuración?</p>
-                    <p style="color:var(--text-secondary);">
-                        Se eliminarán todas las listas y se crearán con valores por defecto.
-                    </p>
-                    <div style="background:var(--bg-primary);border-radius:8px;padding:12px;margin:12px 0;">
-                        <div><strong>Elementos a eliminar:</strong> ${totalItems}</div>
-                        <div><strong>Listas afectadas:</strong> ${Object.keys(configuracionData).length}</div>
-                    </div>
-                    <p style="color:var(--text-danger);font-size:0.9rem;margin-top:8px;">⚠️ Esta acción no se puede deshacer.</p>
-                </div>
-            `,
-            {
-                confirmText: '🗑️ Sí, resetear todo',
-                cancelText: '❌ Cancelar',
-                showConfirm: true,
-                showCancel: true
-            }
-        );
-        return result;
-    };
+    const confirmar = confirm(
+        `⚠️ ¿Resetear toda la configuración?\n\n` +
+        `Se eliminarán todas las listas y se crearán con valores por defecto.\n\n` +
+        `Elementos a eliminar: ${totalItems}\n` +
+        `Listas afectadas: ${Object.keys(configuracionData).length}\n\n` +
+        `⚠️ Esta acción no se puede deshacer.`
+    );
     
-    if (!await confirmar()) return;
+    if (!confirmar) return;
     
     try {
         const defaultData = await crearConfiguracionesPorDefecto();
