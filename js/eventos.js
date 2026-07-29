@@ -1,6 +1,5 @@
 /**
  * eventos.js - Gestión de eventos (vacunas, pesajes, partos, etc.)
- * Dependencias: app.js (db, configuraciones, currentUser), util.js
  */
 
 // ===== VARIABLES LOCALES =====
@@ -13,7 +12,7 @@ function obtenerEventos(animalId, callback) {
         eventosCache = snapshot.val() || {};
         if (callback) callback(eventosCache);
     });
-    return ref; // para posible off
+    return ref;
 }
 
 // ===== ABRIR FORMULARIO DE EVENTO =====
@@ -22,7 +21,6 @@ async function abrirFormularioEvento(animalId, tipo = null) {
     const animal = animalesCache[animalId];
     if (!animal) return mostrarToast('Animal no encontrado', 'error');
 
-    // Asegurar que las configuraciones estén cargadas
     if (!configuraciones || Object.keys(configuraciones).length === 0) {
         await cargarConfiguraciones();
         if (!configuraciones || Object.keys(configuraciones).length === 0) {
@@ -32,7 +30,6 @@ async function abrirFormularioEvento(animalId, tipo = null) {
         }
     }
 
-    // Si no se pasa tipo, mostrar selector
     if (!tipo) {
         const tipos = ['pesaje', 'vacuna', 'tratamiento', 'inseminacion', 'parto', 'cambioCorral', 'venta', 'muerte'];
         let html = `<p>Seleccione el tipo de evento para <strong>${animal.nombre || animal.numero}</strong></p>`;
@@ -45,9 +42,7 @@ async function abrirFormularioEvento(animalId, tipo = null) {
         return;
     }
 
-    // Construir formulario según tipo
     let camposHTML = '';
-    let datosIniciales = {};
 
     switch (tipo) {
         case 'pesaje':
@@ -140,10 +135,8 @@ async function abrirFormularioEvento(animalId, tipo = null) {
     const confirmBtn = document.querySelector('#modalOverlay .modal-footer .btn-primary');
     if (confirmBtn) {
         confirmBtn.onclick = async () => {
-            // Recoger datos
             const fecha = document.getElementById('eFecha').value;
             const datos = {};
-            // Capturar según tipo
             const inputs = document.querySelectorAll('#formEvento input, #formEvento select, #formEvento textarea');
             inputs.forEach(el => {
                 if (el.id.startsWith('e')) {
@@ -151,10 +144,8 @@ async function abrirFormularioEvento(animalId, tipo = null) {
                     datos[key] = el.value;
                 }
             });
-            // Validar fecha
             if (!fecha) return mostrarToast('Fecha es requerida', 'error');
 
-            // Guardar evento
             try {
                 await db.ref('eventos').push({
                     animalId: animalId,
@@ -169,7 +160,6 @@ async function abrirFormularioEvento(animalId, tipo = null) {
                 });
                 mostrarToast('Evento registrado', 'success');
                 cerrarModal();
-                // Actualizar estado del animal según evento (ej: parto, inseminación)
                 await actualizarEstadoAnimal(animalId, tipo, datos);
             } catch (error) {
                 mostrarToast('Error al guardar: ' + error.message, 'error');
@@ -178,7 +168,7 @@ async function abrirFormularioEvento(animalId, tipo = null) {
     }
 }
 
-// ===== ACTUALIZAR ESTADO DEL ANIMAL SEGÚN EVENTO =====
+// ===== ACTUALIZAR ESTADO DEL ANIMAL =====
 async function actualizarEstadoAnimal(animalId, tipo, datos) {
     try {
         const animalRef = db.ref(`animales/${animalId}`);
@@ -219,10 +209,9 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
     }
 }
 
-// ===== CARGAR VISTA DE EVENTOS (global) =====
+// ===== CARGAR VISTA DE EVENTOS =====
 function cargarEventos() {
     const container = document.getElementById('eventosContent');
-    // Mostrar selector de animal para registrar eventos rápidos
     const animales = Object.values(animalesCache).filter(a => a.status === 'activo');
     let html = `
         <div class="card">
@@ -258,7 +247,6 @@ function cargarEventos() {
         </div>
     `;
     container.innerHTML = html;
-    // Cargar últimos eventos
     cargarEventosRecientes();
 }
 
@@ -291,7 +279,6 @@ async function cargarEventosRecientes() {
     }
 }
 
-// ===== REGISTRO RÁPIDO DESDE VISTA EVENTOS =====
 window.registrarEventoRapido = function() {
     const animalId = document.getElementById('eventoAnimalSelect').value;
     const tipo = document.getElementById('eventoTipoSelect').value;

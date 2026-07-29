@@ -36,7 +36,6 @@ function mostrarModal(titulo, contenidoHTML, textoConfirmar = 'Aceptar', accionC
 
         confirmBtn.textContent = textoConfirmar;
         cancelBtn.textContent = textoCancelar;
-        // Remover listeners anteriores
         const newConfirm = confirmBtn.cloneNode(true);
         const newCancel = cancelBtn.cloneNode(true);
         confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
@@ -59,7 +58,6 @@ function mostrarModal(titulo, contenidoHTML, textoConfirmar = 'Aceptar', accionC
             cerrar(false);
         });
         closeBtn.addEventListener('click', () => cerrar(false));
-        // Cerrar al hacer clic fuera del modal
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) cerrar(false);
         });
@@ -132,14 +130,15 @@ function validarCampos(data, rules) {
     return errors;
 }
 
-// ===== SUBIR A CLOUDINARY =====
+// ===== SUBIR A CLOUDINARY (CONFIGURACIÓN REAL) =====
 function subirArchivoCloudinary(file, carpeta = 'granja') {
     return new Promise((resolve, reject) => {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'granja_preset'); // Reemplazar con tu preset
+        formData.append('upload_preset', 'granja_preset');
         formData.append('folder', carpeta);
-        fetch('https://api.cloudinary.com/v1_1/tu_cloud_name/image/upload', {
+        // Cloud name: cn4gurem
+        fetch('https://api.cloudinary.com/v1_1/cn4gurem/image/upload', {
             method: 'POST',
             body: formData
         })

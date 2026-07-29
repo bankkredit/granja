@@ -1,18 +1,18 @@
 /**
  * app.js - Módulo principal
  * Inicializa Firebase, maneja autenticación, navegación, temas y carga de vistas.
- * Incluye la gestión de configuraciones (listas dinámicas) en tiempo real.
  */
 
-// ===== CONFIGURACIÓN DE FIREBASE (REEMPLAZAR CON DATOS REALES) =====
+// ===== CONFIGURACIÓN DE FIREBASE (DATOS REALES) =====
 const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_PROYECTO.firebaseapp.com",
-    databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
-    projectId: "TU_PROYECTO",
-    storageBucket: "TU_PROYECTO.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef"
+    apiKey: "AIzaSyBI4O0d_Mec38FDiuhirujCnX99PFKiXW4",
+    authDomain: "projekt-pc.firebaseapp.com",
+    databaseURL: "https://projekt-pc-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "projekt-pc",
+    storageBucket: "projekt-pc.appspot.com",
+    messagingSenderId: "90098431634",
+    appId: "1:90098431634:web:7cb61800d03533c2a6984b",
+    measurementId: "G-59YH8W8W1L"
 };
 
 // ===== INICIALIZACIÓN =====
@@ -21,9 +21,9 @@ const auth = firebase.auth();
 const db = firebase.database();
 
 // Variables globales
-let currentUser = null;         // { uid, email, rol, nombre }
+let currentUser = null;
 let currentView = 'dashboard';
-let configuraciones = {};       // cached config lists
+let configuraciones = {};
 let theme = localStorage.getItem('theme') || 'light';
 let charts = {};
 
@@ -60,13 +60,7 @@ auth.onAuthStateChanged(async user => {
                     nombre: data.nombre || user.email
                 };
                 userInfo.textContent = currentUser.nombre;
-                // Mostrar/ocultar menú de configuración según rol
-                if (currentUser.rol === 'admin') {
-                    menuConfig.style.display = 'flex';
-                } else {
-                    menuConfig.style.display = 'none';
-                }
-                // Cargar configuraciones y luego mostrar dashboard
+                menuConfig.style.display = currentUser.rol === 'admin' ? 'flex' : 'none';
                 await cargarConfiguraciones();
                 mostrarVista('dashboard');
             } else {
@@ -117,20 +111,17 @@ logoutBtn.addEventListener('click', () => {
     mostrarToast('Sesión cerrada', 'info');
 });
 
-// ===== CARGA DE CONFIGURACIONES CON VALORES POR DEFECTO =====
+// ===== CARGA DE CONFIGURACIONES =====
 async function cargarConfiguraciones() {
     try {
         const snapshot = await db.ref('configuraciones').once('value');
         let data = snapshot.val() || {};
-        // Si no hay configuraciones, crear por defecto
         if (Object.keys(data).length === 0) {
             data = await crearConfiguracionesPorDefecto();
         }
         configuraciones = data;
-        // Listener en tiempo real para mantener actualizada la variable
         db.ref('configuraciones').on('value', snap => {
             configuraciones = snap.val() || {};
-            // Refrescar vistas si es necesario
             if (currentView === 'configuracion') cargarConfiguracion();
             if (currentView === 'animales' && typeof window.renderizarListaAnimales === 'function') {
                 window.renderizarListaAnimales();
@@ -138,7 +129,6 @@ async function cargarConfiguraciones() {
         });
     } catch (error) {
         mostrarToast('Error cargando configuraciones: ' + error.message, 'error');
-        // Intentar crear por defecto nuevamente
         try {
             configuraciones = await crearConfiguracionesPorDefecto();
         } catch (e) {
@@ -147,7 +137,7 @@ async function cargarConfiguraciones() {
     }
 }
 
-// ===== CREAR CONFIGURACIONES POR DEFECTO (si no existen) =====
+// ===== CREAR CONFIGURACIONES POR DEFECTO =====
 async function crearConfiguracionesPorDefecto() {
     const defaultConfig = {
         categorias: [
@@ -198,15 +188,10 @@ async function crearConfiguracionesPorDefecto() {
 
 // ===== NAVEGACIÓN =====
 function mostrarVista(viewName) {
-    // Ocultar todas
-    Object.keys(views).forEach(key => {
-        views[key].classList.remove('active');
-    });
-    // Mostrar la seleccionada
+    Object.keys(views).forEach(key => views[key].classList.remove('active'));
     if (views[viewName]) {
         views[viewName].classList.add('active');
         currentView = viewName;
-        // Actualizar título y menú
         const titles = {
             dashboard: 'Dashboard',
             animales: 'Animales',
@@ -218,7 +203,6 @@ function mostrarVista(viewName) {
         menuItems.forEach(item => {
             item.classList.toggle('active', item.dataset.view === viewName);
         });
-        // Cargar contenido según vista
         switch (viewName) {
             case 'dashboard': cargarDashboard(); break;
             case 'animales':
@@ -232,7 +216,6 @@ function mostrarVista(viewName) {
             case 'reportes': cargarReportes(); break;
             case 'configuracion': cargarConfiguracion(); break;
         }
-        // Cerrar sidebar en móvil
         if (window.innerWidth <= 768) sidebar.classList.remove('open');
     }
 }
@@ -252,7 +235,7 @@ menuToggle.addEventListener('click', () => {
     }
 });
 
-// ===== TEMA OSCURO/CLARO =====
+// ===== TEMA =====
 function setTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     theme = themeName;
@@ -262,7 +245,6 @@ function setTheme(themeName) {
 themeToggle.addEventListener('click', () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
 });
-// Inicializar tema
 setTheme(theme);
 
 // ===== DASHBOARD =====
@@ -270,17 +252,14 @@ async function cargarDashboard() {
     const container = document.getElementById('dashboardContent');
     container.innerHTML = '<div class="loader"></div> Cargando dashboard...';
     try {
-        // Obtener conteos
         const animalesSnap = await db.ref('animales').once('value');
         const animales = animalesSnap.val() || {};
         const total = Object.keys(animales).length;
         const activos = Object.values(animales).filter(a => a.status === 'activo').length;
-        // Eventos recientes (últimos 10)
         const eventosSnap = await db.ref('eventos').orderByChild('createdAt').limitToLast(10).once('value');
         const eventos = eventosSnap.val() || {};
         const listaEventos = Object.values(eventos).reverse();
 
-        // Distribución por categoría
         const categorias = {};
         Object.values(animales).forEach(a => {
             const cat = a.categoria || 'Sin categoría';
@@ -317,7 +296,6 @@ async function cargarDashboard() {
         `;
         container.innerHTML = html;
 
-        // Renderizar gráfica
         setTimeout(() => {
             const ctx = document.getElementById('chartCategorias')?.getContext('2d');
             if (ctx) {
@@ -363,9 +341,7 @@ async function cargarReportes() {
         const eventos = eventosSnap.val() || {};
         const conteoEventos = {};
         Object.values(eventos).forEach(e => {
-            if (e.animalId) {
-                conteoEventos[e.animalId] = (conteoEventos[e.animalId] || 0) + 1;
-            }
+            if (e.animalId) conteoEventos[e.animalId] = (conteoEventos[e.animalId] || 0) + 1;
         });
 
         let html = `
@@ -392,7 +368,6 @@ async function cargarReportes() {
     }
 }
 
-// Funciones de exportación
 window.exportarExcelReporte = function() {
     const tabla = document.querySelector('#reporteTabla table');
     if (tabla) exportarExcel(tabla, 'Reporte_Granja');
@@ -402,7 +377,7 @@ window.exportarPDFReporte = function() {
     if (elemento) exportarPDF(elemento, 'Reporte_Granja');
 };
 
-// ===== CONFIGURACIÓN (gestión de listas dinámicas) =====
+// ===== CONFIGURACIÓN =====
 async function cargarConfiguracion() {
     if (currentUser?.rol !== 'admin') {
         document.getElementById('configuracionContent').innerHTML = '<p>Acceso restringido a administradores.</p>';
@@ -432,7 +407,6 @@ async function cargarConfiguracion() {
     container.innerHTML = html;
 }
 
-// Funciones para agregar/eliminar items (definidas globalmente)
 window.agregarItemConfig = async function(key) {
     const input = document.getElementById(`input_${key}`);
     const valor = input.value.trim();

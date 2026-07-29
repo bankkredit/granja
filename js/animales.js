@@ -9,14 +9,10 @@ let listenerAnimales = null;
 
 // ===== OBTENER ANIMALES (en tiempo real) =====
 function obtenerAnimales(callback) {
-    if (listenerAnimales) {
-        // Si ya hay listener, no duplicar
-        return;
-    }
+    if (listenerAnimales) return;
     listenerAnimales = db.ref('animales').on('value', snapshot => {
         animalesCache = snapshot.val() || {};
         if (callback) callback(animalesCache);
-        // Si la vista actual es animales, refrescar
         if (currentView === 'animales') renderizarListaAnimales();
     });
 }
@@ -27,7 +23,6 @@ function renderizarListaAnimales(filtro = '') {
     if (!container) return;
 
     let lista = Object.values(animalesCache).filter(a => a.status !== 'inactivo');
-    // Aplicar filtro
     if (filtro) {
         const f = filtro.toLowerCase();
         lista = lista.filter(a =>
@@ -81,19 +76,16 @@ function renderizarListaAnimales(filtro = '') {
                 </table>
             </div>
         </div>
-        <!-- Detalle se muestra en un modal -->
     `;
     container.innerHTML = html;
 
-    // Evento de búsqueda
     document.getElementById('buscarAnimal')?.addEventListener('input', (e) => {
         renderizarListaAnimales(e.target.value);
     });
 }
 
-// ===== CARGAR ANIMALES (desde app.js) =====
-async function cargarAnimales() {
-    // Si no hay listener, iniciarlo
+// ===== CARGAR ANIMALES =====
+function cargarAnimales() {
     if (!listenerAnimales) {
         obtenerAnimales(() => renderizarListaAnimales());
     } else {
@@ -101,16 +93,13 @@ async function cargarAnimales() {
     }
 }
 
-// ===== VER DETALLE (modal) =====
+// ===== VER DETALLE =====
 async function verDetalleAnimal(id) {
     const animal = animalesCache[id];
     if (!animal) return mostrarToast('Animal no encontrado', 'error');
-    // Obtener eventos
     const eventosSnap = await db.ref('eventos').orderByChild('animalId').equalTo(id).once('value');
     const eventos = eventosSnap.val() || {};
-    const listaEventos = Object.values(eventos).sort((a,b) => (a.createdAt || 0) - (b.createdAt || 0));
-
-    // Calcular edad
+    const listaEventos = Object.values(eventos).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
     const edad = calcularEdad(animal.nacimiento);
 
     let html = `
@@ -156,15 +145,12 @@ async function verDetalleAnimal(id) {
     mostrarModal(`Detalle de ${animal.nombre || animal.numero}`, html, 'Cerrar', null, '', null);
 }
 
-// ===== ABRIR FORMULARIO (crear/editar) =====
+// ===== ABRIR FORMULARIO =====
 async function abrirFormularioAnimal(id = null) {
-    // Asegurar que las configuraciones estén cargadas (por si la variable global está vacía)
     if (!configuraciones || Object.keys(configuraciones).length === 0) {
         await cargarConfiguraciones();
-        // Si aún así no hay, crear por defecto
         if (!configuraciones || Object.keys(configuraciones).length === 0) {
             await crearConfiguracionesPorDefecto();
-            // Recargar
             const snap = await db.ref('configuraciones').once('value');
             configuraciones = snap.val() || {};
         }
@@ -174,18 +160,20 @@ async function abrirFormularioAnimal(id = null) {
     const esEdicion = !!animal;
     const titulo = esEdicion ? 'Editar animal' : 'Nuevo animal';
 
-    // Obtener listas de configuraciones
     const cats = configuraciones.categorias || [];
     const razas = configuraciones.razas || [];
     const colores = configuraciones.colores || [];
     const corrales = configuraciones.corrales || [];
 
-    // Generar opciones
-    const selectOptions = (list, selected) => list.map(item =>
-        `<option value="${item.nombre}" ${item.nombre === selected ? 'selected' : ''}>${item.nombre}</option>`
-    ).join('');
+    const selectOptions = (list, selected) => {
+        if (!list || list.length === 0) {
+            return '<option value="">No hay opciones</option>';
+        }
+        return list.map(item =>
+            `<option value="${item.nombre}" ${item.nombre === selected ? 'selected' : ''}>${item.nombre}</option>`
+        ).join('');
+    };
 
-    // Preparar fecha de nacimiento en formato YYYY-MM-DD
     const fechaNac = animal?.nacimiento || '';
     const fechaValue = fechaNac ? new Date(fechaNac).toISOString().split('T')[0] : '';
 
@@ -284,22 +272,19 @@ async function abrirFormularioAnimal(id = null) {
                 <label>Observaciones</label>
                 <textarea id="aObservaciones">${animal?.observaciones || ''}</textarea>
             </div>
-            <!-- Foto principal (subida) -->
             <div class="form-group">
                 <label>Foto principal</label>
                 <input type="file" id="aFoto" accept="image/*">
                 ${animal?.fotoPrincipal ? `<img src="${animal.fotoPrincipal}" style="max-width:100px;margin-top:8px;">` : ''}
             </div>
-            <!-- Aquí se podría agregar galería, pero simplificamos -->
         </form>
     `;
+
     await mostrarModal(titulo, html, esEdicion ? 'Actualizar' : 'Crear', null, 'Cancelar', null);
 
-    // Capturar el submit del modal (usamos el evento del botón confirmar)
     const confirmBtn = document.querySelector('#modalOverlay .modal-footer .btn-primary');
     if (confirmBtn) {
         confirmBtn.onclick = async () => {
-            // Validar y guardar
             const datos = {
                 nombre: document.getElementById('aNombre').value.trim(),
                 sexo: document.getElementById('aSexo').value,
@@ -318,9 +303,7 @@ async function abrirFormularioAnimal(id = null) {
                 observaciones: document.getElementById('aObservaciones').value.trim()
             };
 
-            // Validación básica
             const errors = validarCampos(datos, {
-                nombre: { required: false },
                 sexo: { required: true },
                 nacimiento: { required: true }
             });
@@ -329,7 +312,6 @@ async function abrirFormularioAnimal(id = null) {
                 return;
             }
 
-            // Subir foto si se seleccionó
             const fileInput = document.getElementById('aFoto');
             let fotoUrl = animal?.fotoPrincipal || '';
             if (fileInput && fileInput.files.length > 0) {
@@ -342,52 +324,52 @@ async function abrirFormularioAnimal(id = null) {
                 }
             }
 
-            if (esEdicion) {
-                // Actualizar
-                await db.ref(`animales/${id}`).update({
-                    ...datos,
-                    fotoPrincipal: fotoUrl,
-                    updatedAt: Date.now(),
-                    updatedBy: currentUser?.uid || ''
-                });
-                mostrarToast('Animal actualizado', 'success');
-            } else {
-                // Crear
-                const nuevoId = await generarId('CER');
-                const ref = db.ref('animales').push();
-                await ref.set({
-                    id: nuevoId,
-                    numero: nuevoId,
-                    ...datos,
-                    fotoPrincipal: fotoUrl,
-                    status: 'activo',
-                    createdAt: Date.now(),
-                    createdBy: currentUser?.uid || '',
-                    updatedAt: Date.now(),
-                    updatedBy: currentUser?.uid || ''
-                });
-                // Crear evento de nacimiento
-                await db.ref('eventos').push({
-                    animalId: ref.key,
-                    tipoEvento: 'nacimiento',
-                    fecha: datos.nacimiento,
-                    datos: { pesoNacimiento: datos.pesoNacimiento },
-                    createdAt: Date.now(),
-                    createdBy: currentUser?.uid || '',
-                    updatedAt: Date.now(),
-                    updatedBy: currentUser?.uid || '',
-                    status: 'activo'
-                });
-                mostrarToast('Animal creado exitosamente', 'success');
+            try {
+                if (esEdicion) {
+                    await db.ref(`animales/${id}`).update({
+                        ...datos,
+                        fotoPrincipal: fotoUrl,
+                        updatedAt: Date.now(),
+                        updatedBy: currentUser?.uid || ''
+                    });
+                    mostrarToast('Animal actualizado', 'success');
+                } else {
+                    const nuevoId = await generarId('CER');
+                    const ref = db.ref('animales').push();
+                    await ref.set({
+                        id: nuevoId,
+                        numero: nuevoId,
+                        ...datos,
+                        fotoPrincipal: fotoUrl,
+                        status: 'activo',
+                        createdAt: Date.now(),
+                        createdBy: currentUser?.uid || '',
+                        updatedAt: Date.now(),
+                        updatedBy: currentUser?.uid || ''
+                    });
+                    await db.ref('eventos').push({
+                        animalId: ref.key,
+                        tipoEvento: 'nacimiento',
+                        fecha: datos.nacimiento,
+                        datos: { pesoNacimiento: datos.pesoNacimiento },
+                        createdAt: Date.now(),
+                        createdBy: currentUser?.uid || '',
+                        updatedAt: Date.now(),
+                        updatedBy: currentUser?.uid || '',
+                        status: 'activo'
+                    });
+                    mostrarToast('Animal creado exitosamente', 'success');
+                }
+                cerrarModal();
+                renderizarListaAnimales();
+            } catch (error) {
+                mostrarToast('Error al guardar: ' + error.message, 'error');
             }
-            cerrarModal();
-            // Refrescar lista
-            renderizarListaAnimales();
         };
     }
 }
 
-// ===== ELIMINAR ANIMAL (solo admin) =====
+// ===== ELIMINAR ANIMAL =====
 async function eliminarAnimal(id) {
     if (currentUser?.rol !== 'admin') return mostrarToast('No autorizado', 'error');
     if (!confirm('¿Eliminar permanentemente este animal? Esta acción no se puede deshacer.')) return;
