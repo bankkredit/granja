@@ -1,7 +1,7 @@
 /**
  * animales.js - CRUD y gestión de animales
  * Versión completa con validaciones robustas, precarga de datos y selección de padres
- * CORREGIDO: Listas desplegables se llenan correctamente
+ * CORREGIDO: Eliminada creación automática de eventos
  */
 
 // ===== VARIABLES LOCALES =====
@@ -467,7 +467,7 @@ function descargarQR() {
 }
 
 // ============================================================
-// 7. ABRIR FORMULARIO (CON PRECARGA DE LISTAS)
+// 7. ABRIR FORMULARIO
 // ============================================================
 
 async function abrirFormularioAnimal(id = null) {
@@ -479,7 +479,6 @@ async function abrirFormularioAnimal(id = null) {
     try {
         console.log('[animales.js] Abriendo formulario, id:', id);
 
-        // ===== VERIFICAR Y CARGAR CONFIGURACIONES =====
         if (!configuraciones || Object.keys(configuraciones).length === 0) {
             console.log('[animales.js] Configuraciones vacías, cargando...');
             await cargarConfiguraciones();
@@ -493,7 +492,6 @@ async function abrirFormularioAnimal(id = null) {
 
         console.log('[animales.js] Configuraciones cargadas:', Object.keys(configuraciones));
 
-        // ===== OBTENER LISTAS DE CONFIGURACIÓN =====
         const cats = configuraciones.categorias || [];
         const razas = configuraciones.razas || [];
         const colores = configuraciones.colores || [];
@@ -501,7 +499,6 @@ async function abrirFormularioAnimal(id = null) {
 
         console.log('[animales.js] Categorías:', cats.length, 'Razas:', razas.length, 'Colores:', colores.length, 'Corrales:', corrales.length);
 
-        // ===== OBTENER ANIMAL PARA EDICIÓN =====
         let animal = null;
         let firebaseKey = null;
         if (id) {
@@ -519,17 +516,14 @@ async function abrirFormularioAnimal(id = null) {
         animalIdEnEdicion = firebaseKey;
         const titulo = modoEdicion ? '✏️ Editar Animal' : '➕ Nuevo Animal';
 
-        // ===== OBTENER LISTA DE ANIMALES PARA PADRES =====
         const listaAnimales = obtenerListaAnimalesParaSelect(animal?.id || null);
 
-        // ===== FUNCIÓN PARA OBTENER VALOR POR DEFECTO =====
         const getDefaultValue = (modoEdicion, animal, campo, lista, valorPorDefecto = '') => {
             if (modoEdicion && animal && animal[campo]) return animal[campo];
             if (!modoEdicion && lista && lista.length > 0) return lista[0].nombre;
             return valorPorDefecto;
         };
 
-        // ===== OBTENER VALORES (CON PRECARGA) =====
         const nombreValue = modoEdicion ? (animal?.nombre || '') : '';
         const sexoValue = modoEdicion ? (animal?.sexo || '') : VALORES_POR_DEFECTO.sexo;
         const categoriaValue = getDefaultValue(modoEdicion, animal, 'categoria', cats, VALORES_POR_DEFECTO.categoria);
@@ -564,7 +558,6 @@ async function abrirFormularioAnimal(id = null) {
             fecha: fechaValue
         });
 
-        // ===== GENERAR OPCIONES DE SELECT =====
         const madreOptions = generarOpcionesPadres(listaAnimales, madreId, 'Hembra');
         const padreOptions = generarOpcionesPadres(listaAnimales, padreId, 'Macho');
         const categoriaOptions = generarOpciones(cats, categoriaValue);
@@ -575,7 +568,6 @@ async function abrirFormularioAnimal(id = null) {
             `<option value="${e}" ${estadoReproValue === e ? 'selected' : ''}>${e}</option>`
         ).join('');
 
-        // ===== CONSTRUIR HTML =====
         const html = `
             <form id="formAnimal" novalidate>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -747,7 +739,7 @@ async function abrirFormularioAnimal(id = null) {
 }
 
 // ============================================================
-// 8. GUARDAR ANIMAL
+// 8. GUARDAR ANIMAL (SIN CREACIÓN AUTOMÁTICA DE EVENTOS)
 // ============================================================
 
 async function guardarAnimalDesdeFormulario() {
@@ -863,24 +855,20 @@ async function guardarAnimalDesdeFormulario() {
                 updatedByEmail: currentUser?.email || ''
             });
 
-            await db.ref('eventos').push({
-                animalId: ref.key,
-                tipoEvento: 'nacimiento',
-                fecha: datos.nacimiento,
-                datos: {
-                    pesoNacimiento: datos.pesoNacimiento,
-                    raza: datos.raza,
-                    categoria: datos.categoria
-                },
-                createdAt: Date.now(),
-                createdBy: currentUser?.uid || '',
-                createdByEmail: currentUser?.email || '',
-                updatedAt: Date.now(),
-                updatedBy: currentUser?.uid || '',
-                status: 'activo'
-            });
+            // ============================================================
+            // ELIMINADO: Ya no se crea evento de nacimiento automáticamente
+            // El usuario debe registrar el nacimiento manualmente desde el módulo Eventos
+            // ============================================================
+            // await db.ref('eventos').push({ ... }); // <-- ELIMINADO
+            // ============================================================
+
             mostrarToast(`✅ Animal ${nuevoId} creado exitosamente`, 'success');
             console.log('[animales.js] Animal creado:', nuevoId);
+            
+            // Mostrar sugerencia para registrar evento de nacimiento
+            setTimeout(() => {
+                mostrarToast('💡 Recuerda registrar el nacimiento en el módulo Eventos', 'info', 5000);
+            }, 1500);
         }
 
         cerrarModal();
@@ -909,11 +897,9 @@ async function eliminarAnimal(id) {
         return;
     }
 
-    // Buscar el animal por número (id puede ser CER000001 o el ID de Firebase)
     let animal = null;
     let firebaseKey = null;
 
-    // Método 1: Buscar en el caché
     const entries = Object.entries(animalesCache);
     console.log('[animales.js] Buscando en animalesCache. Total:', entries.length);
     
@@ -926,7 +912,6 @@ async function eliminarAnimal(id) {
         }
     }
 
-    // Método 2: Si no se encuentra en caché, buscar directamente en Firebase
     if (!animal) {
         console.log('[animales.js] No encontrado en caché, buscando en Firebase...');
         try {
@@ -945,7 +930,6 @@ async function eliminarAnimal(id) {
         }
     }
 
-    // Método 3: Si aún no se encuentra, buscar por ID de Firebase directamente
     if (!animal) {
         try {
             const snapshot = await db.ref(`animales/${id}`).once('value');
@@ -968,7 +952,6 @@ async function eliminarAnimal(id) {
 
     console.log('[animales.js] Animal encontrado:', animal.numero || 'Sin número', 'Firebase Key:', firebaseKey);
 
-    // Mostrar modal de confirmación
     const html = `
         <div style="text-align:center;padding:20px;">
             <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
@@ -1002,22 +985,6 @@ async function eliminarAnimal(id) {
             updatedByEmail: currentUser?.email || ''
         });
         console.log('[animales.js] Animal marcado como inactivo:', firebaseKey);
-
-        await db.ref('eventos').push({
-            animalId: firebaseKey,
-            tipoEvento: 'eliminacion',
-            fecha: new Date().toISOString().split('T')[0],
-            datos: {
-                motivo: 'Eliminado por administrador',
-                eliminadoPor: currentUser?.email || currentUser?.uid
-            },
-            createdAt: Date.now(),
-            createdBy: currentUser?.uid || '',
-            createdByEmail: currentUser?.email || '',
-            updatedAt: Date.now(),
-            updatedBy: currentUser?.uid || '',
-            status: 'activo'
-        });
 
         if (animalesCache[firebaseKey]) {
             animalesCache[firebaseKey].status = 'inactivo';

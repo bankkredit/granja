@@ -1,7 +1,7 @@
 /**
  * eventos.js - Gestión de eventos para animales
- * Sistema de registro manual de eventos (vacunas, pesajes, partos, ventas, etc.)
- * Versión 3.1 - CORREGIDO: Mapeo de campos para capturar datos correctamente
+ * SOLO REGISTRO MANUAL de eventos (partos, vacunas, pesajes, ventas, etc.)
+ * Versión 4.0 - Correcto: solo eventos manuales, sin automatismos
  */
 
 // ===== VARIABLES LOCALES =====
@@ -11,6 +11,7 @@ let formularioEventoAbierto = false;
 let eventoEnEdicion = null;
 let modoEdicionEvento = false;
 let selectorEventoAbierto = false;
+let eventoIdParaEliminar = null;
 
 // ===== CONSTANTES =====
 const TIPOS_EVENTO = {
@@ -36,9 +37,7 @@ const COLORES_EVENTO = {
     venta: '#ef4444',
     muerte: '#dc2626',
     diagnostico: '#f59e0b',
-    destete: '#22c55e',
-    nacimiento: '#22c55e',
-    eliminacion: '#dc2626'
+    destete: '#22c55e'
 };
 
 const ICONOS_EVENTO = {
@@ -51,12 +50,10 @@ const ICONOS_EVENTO = {
     venta: '💰',
     muerte: '⚰️',
     diagnostico: '🔬',
-    destete: '🐖',
-    nacimiento: '🐖',
-    eliminacion: '🗑️'
+    destete: '🐖'
 };
 
-// MAPEO DE CAMPOS - CORREGIDO
+// MAPEO DE CAMPOS PARA EL FORMULARIO
 const MAPEO_CAMPOS = {
     'Peso': 'peso',
     'Metodo': 'metodo',
@@ -90,7 +87,7 @@ const MAPEO_CAMPOS = {
 };
 
 // ============================================================
-// 1. FUNCIONES AUXILIARES
+// FUNCIONES AUXILIARES
 // ============================================================
 
 function esAdmin() {
@@ -121,46 +118,40 @@ function obtenerNumeroAnimal(animalId) {
     return animal ? animal.numero : animalId;
 }
 
+// ============================================================
+// RECOGER DATOS DEL FORMULARIO
+// ============================================================
+
 function recogerDatosFormularioEvento() {
     const datos = {};
     const elementos = document.querySelectorAll('#formEvento input, #formEvento select, #formEvento textarea');
     
     elementos.forEach(el => {
-        // Excluir campos especiales
         if (el.id === 'eFecha' || el.id === 'eCorralAnterior' || el.id === 'eventoIdEdit') {
             return;
         }
-        
         if (el.id && el.id.startsWith('e')) {
-            let key = el.id.slice(1); // Remover la 'e' inicial
+            let key = el.id.slice(1);
             let value = el.value;
-            
-            // Si es número, convertir a número
             if (el.type === 'number') {
                 value = parseFloat(value);
                 if (isNaN(value)) value = '';
             } else {
                 value = value.trim();
             }
-            
-            // Mapear el nombre del campo (CORREGIDO: ahora mapea correctamente)
             if (MAPEO_CAMPOS[key]) {
                 key = MAPEO_CAMPOS[key];
             }
-            
-            // Guardar solo si tiene valor
             if (value !== '' && value !== null && value !== undefined) {
                 datos[key] = value;
             }
         }
     });
-    
-    console.log('[eventos.js] Datos recogidos (crudos):', datos);
     return datos;
 }
 
 // ============================================================
-// 2. OBTENER EVENTOS
+// OBTENER EVENTOS
 // ============================================================
 
 function obtenerEventos(animalId, callback) {
@@ -168,7 +159,6 @@ function obtenerEventos(animalId, callback) {
         listenerEventos.off();
         listenerEventos = null;
     }
-    
     const ref = db.ref('eventos').orderByChild('animalId').equalTo(animalId);
     listenerEventos = ref.on('value', snapshot => {
         eventosCache = snapshot.val() || {};
@@ -181,7 +171,7 @@ function obtenerEventos(animalId, callback) {
 }
 
 // ============================================================
-// 3. VER DETALLE DEL EVENTO
+// VER DETALLE DEL EVENTO
 // ============================================================
 
 async function verDetalleEvento(eventoId) {
@@ -196,6 +186,7 @@ async function verDetalleEvento(eventoId) {
         const nombreAnimal = obtenerNombreAnimal(evento.animalId);
         const color = COLORES_EVENTO[evento.tipoEvento] || '#3b82f6';
         const icono = ICONOS_EVENTO[evento.tipoEvento] || '📋';
+        const isAdmin = esAdmin();
 
         let detalleHTML = '';
         if (evento.datos) {
@@ -210,8 +201,6 @@ async function verDetalleEvento(eventoId) {
             }
         }
 
-        const isAdmin = esAdmin();
-
         const html = `
             <div style="padding:10px;">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:12px;background:${color}15;border-radius:8px;border-left:4px solid ${color};">
@@ -222,7 +211,6 @@ async function verDetalleEvento(eventoId) {
                     </div>
                     <span style="margin-left:auto;font-size:0.8rem;color:var(--text-light);">${formatearFecha(evento.fecha || evento.createdAt)}</span>
                 </div>
-                
                 <div style="background:var(--bg-primary);border-radius:8px;padding:12px;margin-bottom:12px;">
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                         <div><strong>ID:</strong> ${eventoId.substring(0, 12)}...</div>
@@ -230,17 +218,14 @@ async function verDetalleEvento(eventoId) {
                         <div><strong>Animal:</strong> ${nombreAnimal}</div>
                         <div><strong>Tipo:</strong> ${capitalize(evento.tipoEvento)}</div>
                         ${evento.createdByEmail ? `<div><strong>Registrado por:</strong> ${evento.createdByEmail}</div>` : ''}
-                        ${evento.updatedByEmail && evento.updatedByEmail !== evento.createdByEmail ? `<div><strong>Actualizado por:</strong> ${evento.updatedByEmail}</div>` : ''}
                     </div>
                 </div>
-                
                 ${detalleHTML ? `
                     <div style="background:var(--bg-primary);border-radius:8px;padding:12px;">
                         <div style="font-weight:600;margin-bottom:8px;">📋 Detalles</div>
                         ${detalleHTML}
                     </div>
                 ` : ''}
-                
                 <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
                     <button class="btn btn-secondary btn-sm" onclick="cerrarModal()">
                         <i class="fas fa-times"></i> Cerrar
@@ -270,7 +255,7 @@ async function verDetalleEvento(eventoId) {
 }
 
 // ============================================================
-// 4. ABRIR FORMULARIO DE EVENTO
+// ABRIR FORMULARIO DE EVENTO
 // ============================================================
 
 async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
@@ -299,7 +284,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
         modoEdicionEvento = false;
     }
 
-    // Verificar si hay un formulario abierto
     if (formularioEventoAbierto && !selectorEventoAbierto) {
         mostrarToast('⚠️ Ya hay un formulario de evento abierto. Ciérralo primero.', 'warning');
         return;
@@ -337,7 +321,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0;">
             `;
-            
             tipos.forEach(t => {
                 const icono = ICONOS_EVENTO[t] || '📋';
                 html += `<button class="btn btn-secondary" onclick="seleccionarTipoEvento('${animalId}','${t}')" style="justify-content:center;padding:10px;font-size:0.9rem;">
@@ -351,13 +334,11 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
                     </button>
                 </div>
             `;
-            
             await mostrarModal('📋 Seleccionar Tipo de Evento', html, {
                 confirmText: 'Cerrar',
                 showConfirm: true,
                 showCancel: false
             });
-            
             formularioEventoAbierto = false;
             selectorEventoAbierto = false;
             return;
@@ -372,7 +353,6 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
 
         const getVal = (key) => {
             if (evento && evento.datos) {
-                // Buscar en el mapeo inverso para obtener el valor
                 for (const [mapKey, mapValue] of Object.entries(MAPEO_CAMPOS)) {
                     if (mapValue === key) {
                         return evento.datos[mapValue] || '';
@@ -712,7 +692,7 @@ async function abrirFormularioEvento(animalId, tipo = null, eventoId = null) {
 }
 
 // ============================================================
-// 5. SELECCIONAR / CERRAR SELECTOR
+// SELECCIONAR / CERRAR SELECTOR
 // ============================================================
 
 window.seleccionarTipoEvento = function(animalId, tipo) {
@@ -731,7 +711,7 @@ window.cerrarSelectorEvento = function() {
 };
 
 // ============================================================
-// 6. GUARDAR EVENTO (MANUAL)
+// GUARDAR EVENTO (SOLO MANUAL)
 // ============================================================
 
 async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
@@ -750,7 +730,7 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
         }
 
         const datos = recogerDatosFormularioEvento();
-        console.log('[eventos.js] Datos recogidos (después del mapeo):', datos);
+        console.log('[eventos.js] Datos recogidos:', datos);
 
         const errors = [];
         
@@ -777,7 +757,6 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
                 if (!datos.corral || datos.corral === '') errors.push('Selecciona un corral');
                 break;
             case TIPOS_EVENTO.VENTA:
-                console.log('[eventos.js] Validando VENTA - datos.precio:', datos.precio);
                 if (!datos.precio || datos.precio === '' || datos.precio === 0) {
                     errors.push('Ingresa el precio');
                 }
@@ -816,7 +795,7 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
             return false;
         }
 
-        // Guardar evento en Firebase
+        // Guardar evento en Firebase (SOLO MANUAL)
         const eventoRef = db.ref('eventos').push();
         await eventoRef.set({
             animalId: animalId,
@@ -832,10 +811,11 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
         });
 
         mostrarToast(`✅ Evento ${capitalize(tipo)} registrado exitosamente`, 'success');
-        console.log('[eventos.js] Evento creado:', eventoRef.key, 'Datos:', datos);
+        console.log('[eventos.js] Evento creado:', eventoRef.key);
 
-        // Actualizar estado del animal
+        // Actualizar estado del animal (solo para eventos que afectan el estado)
         await actualizarEstadoAnimal(animalId, tipo, datos);
+        
         cargarEventosRecientes();
         return true;
 
@@ -847,7 +827,7 @@ async function guardarEventoDesdeFormulario(animalId, tipo, animal) {
 }
 
 // ============================================================
-// 7. ACTUALIZAR EVENTO
+// ACTUALIZAR EVENTO
 // ============================================================
 
 async function actualizarEventoDesdeFormulario(animalId, tipo) {
@@ -887,7 +867,7 @@ async function actualizarEventoDesdeFormulario(animalId, tipo) {
         });
 
         mostrarToast(`✅ Evento ${capitalize(tipo)} actualizado exitosamente`, 'success');
-        console.log('[eventos.js] Evento actualizado:', eventoId, 'Datos:', datos);
+        console.log('[eventos.js] Evento actualizado:', eventoId);
 
         await actualizarEstadoAnimal(animalId, tipo, datos);
         cargarEventosRecientes();
@@ -901,7 +881,7 @@ async function actualizarEventoDesdeFormulario(animalId, tipo) {
 }
 
 // ============================================================
-// 8. ELIMINAR EVENTO
+// ELIMINAR EVENTO
 // ============================================================
 
 window.eliminarEvento = async function(eventoId) {
@@ -974,7 +954,7 @@ window.eliminarEvento = async function(eventoId) {
 };
 
 // ============================================================
-// 9. ACTUALIZAR ESTADO DEL ANIMAL
+// ACTUALIZAR ESTADO DEL ANIMAL (SOLO CUANDO EL EVENTO LO REQUIERE)
 // ============================================================
 
 async function actualizarEstadoAnimal(animalId, tipo, datos) {
@@ -993,46 +973,28 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
             case TIPOS_EVENTO.PESAJE:
                 const peso = parseFloat(datos.peso);
                 if (!isNaN(peso) && peso > 0) {
-                    if (animal.pesoActual) {
-                        const pesoAnterior = parseFloat(animal.pesoActual);
-                        const ganancia = peso - pesoAnterior;
-                        updates.gananciaDiaria = ganancia > 0 ? `+${ganancia.toFixed(2)} kg` : `${ganancia.toFixed(2)} kg`;
-                    }
                     updates.pesoActual = peso;
                 }
                 break;
             case TIPOS_EVENTO.INSEMINACION:
                 updates.estadoReproductivo = 'Gestante';
-                updates.fechaInseminacion = datos.fechaIns || new Date().toISOString().split('T')[0];
                 break;
             case TIPOS_EVENTO.PARTO:
                 updates.estadoReproductivo = 'Lactante';
-                updates.ultimoParto = new Date().toISOString().split('T')[0];
-                if (datos.vivos) updates.numeroCrias = parseInt(datos.vivos);
                 break;
             case TIPOS_EVENTO.CAMBIO_CORRAL:
                 if (datos.corral) {
-                    updates.corralAnterior = animal.corral || '';
                     updates.corral = datos.corral;
                 }
                 break;
             case TIPOS_EVENTO.VENTA:
                 updates.status = 'inactivo';
-                updates.fechaSalida = new Date().toISOString().split('T')[0];
-                if (datos.precio) {
-                    updates.precioVenta = parseFloat(datos.precio) || 0;
-                }
                 break;
             case TIPOS_EVENTO.MUERTE:
                 updates.status = 'inactivo';
-                updates.fechaSalida = new Date().toISOString().split('T')[0];
-                if (datos.causa) {
-                    updates.causaMuerte = datos.causa || '';
-                }
                 break;
             case TIPOS_EVENTO.DESTETE:
                 updates.estadoReproductivo = 'Activo';
-                if (datos.numeroCrias) updates.numeroCriasDestetadas = parseInt(datos.numeroCrias);
                 break;
             default:
                 break;
@@ -1048,7 +1010,7 @@ async function actualizarEstadoAnimal(animalId, tipo, datos) {
 }
 
 // ============================================================
-// 10. CARGAR VISTA DE EVENTOS
+// CARGAR VISTA DE EVENTOS
 // ============================================================
 
 function cargarEventos() {
@@ -1066,7 +1028,7 @@ function cargarEventos() {
         <div class="card" style="border-left:4px solid var(--color-primary);">
             <div class="card-header">
                 <span class="card-title">📋 Registro Manual de Eventos</span>
-                <span class="badge badge-purple">Registro manual para cada animal</span>
+                <span class="badge badge-purple">Solo registro manual</span>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                 <div class="form-group">
@@ -1096,7 +1058,7 @@ function cargarEventos() {
             </div>
             <div style="margin-top:8px;padding:8px;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-secondary);">
                 <i class="fas fa-info-circle"></i> 
-                Los eventos se registran manualmente para cada animal. 
+                Registre manualmente eventos como: partos, vacunas, pesajes, ventas, etc.
                 ${isAdmin ? 'Los administradores pueden editar y eliminar eventos.' : 'Solo los administradores pueden editar o eliminar eventos.'}
             </div>
         </div>
@@ -1115,7 +1077,7 @@ function cargarEventos() {
 }
 
 // ============================================================
-// 11. CARGAR EVENTOS RECIENTES
+// CARGAR EVENTOS RECIENTES
 // ============================================================
 
 async function cargarEventosRecientes() {
@@ -1208,7 +1170,7 @@ async function cargarEventosRecientes() {
 }
 
 // ============================================================
-// 12. REGISTRAR EVENTO RÁPIDO
+// REGISTRAR EVENTO RÁPIDO
 // ============================================================
 
 window.registrarEventoRapido = function() {
@@ -1235,7 +1197,7 @@ window.registrarEventoRapido = function() {
 };
 
 // ============================================================
-// 13. EXPOSICIÓN GLOBAL
+// EXPOSICIÓN GLOBAL
 // ============================================================
 
 window.cargarEventos = cargarEventos;

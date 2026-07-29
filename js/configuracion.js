@@ -1,7 +1,7 @@
 /**
  * configuracion.js - Módulo Avanzado de Configuración y Administración
  * Sistema completo para gestionar todos los parámetros configurables de la granja
- * Versión 3.2 - CORREGIDO (sin errores de await)
+ * Versión 3.3 - CORREGIDO: Manejo de listeners
  */
 
 // ===== VARIABLES LOCALES =====
@@ -133,7 +133,18 @@ const GRUPOS_CONFIG = {
     eventos: { label: '📋 Eventos', icon: 'fa-calendar-check' }
 };
 
-// ===== INICIALIZAR MÓDULO =====
+// ============================================================
+// 1. FUNCIONES DE UTILIDAD
+// ============================================================
+
+function esAdmin() {
+    return currentUser?.rol === 'admin' || currentUser?.email === 'vinicio@geomira.se';
+}
+
+// ============================================================
+// 2. INICIALIZAR MÓDULO
+// ============================================================
+
 function cargarConfiguracion() {
     console.log('[configuracion.js] Inicializando módulo avanzado de configuración...');
     const container = document.getElementById('configuracionContent');
@@ -142,7 +153,7 @@ function cargarConfiguracion() {
         return;
     }
 
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         container.innerHTML = `
             <div class="card" style="text-align:center;padding:60px 20px;border:2px dashed var(--color-danger);">
                 <i class="fas fa-lock" style="font-size:4rem;color:var(--color-danger);display:block;margin-bottom:16px;"></i>
@@ -168,7 +179,10 @@ function cargarConfiguracion() {
     cargarDatosConfiguracion();
 }
 
-// ===== CARGAR DATOS =====
+// ============================================================
+// 3. CARGAR DATOS
+// ============================================================
+
 async function cargarDatosConfiguracion() {
     try {
         const snapshot = await db.ref('configuraciones').once('value');
@@ -182,9 +196,18 @@ async function cargarDatosConfiguracion() {
             configuracionData = data;
         }
 
+        // CORREGIDO: Manejo seguro de listener
         if (configuracionListener) {
-            configuracionListener.off();
+            try {
+                // Intentar eliminar el listener anterior si existe
+                db.ref('configuraciones').off('value', configuracionListener);
+            } catch (e) {
+                console.warn('No se pudo eliminar listener anterior:', e);
+            }
+            configuracionListener = null;
         }
+
+        // Crear nuevo listener
         configuracionListener = db.ref('configuraciones').on('value', snap => {
             const newData = snap.val() || {};
             if (JSON.stringify(configuracionData) !== JSON.stringify(newData)) {
@@ -194,6 +217,8 @@ async function cargarDatosConfiguracion() {
                     renderizarConfiguracion();
                 }
             }
+        }, error => {
+            console.error('[configuracion.js] Error en listener:', error);
         });
 
         renderizarConfiguracion();
@@ -213,7 +238,10 @@ async function cargarDatosConfiguracion() {
     }
 }
 
-// ===== CREAR CONFIGURACIONES POR DEFECTO =====
+// ============================================================
+// 4. CREAR CONFIGURACIONES POR DEFECTO
+// ============================================================
+
 async function crearConfiguracionesPorDefecto() {
     const defaultConfig = {};
     for (const [key, config] of Object.entries(LISTAS_CONFIG)) {
@@ -236,7 +264,10 @@ async function crearConfiguracionesPorDefecto() {
     }
 }
 
-// ===== GUARDAR HISTORIAL =====
+// ============================================================
+// 5. GUARDAR HISTORIAL
+// ============================================================
+
 function guardarHistorial(tipo, descripcion, datos = {}) {
     configuracionHistorial.unshift({
         id: Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
@@ -252,7 +283,10 @@ function guardarHistorial(tipo, descripcion, datos = {}) {
     }
 }
 
-// ===== RENDERIZAR CONFIGURACIÓN =====
+// ============================================================
+// 6. RENDERIZAR CONFIGURACIÓN
+// ============================================================
+
 function renderizarConfiguracion() {
     const container = document.getElementById('configuracionContent');
     if (!container) return;
@@ -383,7 +417,10 @@ function renderizarConfiguracion() {
     container.innerHTML = html;
 }
 
-// ===== RENDERIZAR LISTA =====
+// ============================================================
+// 7. RENDERIZAR LISTA
+// ============================================================
+
 function renderizarListaConfiguracion(key, config) {
     const items = configuracionData[key] || [];
     const color = config.color || '#3b82f6';
@@ -460,7 +497,10 @@ function renderizarListaConfiguracion(key, config) {
     `;
 }
 
-// ===== FILTRAR CONFIGURACIÓN =====
+// ============================================================
+// 8. FILTRAR CONFIGURACIÓN
+// ============================================================
+
 function filtrarConfiguracion(valor) {
     configuracionFiltro = valor;
     const grupoFilter = document.getElementById('configGrupoFilter')?.value || '';
@@ -498,9 +538,12 @@ function filtrarConfiguracion(valor) {
     });
 }
 
-// ===== AGREGAR ITEM =====
+// ============================================================
+// 9. AGREGAR ITEM
+// ============================================================
+
 window.agregarItemConfig = async function(key) {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado', 'error');
         return;
     }
@@ -578,9 +621,12 @@ window.agregarItemConfig = async function(key) {
     }
 };
 
-// ===== ELIMINAR ITEM =====
+// ============================================================
+// 10. ELIMINAR ITEM
+// ============================================================
+
 window.eliminarItemConfig = async function(key, id) {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado', 'error');
         return;
     }
@@ -617,7 +663,10 @@ window.eliminarItemConfig = async function(key, id) {
     }
 };
 
-// ===== EXPANDIR LISTA =====
+// ============================================================
+// 11. EXPANDIR LISTA
+// ============================================================
+
 window.expandirLista = function(key) {
     const items = configuracionData[key] || [];
     const config = LISTAS_CONFIG[key];
@@ -653,9 +702,12 @@ window.expandirLista = function(key) {
     });
 };
 
-// ===== RESTAURAR LISTA =====
+// ============================================================
+// 12. RESTAURAR LISTA
+// ============================================================
+
 window.restaurarLista = async function(key) {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado', 'error');
         return;
     }
@@ -695,7 +747,10 @@ window.restaurarLista = async function(key) {
     }
 };
 
-// ===== EXPORTAR CONFIGURACIÓN =====
+// ============================================================
+// 13. EXPORTAR CONFIGURACIÓN
+// ============================================================
+
 window.exportarConfiguracion = function() {
     if (Object.keys(configuracionData).length === 0) {
         mostrarToast('No hay datos para exportar', 'warning');
@@ -703,7 +758,7 @@ window.exportarConfiguracion = function() {
     }
     
     const exportData = {
-        version: '3.2',
+        version: '3.3',
         fecha: new Date().toISOString(),
         exportadoPor: currentUser?.email || 'sistema',
         configuracion: configuracionData
@@ -720,9 +775,12 @@ window.exportarConfiguracion = function() {
     mostrarToast('✅ Configuración exportada correctamente', 'success');
 };
 
-// ===== IMPORTAR CONFIGURACIÓN =====
+// ============================================================
+// 14. IMPORTAR CONFIGURACIÓN
+// ============================================================
+
 window.importarConfiguracion = function() {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado', 'error');
         return;
     }
@@ -775,7 +833,10 @@ window.importarConfiguracion = function() {
     input.click();
 };
 
-// ===== VER HISTORIAL =====
+// ============================================================
+// 15. VER HISTORIAL
+// ============================================================
+
 window.verHistorialConfiguracion = function() {
     if (configuracionHistorial.length === 0) {
         mostrarToast('⚠️ No hay cambios registrados', 'warning');
@@ -812,9 +873,12 @@ window.verHistorialConfiguracion = function() {
     });
 };
 
-// ===== RESETEAR CONFIGURACIÓN =====
+// ============================================================
+// 16. RESETEAR CONFIGURACIÓN
+// ============================================================
+
 window.resetearConfiguracion = async function() {
-    if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
+    if (!esAdmin()) {
         mostrarToast('⛔ No autorizado', 'error');
         return;
     }
@@ -842,7 +906,10 @@ window.resetearConfiguracion = async function() {
     }
 };
 
-// ===== EXPOSICIÓN GLOBAL =====
+// ============================================================
+// 17. EXPOSICIÓN GLOBAL
+// ============================================================
+
 window.cargarConfiguracion = cargarConfiguracion;
 window.agregarItemConfig = window.agregarItemConfig;
 window.eliminarItemConfig = window.eliminarItemConfig;

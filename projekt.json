@@ -1,0 +1,3830 @@
+{
+  "accounts": {
+    "ACCOUNT_1766567687745_yh3hwjomb": {
+      "alias": "Tania credito",
+      "balance": 200,
+      "clientId": "CLIENT_1766565269026_zx56qccey",
+      "createdAt": 1766567687607,
+      "createdBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "createdByEmail": "vinicio@geomira.se",
+      "creditLimit": 0,
+      "currency": "USD",
+      "interestRate": 0,
+      "notes": "",
+      "status": "active",
+      "type": "savings",
+      "updatedAt": 1766572054141,
+      "updatedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "updatedByEmail": "vinicio@geomira.se"
+    }
+  },
+  "admin_pending_requests": {
+    "cancel_1767352975429": {
+      "action": "cancel",
+      "cardId": "card_1767352955087",
+      "cardNumber": "4171704333730135",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767352975429,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "cancel_1767352980718": {
+      "action": "cancel",
+      "cardId": "card_1767352140918",
+      "cardNumber": "4171704333771923",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767352980718,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "cancel_1767353310815": {
+      "action": "cancel",
+      "cardId": "card_1767353073768",
+      "cardNumber": "4171704333777185",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767353310815,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "cancel_1767354027936": {
+      "action": "cancel_card",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767354027936,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "lock_req_1767353948341": {
+      "action": "lock_card",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "currentStatus": "active",
+      "requestedStatus": "blocked",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767353948341,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "lock_req_1767354360768": {
+      "action": "lock_card",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "currentStatus": "active",
+      "requestedStatus": "blocked",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767354360768,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "lock_req_1767355707879": {
+      "action": "lock_card",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "currentStatus": "active",
+      "requestedStatus": "blocked",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767355707879,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "pin_change_1767354002926": {
+      "action": "change_pin",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "newPin": "1815",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767354002926,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "pin_change_1767354019708": {
+      "action": "change_pin",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "newPin": "1111",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767354019708,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "pin_change_1767354276325": {
+      "action": "change_pin",
+      "cardId": "card_1767353073768",
+      "cardLastFour": "7185",
+      "cardNumber": "4171704333777185",
+      "newPin": "1815",
+      "requiresAdminReview": true,
+      "status": "pending",
+      "timestamp": 1767354276325,
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "request_1767315374867": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "Usuario",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767315374867",
+      "requestedAt": 1767315374869,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "Usuario",
+      "userPhone": ""
+    },
+    "request_1767346591331": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "Bolivar Atiencia A.",
+      "limit": 10000,
+      "processed": false,
+      "requestId": "request_1767346591331",
+      "requestedAt": 1767346591332,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "RU",
+      "userEmail": "vinicio@geomira.se",
+      "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "userName": "Bolivar Atiencia A.",
+      "userPhone": "0790790048"
+    },
+    "request_1767352128006": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "2 test",
+      "limit": 10000,
+      "processed": false,
+      "requestId": "request_1767352128006",
+      "requestedAt": 1767352128007,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352332255": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "2 test",
+      "limit": 10000,
+      "processed": false,
+      "requestId": "request_1767352332255",
+      "requestedAt": 1767352332256,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352367989": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "2dd",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767352367989",
+      "requestedAt": 1767352367989,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352385988": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "holderName": "2dd",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767352385988",
+      "requestedAt": 1767352385989,
+      "reviewed": false,
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352586155": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "fee": 0,
+      "holderName": "2aa",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767352586155",
+      "requestedAt": 1767352586156,
+      "reviewed": false,
+      "reviewedBy": "",
+      "shippingStatus": "not_applicable",
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352599722": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "fee": 0,
+      "holderName": "asfasfsa",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767352599722",
+      "requestedAt": 1767352599723,
+      "reviewed": false,
+      "reviewedBy": "",
+      "shippingStatus": "not_applicable",
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767352693838": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "fee": 0,
+      "holderName": "sdasd",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767352693838",
+      "requestedAt": 1767352693839,
+      "reviewed": false,
+      "reviewedBy": "",
+      "shippingStatus": "not_applicable",
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    },
+    "request_1767353047826": {
+      "adminEmail": "vinicio@geomira.se",
+      "adminView": true,
+      "fee": 0,
+      "holderName": "2",
+      "limit": 2500,
+      "processed": false,
+      "requestId": "request_1767353047826",
+      "requestedAt": 1767353047827,
+      "reviewed": false,
+      "reviewedBy": "",
+      "shippingStatus": "not_applicable",
+      "status": "pending",
+      "type": "digital",
+      "userCountry": "",
+      "userEmail": "2@gmail.com",
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2",
+      "userPhone": ""
+    }
+  },
+  "admins": {
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "addedAt": 1766489922983,
+      "email": "vinicio@geomira.se",
+      "name": "Vinicio (Administrador Principal)",
+      "permissions": [
+        "read",
+        "write",
+        "delete",
+        "manage_users"
+      ],
+      "role": "super_admin"
+    }
+  },
+  "card_history": {
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "request_1767346591331": {
+        "action": "request",
+        "limit": 10000,
+        "requestId": "request_1767346591331",
+        "status": "pending",
+        "timestamp": 1767346591518,
+        "type": "digital"
+      }
+    },
+    "hist_1767317863441": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767297504512",
+      "cardNumber": "2236416804744170",
+      "timestamp": 1767317863441,
+      "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+      "userName": "Jose Yovani Armijos"
+    },
+    "hist_1767317922195": {
+      "action": "card_created",
+      "admin": "vinicio@geomira.se",
+      "brand": "invest_sverige",
+      "cardId": "card_1767317922068",
+      "cardNumber": "9115646604882194",
+      "timestamp": 1767317922195,
+      "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+      "userName": "Jose Yovani Armijos"
+    },
+    "hist_1767317968934": {
+      "action": "card_created",
+      "admin": "vinicio@geomira.se",
+      "brand": "invest_sverige",
+      "cardId": "card_1767317968688",
+      "cardNumber": "9069732233806212",
+      "timestamp": 1767317968934,
+      "userId": "V8AZORcquXcig8JP72ZIrrl6E6F3",
+      "userName": "Test"
+    },
+    "hist_1767318019062": {
+      "action": "card_created",
+      "admin": "vinicio@geomira.se",
+      "brand": "invest_sverige",
+      "cardId": "card_1767318018859",
+      "cardNumber": "9069732233851648",
+      "timestamp": 1767318019062,
+      "userId": "V8AZORcquXcig8JP72ZIrrl6E6F3",
+      "userName": "Test"
+    },
+    "hist_1767352103043": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352102443",
+      "requestId": "request_1767346591331",
+      "timestamp": 1767352103043,
+      "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "userName": "Bolivar Atiencia A."
+    },
+    "hist_1767352108311": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352108115",
+      "requestId": "request_1767303198050",
+      "timestamp": 1767352108311,
+      "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+      "userName": "Jose Yovani Armijos"
+    },
+    "hist_1767352141282": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352140918",
+      "requestId": "request_1767352128006",
+      "timestamp": 1767352141282,
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "hist_1767352955391": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352955087",
+      "requestId": "request_1767352332255",
+      "timestamp": 1767352955391,
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "hist_1767353004821": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352955087",
+      "cardNumber": "4171704333730135",
+      "timestamp": 1767353004821,
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "hist_1767353006542": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352140918",
+      "cardNumber": "4171704333771923",
+      "timestamp": 1767353006542,
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "hist_1767353013252": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767318018859",
+      "cardNumber": "9069732233851648",
+      "timestamp": 1767353013252,
+      "userId": "V8AZORcquXcig8JP72ZIrrl6E6F3",
+      "userName": "Test"
+    },
+    "hist_1767353023695": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767352108115",
+      "cardNumber": "4115646604804074",
+      "timestamp": 1767353023695,
+      "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+      "userName": "Jose Yovani Armijos"
+    },
+    "hist_1767353025691": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767317922068",
+      "cardNumber": "9115646604882194",
+      "timestamp": 1767353025692,
+      "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+      "userName": "Jose Yovani Armijos"
+    },
+    "hist_1767353038543": {
+      "action": "card_deleted",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767317968688",
+      "cardNumber": "9069732233806212",
+      "timestamp": 1767353038543,
+      "userId": "V8AZORcquXcig8JP72ZIrrl6E6F3",
+      "userName": "Test"
+    },
+    "hist_1767353074077": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767353073768",
+      "requestId": "request_1767352693838",
+      "timestamp": 1767353074077,
+      "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+      "userName": "2"
+    },
+    "hist_1767358227101": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767358226970",
+      "requestId": "request_1767358084437",
+      "timestamp": 1767358227101,
+      "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+      "userName": "Luis Fabián "
+    },
+    "hist_1767363898357": {
+      "action": "request_approved",
+      "admin": "vinicio@geomira.se",
+      "cardId": "card_1767363898137",
+      "requestId": "request_1767363820139",
+      "timestamp": 1767363898357,
+      "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+      "userName": "Edwin Maldonado"
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "lock_req_1767354360768": {
+        "action": "lock_request",
+        "cardId": "card_1767353073768",
+        "requestId": "lock_req_1767354360768",
+        "status": "pending",
+        "timestamp": 1767354360888
+      },
+      "lock_req_1767355707879": {
+        "action": "lock_request",
+        "cardId": "card_1767353073768",
+        "requestId": "lock_req_1767355707879",
+        "status": "pending",
+        "timestamp": 1767355707944
+      },
+      "pin_change_1767354276398": {
+        "action": "pin_change_request",
+        "cardId": "card_1767353073768",
+        "requestId": "pin_change_1767354276325",
+        "status": "pending",
+        "timestamp": 1767354276398
+      }
+    }
+  },
+  "card_requests": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "request_1767363797854": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363887641,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363797856,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363803403": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363871780,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363803405,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363804595": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363869240,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363804597,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363809583": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363867244,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "ee",
+        "requestedAt": 1767363809584,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363810751": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363863882,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363810753,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363810994": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363861566,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363810995,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363811786": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363857619,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363811786,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363815499": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363852765,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363815500,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363816184": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363850451,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363816185,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363816365": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363855388,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363816366,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363816520": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363874804,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363816521,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363819523": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363878011,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363819524,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363819759": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363883534,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363819760,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363819956": {
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "rejectedAt": 1767363889496,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "e",
+        "requestedAt": 1767363819958,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      },
+      "request_1767363820139": {
+        "approvedAt": 1767363898198,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767363898137",
+        "fee": 0,
+        "holderName": "Edwin Maldonado",
+        "limit": 10000,
+        "requestedAt": 1767363820140,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2",
+        "userName": "Edwin Maldonado",
+        "userPhone": ""
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "req_1767302520645": {
+        "fee": 0,
+        "holderName": "Yovani A",
+        "limit": 2500,
+        "rejectedAt": 1767303229509,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "Monto fuera de rango",
+        "requestedAt": 1767302520645,
+        "status": "rejected",
+        "type": "digital",
+        "userEmail": "yova@hotmail.com",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+        "userName": "Yovani A"
+      },
+      "request_1767303198050": {
+        "approvedAt": 1767352108173,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767352108115",
+        "holderName": "Jose Yovani Armijos",
+        "limit": 5000,
+        "requestedAt": 1767303198051,
+        "reviewed": false,
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "EC",
+        "userEmail": "yova@hotmail.com",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52",
+        "userName": "Jose Yovani Armijos",
+        "userPhone": "321521"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "request_1767358084437": {
+        "approvedAt": 1767358227014,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767358226970",
+        "fee": 0,
+        "holderName": "Luis Fabian Atiencia Armojos",
+        "limit": 10000,
+        "requestedAt": 1767358084440,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "CO",
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "userName": "Luis Fabián ",
+        "userPhone": "0960207621"
+      },
+      "request_1767358092795": {
+        "fee": 0,
+        "holderName": "Luis Fabian Atiencia Armojos",
+        "limit": 10000,
+        "rejectedAt": 1767358266313,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "n",
+        "requestedAt": 1767358092796,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "CO",
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "userName": "Luis Fabián ",
+        "userPhone": "0960207621"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "request_1767346591331": {
+        "approvedAt": 1767352102576,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767352102443",
+        "holderName": "Bolivar Atiencia A.",
+        "limit": 10000,
+        "requestedAt": 1767346591332,
+        "reviewed": false,
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "RU",
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia A.",
+        "userPhone": "0790790048"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "request_1767315374867": {
+        "holderName": "Usuario",
+        "limit": 2500,
+        "rejectedAt": 1767346638164,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "NINGUN",
+        "requestedAt": 1767315374869,
+        "reviewed": false,
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "Usuario",
+        "userPhone": ""
+      },
+      "request_1767352128006": {
+        "approvedAt": 1767352141078,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767352140918",
+        "holderName": "2 test",
+        "limit": 10000,
+        "requestedAt": 1767352128007,
+        "reviewed": false,
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352332255": {
+        "approvedAt": 1767352955188,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767352955087",
+        "holderName": "2 test",
+        "limit": 10000,
+        "requestedAt": 1767352332256,
+        "reviewed": false,
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352367989": {
+        "holderName": "2dd",
+        "limit": 2500,
+        "rejectedAt": 1767352987332,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "d",
+        "requestedAt": 1767352367989,
+        "reviewed": false,
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352385988": {
+        "holderName": "2dd",
+        "limit": 2500,
+        "rejectedAt": 1767352997153,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "d",
+        "requestedAt": 1767352385989,
+        "reviewed": false,
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352586155": {
+        "fee": 0,
+        "holderName": "2aa",
+        "limit": 2500,
+        "rejectedAt": 1767352991134,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "d",
+        "requestedAt": 1767352586156,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352599722": {
+        "fee": 0,
+        "holderName": "asfasfsa",
+        "limit": 2500,
+        "rejectedAt": 1767352994638,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "d",
+        "requestedAt": 1767352599723,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767352693838": {
+        "approvedAt": 1767353073872,
+        "approvedBy": "vinicio@geomira.se",
+        "cardId": "card_1767353073768",
+        "fee": 0,
+        "holderName": "sdasd",
+        "limit": 2500,
+        "requestedAt": 1767352693839,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "approved",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      },
+      "request_1767353047826": {
+        "fee": 0,
+        "holderName": "2",
+        "limit": 2500,
+        "rejectedAt": 1767353071742,
+        "rejectedBy": "vinicio@geomira.se",
+        "rejectionReason": "S",
+        "requestedAt": 1767353047827,
+        "reviewed": false,
+        "reviewedBy": "",
+        "shippingStatus": "not_applicable",
+        "status": "rejected",
+        "type": "digital",
+        "userCountry": "",
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2",
+        "userPhone": ""
+      }
+    }
+  },
+  "chatRooms": {
+    "chat_W7JSa2VgxAQloPRTnqrnAZkk2Cm1": {
+      "assignedTo": "pending",
+      "botResponseCount": 4,
+      "closedAt": 1767715775228,
+      "closedBy": "vinicio@geomira.se",
+      "createdAt": 1767638595200,
+      "lastActivity": 1767640551420,
+      "lastMessage": "Gracias por contactarnos. Estoy revisando tu consulta.",
+      "lastMessageTime": 1767640246948,
+      "messages": {
+        "-OiET6wLC-u_DZOTHJUu": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "¡Hola! Soy el asistente virtual de Canada Coin. ¿En qué puedo ayudarte hoy?",
+          "timestamp": 1767638597813,
+          "type": "text"
+        },
+        "-OiET88ptQVcygsNuk9K": {
+          "senderEmail": "vinicio@canadacoin.com",
+          "senderId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1",
+          "senderName": "Bolivar Atiencia",
+          "senderRole": "user",
+          "text": "Problema con depósito",
+          "timestamp": 1767638602772,
+          "type": "text"
+        },
+        "-OiET8WJJXZhRIJEi76V": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "Para realizar un depósito: 1. Ve a 'Depósitos' en tu dashboard 2. Selecciona el método de pago 3. Ingresa el monto 4. Sigue las instrucciones. ¿Necesitas ayuda con algún método específico?",
+          "timestamp": 1767638604274,
+          "type": "text"
+        },
+        "-OiET90YpU_wtqM6ZfZo": {
+          "senderEmail": "vinicio@canadacoin.com",
+          "senderId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1",
+          "senderName": "Bolivar Atiencia",
+          "senderRole": "user",
+          "text": "Consulta sobre retiro",
+          "timestamp": 1767638606338,
+          "type": "text"
+        },
+        "-OiET9Szk_djzIyJqgpY": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "Los retiros se procesan en 1-5 días hábiles. Métodos disponibles: transferencia bancaria ($25), PayPal (3.5%), criptomonedas. ¿Qué método prefieres usar?",
+          "timestamp": 1767638608158,
+          "type": "text"
+        },
+        "-OiETAdjAEdJIqfQUWiV": {
+          "senderEmail": "vinicio@canadacoin.com",
+          "senderId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1",
+          "senderName": "Bolivar Atiencia",
+          "senderRole": "user",
+          "text": "prestamo",
+          "timestamp": 1767638613006,
+          "type": "text"
+        },
+        "-OiETB9rGdVRarpwAdmm": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "He detectado que necesitas atención más especializada. Estoy conectándote con uno de nuestros especialistas humanos. Por favor, espera un momento...",
+          "timestamp": 1767638615126,
+          "type": "text"
+        },
+        "-OiETGoXnq8XfV6vn3MZ": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Especialista de Soporte",
+          "senderRole": "admin",
+          "text": "Hola soy Sofia, en que te puedo ayuar?",
+          "timestamp": 1767638638455,
+          "type": "text"
+        },
+        "-OiETPQERz60MRzyzvM_": {
+          "senderEmail": "vinicio@canadacoin.com",
+          "senderId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1",
+          "senderName": "Bolivar Atiencia",
+          "senderRole": "user",
+          "text": "quiero hacer un prestamo",
+          "timestamp": 1767638673518,
+          "type": "text"
+        },
+        "-OiEYTl56Xl1kgQjZ1px": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Especialista de Soporte",
+          "senderRole": "admin",
+          "text": "hola",
+          "timestamp": 1767640002204,
+          "type": "text"
+        },
+        "-OiEYZKK1kLuIDvoxOsA": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Especialista de Soporte",
+          "senderRole": "admin",
+          "text": "al momento no contamos con creditos o prestamos",
+          "timestamp": 1767640025003,
+          "type": "text"
+        },
+        "-OiEZPR3v1XNvoe2vCCD": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Especialista de Soporte",
+          "senderRole": "admin",
+          "text": "Gracias por contactarnos. Estoy revisando tu consulta.",
+          "timestamp": 1767640246618,
+          "type": "text"
+        },
+        "-OiJ3X4f4t8q0_hNAqaE": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Sistema",
+          "senderRole": "admin",
+          "text": "Este chat ha sido cerrado por nuestro especialista. Si necesitas más ayuda, por favor inicia un nuevo chat. ¡Gracias por contactarnos!",
+          "timestamp": 1767715775536,
+          "type": "text"
+        }
+      },
+      "status": "closed",
+      "unreadCount": 0,
+      "userEmail": "vinicio@canadacoin.com",
+      "userId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1",
+      "userName": "Bolivar Atiencia"
+    },
+    "chat_cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "assignedTo": "bot",
+      "botResponseCount": 1,
+      "createdAt": 1768236491942,
+      "lastActivity": 1768822081052,
+      "lastMessage": "Para realizar un depósito: 1. Ve a 'Depósitos' en tu dashboard 2. Selecciona el método de pago 3. Ingresa el monto 4. Sigue las instrucciones. ¿Necesitas ayuda con algún método específico?",
+      "lastMessageTime": 1768822082082,
+      "messages": {
+        "-Oin5uZnYX60kCGhgjUL": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "¡Hola! Soy el asistente virtual de Canada Coin. ¿En qué puedo ayudarte hoy?",
+          "timestamp": 1768236493014,
+          "type": "text"
+        },
+        "-OjL-kMgyuFSmUu4srvU": {
+          "senderEmail": "vinicio@geomira.se",
+          "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+          "senderName": "Bolivar Atiencia",
+          "senderRole": "user",
+          "text": "Problema con depósito",
+          "timestamp": 1768822081040,
+          "type": "text"
+        },
+        "-OjL-kbnT_jHNYtTEw0g": {
+          "senderId": "bot",
+          "senderName": "Asistente Virtual",
+          "senderRole": "bot",
+          "text": "Para realizar un depósito: 1. Ve a 'Depósitos' en tu dashboard 2. Selecciona el método de pago 3. Ingresa el monto 4. Sigue las instrucciones. ¿Necesitas ayuda con algún método específico?",
+          "timestamp": 1768822082071,
+          "type": "text"
+        }
+      },
+      "needsHuman": false,
+      "status": "active",
+      "unreadCount": 1,
+      "userEmail": "vinicio@geomira.se",
+      "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "userName": "Bolivar Atiencia"
+    }
+  },
+  "clients": {
+    "CLIENT_1766565269026_zx56qccey": {
+      "address": "Ecuador",
+      "birthDate": 660960000000,
+      "city": "Puyo",
+      "createdAt": 1766565269026,
+      "createdBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "createdByEmail": "vinicio@geomira.se",
+      "email": "tania@gmail.com",
+      "lastName": "Atiencia Armijos",
+      "monthlyIncome": 1000,
+      "name": "Tania Elizabeth",
+      "notes": "Ninguno",
+      "occupation": "Negociante",
+      "phone": "+593 99 808 4627",
+      "status": "active",
+      "type": "family",
+      "updatedAt": 1766572708179,
+      "updatedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "updatedByEmail": "vinicio@geomira.se",
+      "zipCode": "2100"
+    }
+  },
+  "contacts": {
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "ct_BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+        "createdAt": 1767297956488,
+        "email": "luisfabianatiencia@gmail.com",
+        "name": "Luis Fabián ",
+        "type": "personal",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "ct_CwMDwEOCCocjKMedJ0d69Wy2sbG3": {
+        "createdAt": 1767705593865,
+        "email": "andreas@geomira.se",
+        "name": "Andreas",
+        "type": "personal",
+        "userId": "CwMDwEOCCocjKMedJ0d69Wy2sbG3"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "ct_25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+        "createdAt": 1767318188973,
+        "email": "yova@hotmail.com",
+        "name": "Jose Yovani Armijos",
+        "type": "personal",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52"
+      },
+      "ct_BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+        "createdAt": 1767350139568,
+        "email": "luisfabianatiencia@gmail.com",
+        "name": "Luis Fabián ",
+        "type": "personal",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      }
+    }
+  },
+  "credits": {
+    "8UMG0tU0cEYkhyEkDON6zhRe7G62": {
+      "id_rl1a78c91_mj66mto5": {
+        "adminComments": "",
+        "amount": 10000,
+        "approvalDate": 1765903558220,
+        "approvedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "createdAt": 1765744414133,
+        "description": "Köpa en bil",
+        "dueDate": 1828111558220,
+        "interestRate": 4,
+        "monthlyRate": 0.0033333333333333335,
+        "purpose": "personal",
+        "status": "approved",
+        "term": 24,
+        "totalInterest": 800,
+        "totalPaid": 0,
+        "updatedAt": 1765903544870,
+        "updatedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "credit_1765749437863_s8p2122lp": {
+        "adminComments": "",
+        "amount": 5000,
+        "approvalDate": 1765749517752,
+        "approvedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "createdAt": 1765749437863,
+        "description": "nada",
+        "dueDate": 1796853517752,
+        "id": "credit_1765749437863_s8p2122lp",
+        "interestRate": 4,
+        "monthlyRate": 0.0033333333333333335,
+        "purpose": "personal",
+        "status": "approved",
+        "term": 12,
+        "totalInterest": 200,
+        "totalPaid": 0,
+        "updatedAt": 1765749506827,
+        "updatedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_1w9z7qjbl_mkxpusty": {
+        "amount": 10000,
+        "createdAt": 1769586068086,
+        "description": "",
+        "monthlyRate": 0.0033333333333333335,
+        "purpose": "personal",
+        "status": "pending",
+        "term": 12,
+        "totalInterest": 400,
+        "totalPaid": 0,
+        "updatedAt": 1769586068086
+      }
+    }
+  },
+  "deposits": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "dep_1767363675073_aawnt8khs": {
+        "amount": 50000,
+        "createdAt": 1767363675073,
+        "fileName": "IMG-20260102-WA0000.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2F15GaTCBuiSXARuqyJHmEfsVx4Ij2%2Fdeposit_1767363670352.jpg?alt=media&token=1e19b3c4-340e-4b67-883e-62b25fac2abd",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767363675073,
+        "userEmail": "efma1978@gmail.com",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2"
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "dep_1767305168633_o4n5uigeo": {
+        "amount": 100,
+        "createdAt": 1767305168633,
+        "fileName": "10.png",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2F25kHBoWCnveVLrkR9vv1Eg2eRi52%2Fdeposit_1767305164746.png?alt=media&token=ae6dfb5b-736a-4d52-beea-56b0e86a26eb",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767305168633,
+        "userEmail": "yova@hotmail.com",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52"
+      },
+      "id_xdqe4srk2_mjt5p3ea": {
+        "amount": 50000,
+        "createdAt": 1767133562482,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767133562482,
+        "userEmail": "yova@hotmail.com",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52"
+      }
+    },
+    "9PKH5LzMdHRap1ASnNGfEYvv8tv2": {
+      "id_bdmdpv6qp_mi972706": {
+        "amount": 7850,
+        "createdAt": 1763749747446,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_g72kg2y9m_mi979dsf": {
+        "amount": 1221,
+        "createdAt": 1763750082831,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_xton8ncyq_mi974u01": {
+        "amount": 122,
+        "createdAt": 1763749870561,
+        "method": "paypal",
+        "status": "approved"
+      }
+    },
+    "BVMyZqhyOPaeBkf9N56kwLky1ZZ2": {
+      "id_gvsaa8nr0_minnnyrt": {
+        "amount": 60000,
+        "createdAt": 1764624163529,
+        "method": "bank",
+        "status": "approved"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "dep_1767370873874_3x670vhmp": {
+        "amount": 50000,
+        "createdAt": 1767370873874,
+        "fileName": "IMG-20260101-WA0002.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FBfLcB8AN8seiAcTTZTGj77oU5Ov1%2Fdeposit_1767370871295.jpg?alt=media&token=acdb1ee0-3ded-4677-af85-a15bf5394289",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767370873874,
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "id_hmai671rd_mjsvekpi": {
+        "amount": 4000,
+        "createdAt": 1767116275543,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767116275543,
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "id_s09whggho_mjsvg1jp": {
+        "amount": 15000,
+        "createdAt": 1767116344021,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767116344021,
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "id_vs9rkn81q_miw3yvs4": {
+        "amount": 5000,
+        "createdAt": 1765135276132,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1765135276132,
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      }
+    },
+    "CwMDwEOCCocjKMedJ0d69Wy2sbG3": {
+      "dep_1767705834009_f14lofk74": {
+        "amount": 100,
+        "createdAt": 1767705834009,
+        "fileName": "17677058058962019423532568964058.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FCwMDwEOCCocjKMedJ0d69Wy2sbG3%2Fdeposit_1767705828193.jpg?alt=media&token=7d430c76-f7be-4c35-93c0-4da783d8ff5d",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767705834009,
+        "userEmail": "andreas@geomira.se",
+        "userId": "CwMDwEOCCocjKMedJ0d69Wy2sbG3"
+      }
+    },
+    "Eg3s8uNeptOnTgJhGibHwxfjanD2": {
+      "id_x8m284pww_mju0yj62": {
+        "amount": 50000,
+        "createdAt": 1767186070922,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767186070922,
+        "userEmail": "admin@1.se",
+        "userId": "Eg3s8uNeptOnTgJhGibHwxfjanD2"
+      }
+    },
+    "GHgzXUU9AHYeLZzGIBbChiwxOks1": {
+      "id_5ihgiw2af_mi8gi142": {
+        "amount": 500,
+        "createdAt": 1763705136674,
+        "method": "crypto",
+        "status": "approved"
+      },
+      "id_dhyrsnzrs_mi8yyp12": {
+        "amount": 3243,
+        "createdAt": 1763736147254,
+        "method": "paypal",
+        "status": "approved"
+      },
+      "id_oqrztlke2_mi8ipwui": {
+        "amount": 15000,
+        "createdAt": 1763708863626,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_v3cjzgjmv_mi7pbh4z": {
+        "amount": 1500,
+        "createdAt": 1763659481219,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_w2s8e3jhp_mi7tli2c": {
+        "amount": 34335,
+        "createdAt": 1763666667444,
+        "method": "crypto",
+        "status": "rejected"
+      }
+    },
+    "HcRLqey4FOZcI5bPRYCjPPaQGmC2": {
+      "dep_1767719556874_we86jyf69": {
+        "amount": 5000,
+        "createdAt": 1767719556874,
+        "fileName": "Screenshot_2026-01-05-21-26-37-667_com.android.chrome.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FHcRLqey4FOZcI5bPRYCjPPaQGmC2%2Fdeposit_1767719553859.jpg?alt=media&token=48dd314d-4ca3-4fce-b63c-4ed47a525547",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767719556874,
+        "userEmail": "teaabe2005@gmail.com",
+        "userId": "HcRLqey4FOZcI5bPRYCjPPaQGmC2"
+      }
+    },
+    "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72": {
+      "id_ew83kcj24_mj0dsei5": {
+        "amount": 1000,
+        "createdAt": 1765393634669,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1765393634669,
+        "userEmail": "gabrielyara2014@hotmail.com",
+        "userId": "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72"
+      }
+    },
+    "W7JSa2VgxAQloPRTnqrnAZkk2Cm1": {
+      "dep_1767535029910_dijbidmdf": {
+        "amount": 30000,
+        "createdAt": 1767535029910,
+        "fileName": "invest.png",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FW7JSa2VgxAQloPRTnqrnAZkk2Cm1%2Fdeposit_1767535023826.png?alt=media&token=6d06289b-708b-4080-be19-56127ab2f2cd",
+        "method": "crypto",
+        "note": "634C0532925",
+        "status": "approved",
+        "updatedAt": 1767535029910,
+        "userEmail": "vinicio@canadacoin.com",
+        "userId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "30459412": {
+        "amount": 122,
+        "createdAt": 1763753304594,
+        "depositId": "30459412",
+        "method": "bank",
+        "status": "approved",
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia"
+      },
+      "77406001": {
+        "amount": 134,
+        "createdAt": 1763752774060,
+        "depositId": "77406001",
+        "method": "bank",
+        "status": "approved"
+      },
+      "79624119": {
+        "amount": 233,
+        "createdAt": 1763752796241,
+        "depositId": "79624119",
+        "method": "bank",
+        "status": "approved"
+      },
+      "dep_1767295556334_ii10u766p": {
+        "amount": 5000,
+        "createdAt": 1767295556334,
+        "fileName": "mana.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2Fcc0HEwLBZvhyx7OCPAthr3Opkaj2%2Fdeposit_1767295551700.jpg?alt=media&token=4ba7134a-efb7-419d-a24a-4e609d0b442b",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767295556334,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "dep_1767348790169_5bdstasqv": {
+        "amount": 150,
+        "createdAt": 1767348790169,
+        "fileName": "mana.jpg",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2Fcc0HEwLBZvhyx7OCPAthr3Opkaj2%2Fdeposit_1767348785685.jpg?alt=media&token=4125f30a-8fcd-4b55-b7bc-ca99c6489fd6",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767348790169,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_2dx9byymt_mj65iukj": {
+        "amount": 100,
+        "createdAt": 1765742549059,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1765742549059,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_8rzdgw9k5_mjvvrja9": {
+        "amount": 500,
+        "createdAt": 1767298278753,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767298278753,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_ar3xdtlfa_mj2xfpt2": {
+        "amount": 150000,
+        "createdAt": 1765547567462,
+        "method": "crypto",
+        "status": "approved",
+        "updatedAt": 1765547567462,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_azcxukl0i_mj0dirho": {
+        "amount": 5000,
+        "createdAt": 1765393184940,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1765393184940,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_dwhakso4r_miw3hk5j": {
+        "amount": 50000,
+        "createdAt": 1765134467911,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1765134467911,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_emubkarj1_mjsvedcn": {
+        "amount": 12000,
+        "createdAt": 1767116266007,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1767116266007,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_m0ulvcdvv_mi96wsgj": {
+        "amount": 770,
+        "createdAt": 1763749495315,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_u66zvg1w2_mlgwmutc": {
+        "amount": 1500,
+        "createdAt": 1770746312064,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1770746312064,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "id_utijejr5c_mjiv6zfq": {
+        "amount": 4000,
+        "createdAt": 1766511259622,
+        "method": "bank",
+        "status": "approved",
+        "updatedAt": 1766511259622,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "dep_1767351478670_t9qywower": {
+        "amount": 100,
+        "createdAt": 1767351478670,
+        "fileName": "invest.png",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FugIbQO7dlXOGZg7UOlM9IcIvJaG2%2Fdeposit_1767351473290.png?alt=media&token=ee365b96-7b08-4aaf-83a9-86e3b137d869",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767351478670,
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2"
+      },
+      "dep_1767354695660_64f6lvmd2": {
+        "amount": 1500,
+        "createdAt": 1767354695660,
+        "fileName": "invest.png",
+        "fileUrl": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/deposits%2FugIbQO7dlXOGZg7UOlM9IcIvJaG2%2Fdeposit_1767354689631.png?alt=media&token=cc232a17-0c91-45fe-8354-cc28a0648564",
+        "method": "bank",
+        "note": "",
+        "status": "approved",
+        "updatedAt": 1767354695660,
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2"
+      }
+    }
+  },
+  "investments": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "inv_1767365665234_tvgyessuh": {
+        "amount": 50000,
+        "annualRate": 6,
+        "createdAt": 1767365665234,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1798901665234,
+        "id": "inv_1767365665234_tvgyessuh",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2"
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "inv_1767370310858_520z960bi": {
+        "amount": 50000,
+        "annualRate": 6,
+        "createdAt": 1767370310858,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1798906310858,
+        "id": "inv_1767370310858_520z960bi",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52"
+      }
+    },
+    "BVMyZqhyOPaeBkf9N56kwLky1ZZ2": {
+      "inv_1767887904977_qreiv8sw9": {
+        "amount": 58800,
+        "annualRate": 6,
+        "createdAt": 1767887904977,
+        "duration": 30,
+        "earnings": 0,
+        "endDate": 1770479904977,
+        "id": "inv_1767887904977_qreiv8sw9",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "BVMyZqhyOPaeBkf9N56kwLky1ZZ2"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "inv_1767357988551_mqh5uokb6": {
+        "amount": 10000,
+        "annualRate": 6,
+        "createdAt": 1767357988551,
+        "duration": 30,
+        "earnings": 0,
+        "endDate": 1769949988551,
+        "id": "inv_1767357988551_mqh5uokb6",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "inv_1767370959207_hpyotbebl": {
+        "amount": 12000,
+        "annualRate": 6,
+        "createdAt": 1767370959207,
+        "duration": 30,
+        "earnings": 0,
+        "endDate": 1769962959207,
+        "id": "inv_1767370959207_hpyotbebl",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      }
+    },
+    "HcRLqey4FOZcI5bPRYCjPPaQGmC2": {
+      "inv_1767719744444_vfyzam54c": {
+        "amount": 5000,
+        "annualRate": 6,
+        "createdAt": 1767719744444,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1799255744444,
+        "id": "inv_1767719744444_vfyzam54c",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "HcRLqey4FOZcI5bPRYCjPPaQGmC2"
+      }
+    },
+    "W7JSa2VgxAQloPRTnqrnAZkk2Cm1": {
+      "inv_1767535109259_1qnxz44g4": {
+        "amount": 30000,
+        "annualRate": 6,
+        "createdAt": 1767535109259,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1799071109259,
+        "id": "inv_1767535109259_1qnxz44g4",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "inv_1767359953856_i26wj7pv4": {
+        "amount": 100000,
+        "annualRate": 6,
+        "createdAt": 1767359953857,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1798895953857,
+        "id": "inv_1767359953856_i26wj7pv4",
+        "monthlyRate": 0.5,
+        "planType": "VIP",
+        "status": "active",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "inv_1767360025102_8yxl54vfe": {
+        "amount": 4900,
+        "annualRate": 5,
+        "createdAt": 1767360025102,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1798896025102,
+        "id": "inv_1767360025102_8yxl54vfe",
+        "monthlyRate": 0.4166666666666667,
+        "planType": "Premium",
+        "status": "active",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "inv_1767355243041_m76ozrs0p": {
+        "amount": 1100,
+        "annualRate": 5,
+        "createdAt": 1767355243041,
+        "duration": 365,
+        "earnings": 0,
+        "endDate": 1798891243041,
+        "id": "inv_1767355243041_m76ozrs0p",
+        "monthlyRate": 0.4166666666666667,
+        "planType": "Premium",
+        "status": "active",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2"
+      }
+    }
+  },
+  "loans": {
+    "LOAN_1766569084947_fayohc4fq": {
+      "accountId": "ACCOUNT_1766567687745_yh3hwjomb",
+      "amount": 200,
+      "balance": 200,
+      "clientId": "CLIENT_1766565269026_zx56qccey",
+      "clientName": "Tania Elizabeth Atiencia Armijos",
+      "collateral": "",
+      "createdAt": 1766569084947,
+      "createdBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "createdByEmail": "vinicio@geomira.se",
+      "currency": "USD",
+      "interestRate": 4,
+      "monthlyPayment": 17.0299808391112,
+      "purpose": "",
+      "startDate": 1766534400000,
+      "status": "active",
+      "term": 12,
+      "updatedAt": 1766569084947
+    }
+  },
+  "movements": {
+    "MOV_1766569085150_1v4jcuz3x": {
+      "accountAlias": "Tania credito",
+      "accountId": "ACCOUNT_1766567687745_yh3hwjomb",
+      "amount": 200,
+      "balanceAfter": 200,
+      "balanceBefore": 0,
+      "clientId": "CLIENT_1766565269026_zx56qccey",
+      "clientName": "Tania Elizabeth Atiencia Armijos",
+      "createdAt": 1766569085150,
+      "createdBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+      "createdByEmail": "vinicio@geomira.se",
+      "currency": "USD",
+      "date": 1766569085150,
+      "description": "Desembolso de préstamo - Sin propósito especificado",
+      "id": "MOV_1766569085150_1v4jcuz3x",
+      "reference": "LOAN_LOAN_1766569084947_fayohc4fq",
+      "status": "completed",
+      "type": "deposit"
+    }
+  },
+  "notifications": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "1767363850619": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363850619,
+        "type": "card_rejected"
+      },
+      "1767363852871": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363852871,
+        "type": "card_rejected"
+      },
+      "1767363855533": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363855533,
+        "type": "card_rejected"
+      },
+      "1767363857786": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363857786,
+        "type": "card_rejected"
+      },
+      "1767363861678": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363861678,
+        "type": "card_rejected"
+      },
+      "1767363864033": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363864033,
+        "type": "card_rejected"
+      },
+      "1767363867412": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: ee",
+        "read": false,
+        "timestamp": 1767363867412,
+        "type": "card_rejected"
+      },
+      "1767363869301": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363869301,
+        "type": "card_rejected"
+      },
+      "1767363871919": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363871919,
+        "type": "card_rejected"
+      },
+      "1767363874888": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363874888,
+        "type": "card_rejected"
+      },
+      "1767363878164": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363878164,
+        "type": "card_rejected"
+      },
+      "1767363883604": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363883604,
+        "type": "card_rejected"
+      },
+      "1767363887792": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363887792,
+        "type": "card_rejected"
+      },
+      "1767363889634": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: e",
+        "read": false,
+        "timestamp": 1767363889634,
+        "type": "card_rejected"
+      },
+      "notif_1767363898315": {
+        "cardLastFour": "5263",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767363898315,
+        "type": "card_approved"
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "1767190953764": {
+        "message": "Se ha creado una nueva tarjeta digital para tu cuenta",
+        "read": false,
+        "timestamp": 1767190953764,
+        "type": "card_created"
+      },
+      "1767303229554": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: Monto fuera de rango",
+        "read": false,
+        "timestamp": 1767303229554,
+        "type": "card_rejected"
+      },
+      "1767317922249": {
+        "cardLastFour": "2194",
+        "message": "Se ha creado una nueva tarjeta Invest Sverige digital para tu cuenta",
+        "read": false,
+        "timestamp": 1767317922249,
+        "type": "card_created"
+      },
+      "notif_1767352108227": {
+        "cardLastFour": "4074",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767352108227,
+        "type": "card_approved"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "1767358266360": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: n",
+        "read": false,
+        "timestamp": 1767358266360,
+        "type": "card_rejected"
+      },
+      "notif_1767358227057": {
+        "cardLastFour": "2416",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767358227058,
+        "type": "card_approved"
+      }
+    },
+    "V8AZORcquXcig8JP72ZIrrl6E6F3": {
+      "1767317969139": {
+        "cardLastFour": "6212",
+        "message": "Se ha creado una nueva tarjeta Invest Sverige digital para tu cuenta",
+        "read": false,
+        "timestamp": 1767317969139,
+        "type": "card_created"
+      },
+      "1767318019112": {
+        "cardLastFour": "1648",
+        "message": "Se ha creado una nueva tarjeta Invest Sverige digital para tu cuenta",
+        "read": false,
+        "timestamp": 1767318019112,
+        "type": "card_created"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "notif_1767352102986": {
+        "cardLastFour": "3796",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767352102986,
+        "type": "card_approved"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "1767346638318": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: NINGUN",
+        "read": false,
+        "timestamp": 1767346638318,
+        "type": "card_rejected"
+      },
+      "1767352987444": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: d",
+        "read": false,
+        "timestamp": 1767352987444,
+        "type": "card_rejected"
+      },
+      "1767352991233": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: d",
+        "read": false,
+        "timestamp": 1767352991233,
+        "type": "card_rejected"
+      },
+      "1767352994719": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: d",
+        "read": false,
+        "timestamp": 1767352994719,
+        "type": "card_rejected"
+      },
+      "1767352997221": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: d",
+        "read": false,
+        "timestamp": 1767352997221,
+        "type": "card_rejected"
+      },
+      "1767353071928": {
+        "message": "Tu solicitud de tarjeta ha sido rechazada: S",
+        "read": false,
+        "timestamp": 1767353071928,
+        "type": "card_rejected"
+      },
+      "notif_1767352141139": {
+        "cardLastFour": "1923",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767352141139,
+        "type": "card_approved"
+      },
+      "notif_1767352955235": {
+        "cardLastFour": "0135",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767352955236,
+        "type": "card_approved"
+      },
+      "notif_1767353073926": {
+        "cardLastFour": "7185",
+        "message": "Tu solicitud de tarjeta digital ha sido aprobada",
+        "read": false,
+        "timestamp": 1767353073926,
+        "type": "card_approved"
+      }
+    }
+  },
+  "referrals": {
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "id_ql09r3rjy_mj0d6dgd": {
+        "activated": false,
+        "bonus": 25,
+        "createdAt": 1765392606877,
+        "referredUserId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "referredUserName": "vinicio@geomira.se",
+        "referrerId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "referrerName": "Luis Fabián "
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "id_zvj97go00_mj0d677n": {
+        "activated": false,
+        "bonus": 25,
+        "createdAt": 1765392598787,
+        "referredUserId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "referredUserName": "luisfabianatiencia@gmail.com",
+        "referrerId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "referrerName": "Bolivar Atiencia"
+      }
+    }
+  },
+  "settings": {
+    "companyAddress": "Suecia",
+    "companyEmail": "vinicio@geomira.se",
+    "companyLogo": "",
+    "companyName": "Terminal Bancaria",
+    "companyPhone": "0790790048",
+    "companyRegNumber": "",
+    "emailNotifications": "true",
+    "enableAudit": true,
+    "enableBackup": true,
+    "interestRate": 4,
+    "ivaRate": 25,
+    "mainCurrency": "USD",
+    "systemMessage": "",
+    "transactionLimit": 10000,
+    "updatedAt": 1766574024845,
+    "updatedBy": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+    "updatedByEmail": "vinicio@geomira.se"
+  },
+  "test_permission": {
+    "test": 1766490205388
+  },
+  "transactions": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "trans_1767365665438": {
+        "amount": 50000,
+        "date": 1767365665438,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767365665438",
+        "status": "completed",
+        "type": "investment",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2"
+      },
+      "tx_1767363675147": {
+        "amount": 50000,
+        "createdAt": 1767363675147,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "trans_1767370310955": {
+        "amount": 50000,
+        "date": 1767370310955,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767370310955",
+        "status": "completed",
+        "type": "investment",
+        "userId": "25kHBoWCnveVLrkR9vv1Eg2eRi52"
+      },
+      "tx_1767305168723": {
+        "amount": 100,
+        "createdAt": 1767305168723,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "8UMG0tU0cEYkhyEkDON6zhRe7G62": {
+      "-OgTZNTCL8jx1etM5YZb": {
+        "amount": 10000,
+        "createdAt": 1765744414201,
+        "description": "Crédito solicitado #id_rl1a7",
+        "status": "pending",
+        "type": "credit"
+      }
+    },
+    "9PKH5LzMdHRap1ASnNGfEYvv8tv2": {
+      "-OebfLNvpKK5umo8mApt": {
+        "amount": 7850,
+        "createdAt": 1763749747664,
+        "description": "Depósito #id_bdmdp",
+        "type": "deposit"
+      },
+      "-OebfoPZwpMf8ZJKvTd8": {
+        "amount": 122,
+        "createdAt": 1763749870651,
+        "description": "Depósito #id_xton8",
+        "type": "deposit"
+      },
+      "-Oebg12S8jMTXWrEhrMy": {
+        "amount": 122,
+        "createdAt": 1763749926623,
+        "description": "Depósito aprobado #id_xton8",
+        "type": "deposit"
+      },
+      "-OebgcFvwkKcNs4_x2HG": {
+        "amount": 1221,
+        "createdAt": 1763750082933,
+        "description": "Depósito #id_g72kg",
+        "type": "deposit"
+      },
+      "-Oebt1tIk4QdSAyRlmLP": {
+        "amount": 1221,
+        "createdAt": 1763753337829,
+        "description": "Depósito aprobado #id_g72kg",
+        "type": "deposit"
+      }
+    },
+    "BVMyZqhyOPaeBkf9N56kwLky1ZZ2": {
+      "-OfQmyBNbE9Vrdy2efBW": {
+        "amount": 60000,
+        "createdAt": 1764624163633,
+        "description": "Depósito #id_gvsaa",
+        "type": "deposit"
+      },
+      "-OfQn7MO7RTdWQ34u7IS": {
+        "amount": 60000,
+        "createdAt": 1764624204088,
+        "description": "Depósito aprobado #id_gvsaa",
+        "type": "deposit"
+      },
+      "-OglkeOO3jOGIyiq30qs": {
+        "amount": -200,
+        "createdAt": 1766066398848,
+        "description": "Retiro #id_s5nnf (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 195,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "trans_1767887905198": {
+        "amount": 58800,
+        "date": 1767887905198,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767887905198",
+        "status": "completed",
+        "type": "investment",
+        "userId": "BVMyZqhyOPaeBkf9N56kwLky1ZZ2"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "-OfuFhX5RBhg_s9nGooV": {
+        "amount": 5000,
+        "createdAt": 1765135276189,
+        "description": "Depósito #id_vs9rk",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-OfuFsWmbNEDu4t0rLB7": {
+        "amount": 5000,
+        "createdAt": 1765135323313,
+        "description": "Depósito aprobado #id_vs9rk",
+        "type": "deposit"
+      },
+      "-OhkKbzH6wIsrKDViiDw": {
+        "amount": 4000,
+        "createdAt": 1767116275647,
+        "description": "Depósito #id_hmai6",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-OhkKsh9-u4UV8adddzM": {
+        "amount": 15000,
+        "createdAt": 1767116344119,
+        "description": "Depósito #id_s09wh",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-Ohv1GCy4go_DBLyTjC8": {
+        "amount": -1000,
+        "createdAt": 1767295751051,
+        "description": "Retiro #id_t7mem (bank)",
+        "fee": 20,
+        "method": "bank",
+        "netAmount": 980,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "trans_1767357988656": {
+        "amount": 10000,
+        "date": 1767357988656,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767357988656",
+        "status": "completed",
+        "type": "investment",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "trans_1767370959330": {
+        "amount": 12000,
+        "date": 1767370959330,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767370959330",
+        "status": "completed",
+        "type": "investment",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      },
+      "tx_1767188406503_recv": {
+        "amount": 1000,
+        "createdAt": 1767188406503,
+        "description": "Transferencia de Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "transfer_in"
+      },
+      "tx_1767188413813_recv": {
+        "amount": 1000,
+        "createdAt": 1767188413813,
+        "description": "Transferencia de Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "transfer_in"
+      },
+      "tx_1767188420674_recv": {
+        "amount": 1000,
+        "createdAt": 1767188420674,
+        "description": "Transferencia de Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "transfer_in"
+      },
+      "tx_1767297956488_recv": {
+        "amount": 100,
+        "createdAt": 1767297956488,
+        "description": "Transferencia de Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "transfer_in"
+      },
+      "tx_1767370873947": {
+        "amount": 50000,
+        "createdAt": 1767370873948,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "CwMDwEOCCocjKMedJ0d69Wy2sbG3": {
+      "tx_1767705834123": {
+        "amount": 100,
+        "createdAt": 1767705834123,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "Eg3s8uNeptOnTgJhGibHwxfjanD2": {
+      "-OhoUrmpFzlFY1GeqlSN": {
+        "amount": 50000,
+        "createdAt": 1767186071233,
+        "description": "Depósito #id_x8m28",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "GHgzXUU9AHYeLZzGIBbChiwxOks1": {
+      "-OeXI-4tult-fQRvLo7i": {
+        "amount": 1500,
+        "createdAt": 1763659481410,
+        "description": "Depósito #id_v3cjz",
+        "type": "deposit"
+      },
+      "-OeXi93YhDLifcxvkZAM": {
+        "amount": 1500,
+        "createdAt": 1763666600299,
+        "description": "Depósito aprobado #id_v3cjz",
+        "type": "deposit"
+      },
+      "-OeXiPVOKk7KDH8PWnKr": {
+        "amount": 34335,
+        "createdAt": 1763666667575,
+        "description": "Depósito #id_w2s8e",
+        "type": "deposit"
+      },
+      "-OeXiW71yIJM8GCdRJ_m": {
+        "amount": 34335,
+        "createdAt": 1763666694607,
+        "description": "Depósito rechazado #id_w2s8e",
+        "type": "withdrawal"
+      },
+      "-OeXifDrg1GGN2XWVpEH": {
+        "amount": 1000,
+        "createdAt": 1763666736181,
+        "description": "Retiro #id_jq0bt",
+        "type": "withdrawal"
+      },
+      "-Oe_09qM4aPAwhwzbjUt": {
+        "amount": 500,
+        "createdAt": 1763705136728,
+        "description": "Depósito #id_5ihgi",
+        "type": "deposit"
+      },
+      "-Oe_0gVJ6JDpKDfAcTTD": {
+        "amount": 500,
+        "createdAt": 1763705274652,
+        "description": "Depósito aprobado #id_5ihgi",
+        "type": "deposit"
+      },
+      "-Oe_1q35e_bkqcmDS4_I": {
+        "amount": 1000,
+        "createdAt": 1763705575976,
+        "description": "Retiro aprobado #id_jq0bt",
+        "type": "withdrawal"
+      },
+      "-Oe_24kpwvKC3wDzwCfs": {
+        "amount": 1000,
+        "createdAt": 1763705640435,
+        "description": "Retiro #id_lieb9",
+        "type": "withdrawal"
+      },
+      "-Oe_2EpeBOK-fF0Hct_t": {
+        "amount": 1000,
+        "createdAt": 1763705681552,
+        "description": "Retiro aprobado #id_lieb9",
+        "type": "withdrawal"
+      },
+      "-Oe_ENiXNRbfQjIg0TTK": {
+        "amount": 15000,
+        "createdAt": 1763708863755,
+        "description": "Depósito #id_oqrzt",
+        "type": "deposit"
+      },
+      "-Oe_EaPzUVXGreIEeOgh": {
+        "amount": 15000,
+        "createdAt": 1763708919827,
+        "description": "Depósito aprobado #id_oqrzt",
+        "type": "deposit"
+      },
+      "-OearT03dY_IGlceOK34": {
+        "amount": 3243,
+        "createdAt": 1763736147432,
+        "description": "Depósito #id_dhyrs",
+        "type": "deposit"
+      },
+      "-Oebe__b4n9HtVCBLVma": {
+        "amount": 3243,
+        "createdAt": 1763749547771,
+        "description": "Depósito aprobado #id_dhyrs",
+        "type": "deposit"
+      }
+    },
+    "HcRLqey4FOZcI5bPRYCjPPaQGmC2": {
+      "trans_1767719744820": {
+        "amount": 5000,
+        "date": 1767719744820,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767719744820",
+        "status": "completed",
+        "type": "investment",
+        "userId": "HcRLqey4FOZcI5bPRYCjPPaQGmC2"
+      },
+      "tx_1767719557078": {
+        "amount": 5000,
+        "createdAt": 1767719557078,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72": {
+      "-Og8eGOInJ1M9lyMvpxu": {
+        "amount": 1000,
+        "createdAt": 1765393634953,
+        "description": "Depósito #id_ew83k",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-Ohl8uzvM2fDosWRMch8": {
+        "amount": -100,
+        "createdAt": 1767129985076,
+        "description": "Retiro #id_3rmfl (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "-Ohl9oIKhtMG9DqVAQgx": {
+        "amount": -10,
+        "createdAt": 1767130219789,
+        "description": "Retiro #id_7vd5c (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 5,
+        "status": "pending",
+        "type": "withdrawal"
+      }
+    },
+    "W7JSa2VgxAQloPRTnqrnAZkk2Cm1": {
+      "trans_1767535109524": {
+        "amount": 30000,
+        "date": 1767535109524,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767535109524",
+        "status": "completed",
+        "type": "investment",
+        "userId": "W7JSa2VgxAQloPRTnqrnAZkk2Cm1"
+      },
+      "tx_1767535029953": {
+        "amount": 30000,
+        "createdAt": 1767535029954,
+        "description": "Depósito #dep_1767",
+        "method": "crypto",
+        "status": "pending",
+        "type": "deposit"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "-OgTrYGZkytM4UM1S39k": {
+        "amount": 5000,
+        "createdAt": 1765749437973,
+        "description": "Crédito solicitado #credit_1",
+        "status": "pending",
+        "type": "credit"
+      },
+      "-OgcVMARPrqw7BFYi9Cg": {
+        "amount": -1000,
+        "createdAt": 1765911129881,
+        "description": "Retiro #id_mag8j (bank)",
+        "fee": 20,
+        "method": "bank",
+        "netAmount": 980,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "-OgcXejSWrt6b6l9q27-": {
+        "amount": -100,
+        "createdAt": 1765911734329,
+        "description": "Retiro #id_k9w5o (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "-OhBGf3iGHLPgJDpdxwv": {
+        "amount": 4000,
+        "createdAt": 1766511259893,
+        "description": "Depósito #id_utije",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-OhkK_hUGVWGH0K6AzF_": {
+        "amount": 12000,
+        "createdAt": 1767116266411,
+        "description": "Depósito #id_emubk",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-OhlHxJz0qkgmrqPh95i": {
+        "amount": -10,
+        "createdAt": 1767132354088,
+        "description": "Retiro #id_26hz9 (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 5,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "-OhoX4XcjC2U7CiNYAxS": {
+        "amount": -1023,
+        "createdAt": 1767186651841,
+        "description": "Retiro #id_cvgry (bank)",
+        "fee": 20.46,
+        "method": "bank",
+        "netAmount": 1002.54,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "-OhvAuBMVXcDhhm-qv4o": {
+        "amount": 500,
+        "createdAt": 1767298278906,
+        "description": "ฝากเงิน #id_8rzdg",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "-Ok2Y7z0MsYM79yCJHz9": {
+        "amount": 10000,
+        "createdAt": 1769586068239,
+        "description": "Crédito solicitado #id_1w9z7",
+        "status": "pending",
+        "type": "credit"
+      },
+      "-Ol7h6KzxoGcESwu1pHO": {
+        "amount": 1500,
+        "createdAt": 1770746312267,
+        "description": "Depósito #id_u66zv",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "trans_1767359954240": {
+        "amount": 100000,
+        "date": 1767359954240,
+        "description": "Inversión en plan VIP",
+        "id": "trans_1767359954240",
+        "status": "completed",
+        "type": "investment",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "trans_1767360025360": {
+        "amount": 4900,
+        "date": 1767360025360,
+        "description": "Inversión en plan Premium",
+        "id": "trans_1767360025360",
+        "status": "completed",
+        "type": "investment",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      },
+      "tx_1767188406503": {
+        "amount": -1000.5,
+        "createdAt": 1767188406503,
+        "description": "Transferencia a Luis Fabián ",
+        "status": "completed",
+        "type": "transfer_out"
+      },
+      "tx_1767188413813": {
+        "amount": -1000.5,
+        "createdAt": 1767188413813,
+        "description": "Transferencia a Luis Fabián ",
+        "status": "completed",
+        "type": "transfer_out"
+      },
+      "tx_1767188420674": {
+        "amount": -1000.5,
+        "createdAt": 1767188420674,
+        "description": "Transferencia a Luis Fabián ",
+        "status": "completed",
+        "type": "transfer_out"
+      },
+      "tx_1767295556424": {
+        "amount": 5000,
+        "createdAt": 1767295556424,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "tx_1767297956488": {
+        "amount": -100.5,
+        "createdAt": 1767297956488,
+        "description": "Transferencia a Luis Fabián ",
+        "status": "completed",
+        "type": "transfer_out"
+      },
+      "tx_1767348790210": {
+        "amount": 150,
+        "createdAt": 1767348790210,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "tx_1767705631282": {
+        "amount": -500,
+        "createdAt": 1767705631282,
+        "description": "Retiro #with_176 (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 495,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "tx_1769430493802": {
+        "amount": -1200,
+        "createdAt": 1769430493803,
+        "description": "Retiro #with_176 (international)",
+        "fee": 20,
+        "method": "international",
+        "netAmount": 1180,
+        "status": "pending",
+        "type": "withdrawal"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "-OhyZ4LyKepVBz96v8b4": {
+        "amount": -100,
+        "createdAt": 1767354945263,
+        "description": "Retiro #with_176 (international)",
+        "fee": 20,
+        "method": "international",
+        "netAmount": 80,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "trans_1767355243396": {
+        "amount": 1100,
+        "date": 1767355243396,
+        "description": "Inversión en plan Premium",
+        "id": "trans_1767355243396",
+        "status": "completed",
+        "type": "investment",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2"
+      },
+      "tx_1767305276799": {
+        "amount": 100,
+        "createdAt": 1767305276799,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "tx_1767351478722": {
+        "amount": 100,
+        "createdAt": 1767351478722,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "tx_1767354695741": {
+        "amount": 1500,
+        "createdAt": 1767354695741,
+        "description": "Depósito #dep_1767",
+        "method": "bank",
+        "status": "pending",
+        "type": "deposit"
+      },
+      "tx_1767356710078": {
+        "amount": -100,
+        "createdAt": 1767356710078,
+        "description": "Retiro #with_176 (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "pending",
+        "type": "withdrawal"
+      },
+      "tx_1767356789325": {
+        "amount": -200,
+        "createdAt": 1767356789325,
+        "description": "Retiro #with_176 (bank)",
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 195,
+        "status": "pending",
+        "type": "withdrawal"
+      }
+    }
+  },
+  "transfers": {
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "trf_1767188406503_recv": {
+        "amount": 1000,
+        "createdAt": 1767188406503,
+        "message": "Navidades",
+        "senderEmail": "vinicio@geomira.se",
+        "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "senderName": "Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "received"
+      },
+      "trf_1767188413813_recv": {
+        "amount": 1000,
+        "createdAt": 1767188413813,
+        "message": "Navidades",
+        "senderEmail": "vinicio@geomira.se",
+        "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "senderName": "Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "received"
+      },
+      "trf_1767188420674_recv": {
+        "amount": 1000,
+        "createdAt": 1767188420674,
+        "message": "Navidades",
+        "senderEmail": "vinicio@geomira.se",
+        "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "senderName": "Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "received"
+      },
+      "trf_1767297956488_recv": {
+        "amount": 100,
+        "createdAt": 1767297956488,
+        "senderEmail": "vinicio@geomira.se",
+        "senderId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "senderName": "Bolivar Atiencia A.",
+        "status": "completed",
+        "type": "received"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "trf_1767188406503": {
+        "amount": 1000,
+        "createdAt": 1767188406503,
+        "currency": "USD",
+        "fee": 0.5,
+        "message": "Navidades",
+        "recipientEmail": "luisfabianatiencia@gmail.com",
+        "recipientId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "recipientName": "Luis Fabián ",
+        "status": "completed",
+        "total": 1000.5,
+        "type": "sent"
+      },
+      "trf_1767188413813": {
+        "amount": 1000,
+        "createdAt": 1767188413813,
+        "currency": "USD",
+        "fee": 0.5,
+        "message": "Navidades",
+        "recipientEmail": "luisfabianatiencia@gmail.com",
+        "recipientId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "recipientName": "Luis Fabián ",
+        "status": "completed",
+        "total": 1000.5,
+        "type": "sent"
+      },
+      "trf_1767188420674": {
+        "amount": 1000,
+        "createdAt": 1767188420674,
+        "currency": "USD",
+        "fee": 0.5,
+        "message": "Navidades",
+        "recipientEmail": "luisfabianatiencia@gmail.com",
+        "recipientId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "recipientName": "Luis Fabián ",
+        "status": "completed",
+        "total": 1000.5,
+        "type": "sent"
+      },
+      "trf_1767297956488": {
+        "amount": 100,
+        "createdAt": 1767297956488,
+        "currency": "USD",
+        "fee": 0.5,
+        "recipientEmail": "luisfabianatiencia@gmail.com",
+        "recipientId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "recipientName": "Luis Fabián ",
+        "status": "completed",
+        "total": 100.5,
+        "type": "sent"
+      }
+    }
+  },
+  "userRoles": {
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "createdAt": 1766489127807,
+      "email": "vinicio@geomira.se",
+      "role": "client"
+    }
+  },
+  "user_cards": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "card_1767363898137": {
+        "brand": "visa",
+        "cardNumber": "4182799808045263",
+        "createdAt": 1767363898137,
+        "cvv": "911",
+        "expiryDate": "12/29",
+        "holderName": "Edwin Maldonado",
+        "lastFour": "5263",
+        "limit": 10000,
+        "notes": "Aprobado desde panel administrativo",
+        "status": "active",
+        "type": "digital",
+        "userId": "15GaTCBuiSXARuqyJHmEfsVx4Ij2"
+      }
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "card_1767190953690": {
+        "cardNumber": "1522553254553236",
+        "createdAt": 1767190953690,
+        "createdBy": "vinicio@geomira.se",
+        "cvv": "625",
+        "expiryDate": "12/30",
+        "holderName": "Jose Yovani Armijos",
+        "limit": 10000,
+        "notes": "",
+        "status": "active",
+        "type": "digital",
+        "updatedAt": 1767300556962,
+        "updatedBy": "vinicio@geomira.se"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "card_1767358226970": {
+        "brand": "visa",
+        "cardNumber": "4010491669562416",
+        "createdAt": 1767358226970,
+        "cvv": "691",
+        "expiryDate": "04/29",
+        "holderName": "Luis Fabián ",
+        "lastFour": "2416",
+        "limit": 10000,
+        "notes": "Aprobado desde panel administrativo",
+        "status": "active",
+        "type": "digital",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1"
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "card_1767352102443": {
+        "brand": "visa",
+        "cardNumber": "4119678125393796",
+        "createdAt": 1767352102443,
+        "cvv": "347",
+        "expiryDate": "10/28",
+        "holderName": "Bolivar Atiencia A.",
+        "lastFour": "3796",
+        "limit": 10000,
+        "notes": "Aprobado desde panel administrativo",
+        "status": "active",
+        "type": "digital",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "card_1767353073768": {
+        "brand": "visa",
+        "cardNumber": "4171704333777185",
+        "createdAt": 1767353073768,
+        "cvv": "100",
+        "expiryDate": "02/30",
+        "holderName": "2",
+        "lastFour": "7185",
+        "limit": 2500,
+        "notes": "Aprobado desde panel administrativo",
+        "status": "active",
+        "type": "digital",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2"
+      }
+    }
+  },
+  "users": {
+    "15GaTCBuiSXARuqyJHmEfsVx4Ij2": {
+      "accountStatus": "active",
+      "accountTier": "basic",
+      "balance": 0,
+      "cardCount": 1,
+      "createdAt": 1767363632414,
+      "email": "efma1978@gmail.com",
+      "lastLogin": 1767363632414,
+      "name": "Edwin Maldonado",
+      "referralBonus": 0,
+      "totalDeposits": 50000,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": 1767363757022,
+      "verificationStatus": "unverified"
+    },
+    "25kHBoWCnveVLrkR9vv1Eg2eRi52": {
+      "balance": 300,
+      "cardCount": 0,
+      "country": "EC",
+      "createdAt": 1767133245330,
+      "dailyEarnings": 0,
+      "documentNumber": "2-2690580",
+      "documentType": "id_card",
+      "email": "yova@hotmail.com",
+      "ibanNumber": "GB29N21252365WX1",
+      "internationalBankName": "Canada-Coin",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1767185572829,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1767305168633,
+      "lastLogin": 1767365254706,
+      "name": "Jose Yovani Armijos",
+      "phone": "321521",
+      "referralBonus": 0,
+      "referralCode": "079648K8",
+      "referredBy": "8BY5XLY9",
+      "swiftCode": "SWD-156351-EU",
+      "totalDeposits": 100300,
+      "totalEarnings": 798.4008005401236,
+      "totalReferrals": 0,
+      "updatedAt": 1767348718646
+    },
+    "8UMG0tU0cEYkhyEkDON6zhRe7G62": {
+      "country": "ES",
+      "createdAt": 1765744330716,
+      "documentStatus": "pending",
+      "email": "andreas@geomira.se",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765905824681,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "name": "Andreas Maldonado",
+      "phone": "0790790045",
+      "totalCredits": 0,
+      "totalInterest": 0,
+      "totalPaid": 0,
+      "updatedAt": 1765905824681
+    },
+    "9TgmR9PoJ6YA6aeXIr9UpjWrrv72": {
+      "balance": 0,
+      "createdAt": 1767626702978,
+      "email": "jorgearmijos87@gmail.com",
+      "name": "jorgearmijos87",
+      "referralBonus": 0,
+      "totalDeposits": 0,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": 1767626702978
+    },
+    "BVMyZqhyOPaeBkf9N56kwLky1ZZ2": {
+      "balance": 1000,
+      "country": "US",
+      "createdAt": 1763746426692,
+      "email": "marquinhoarmijos81@icloud.com",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765911528139,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1766436511915,
+      "name": "Marco Antonio Armijos Armijos",
+      "phone": "8352265005",
+      "referralBonus": 0,
+      "referralCode": "LVFIWAGO",
+      "totalDeposits": 60000,
+      "totalEarnings": 7783.811409143518,
+      "totalReferrals": 0,
+      "totalWithdrawals": 200,
+      "updatedAt": 1766436511915
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "balance": 70398.07220052084,
+      "cardCount": 1,
+      "country": "CO",
+      "createdAt": 1763728909063,
+      "email": "luisfabianatiencia@gmail.com",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765138552230,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1767295694685,
+      "lastLogin": 1767370833863,
+      "name": "Luis Fabián ",
+      "phone": "0960207621",
+      "referralBonus": 25,
+      "referralCode": "UW2UOR8N",
+      "referredBy": "8BY5XLY9",
+      "totalDeposits": 96100,
+      "totalEarnings": 1214.6201764564041,
+      "totalReferrals": 1,
+      "totalWithdrawals": 1000,
+      "updatedAt": 1767535068460
+    },
+    "CwMDwEOCCocjKMedJ0d69Wy2sbG3": {
+      "accountStatus": "active",
+      "accountTier": "basic",
+      "balance": 100,
+      "createdAt": 1767705353368,
+      "email": "andreas@geomira.se",
+      "lastLogin": 1767705353368,
+      "name": "Andreas",
+      "referralBonus": 0,
+      "totalDeposits": 100,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": 1767705880432,
+      "verificationStatus": "unverified"
+    },
+    "Eg3s8uNeptOnTgJhGibHwxfjanD2": {
+      "balance": 100000,
+      "country": "US",
+      "createdAt": 1763659935164,
+      "email": "admin@1.se",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765741775956,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1767348375430,
+      "name": "Nombre usuario",
+      "phone": "079079079",
+      "referralBonus": 0,
+      "referralCode": "MBB3O7HR",
+      "totalDeposits": 100000,
+      "totalEarnings": 782.7184992283951,
+      "totalReferrals": 0,
+      "updatedAt": 1767348375430
+    },
+    "GHgzXUU9AHYeLZzGIBbChiwxOks1": {
+      "balance": 18243,
+      "country": "CO",
+      "createdAt": "2025-11-18T17:24:41.810Z",
+      "email": "1@GMAI.COM",
+      "kycData": {
+        "address": "mas alla de pruve",
+        "birthdate": "1983-12-31",
+        "comments": "Verificación aprobada",
+        "documents": [
+          {
+            "name": "S3.jpg",
+            "size": 226567,
+            "type": "id_front",
+            "uploadedAt": 1765144361476,
+            "url": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/kyc%2FGHgzXUU9AHYeLZzGIBbChiwxOks1%2Fkyc_id_front_1765144360037.jpg?alt=media&token=e45dc7ce-f880-41b0-a85a-1ae1a071f716"
+          },
+          {
+            "name": "12.jpg",
+            "size": 279079,
+            "type": "id_back",
+            "uploadedAt": 1765144363348,
+            "url": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/kyc%2FGHgzXUU9AHYeLZzGIBbChiwxOks1%2Fkyc_id_back_1765144360037.jpg?alt=media&token=ac1c4005-e8a9-46aa-969c-37c8b906719b"
+          },
+          {
+            "name": "Rör_1.jpg",
+            "size": 1045072,
+            "type": "selfie",
+            "uploadedAt": 1765144363993,
+            "url": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/kyc%2FGHgzXUU9AHYeLZzGIBbChiwxOks1%2Fkyc_selfie_1765144360037.jpg?alt=media&token=2e481187-99de-47e8-9b39-6a00b84c2026"
+          },
+          {
+            "name": "Rör_1b.jpg",
+            "size": 996086,
+            "type": "proof_of_address",
+            "uploadedAt": 1765144364094,
+            "url": "https://firebasestorage.googleapis.com/v0/b/projekt-pc.appspot.com/o/kyc%2FGHgzXUU9AHYeLZzGIBbChiwxOks1%2Fkyc_proof_of_address_1765144360037.jpg?alt=media&token=33328611-b6d2-4714-91a8-fffa998165b5"
+          }
+        ],
+        "fullName": "Usuario 1",
+        "idCountry": "EC",
+        "idNumber": "211052121551",
+        "idType": "passport",
+        "status": "pending",
+        "submittedAt": 1765144359942,
+        "updatedAt": 1765144359942,
+        "verifiedAt": 1765207198530,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "name": "Usuario 1",
+      "phone": "999999999",
+      "referralCode": "MESKWDIB",
+      "status": "pending",
+      "totalContributions": 0,
+      "totalDeposits": 20243,
+      "totalWithdrawals": 2000,
+      "updatedAt": 1765207198530
+    },
+    "HcRLqey4FOZcI5bPRYCjPPaQGmC2": {
+      "accountStatus": "active",
+      "accountTier": "basic",
+      "balance": 0,
+      "createdAt": 1767719398399,
+      "email": "teaabe2005@gmail.com",
+      "lastLogin": 1767719398399,
+      "name": "Tania Elizabeth Atiencia Armijos",
+      "referralBonus": 0,
+      "totalDeposits": 5000,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": 1767719663631,
+      "verificationStatus": "unverified"
+    },
+    "IZfLP9UHK1XRJVr2xhC0YJE4jN03": {
+      "balance": 0,
+      "createdAt": "2025-11-18T18:01:09.792Z",
+      "email": "logan7@banglemail.com",
+      "kycData": {
+        "comments": "Verificación rechazada",
+        "status": "rejected",
+        "verifiedAt": 1765905793572,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "rejected",
+      "name": "Bernard",
+      "referralCode": "8GCV2NHU",
+      "referredBy": "bgzq",
+      "status": "pending",
+      "totalContributions": 0,
+      "updatedAt": 1765905793572
+    },
+    "MRQs2ZgQV0WCapoUdboMH5u2G8o2": {
+      "balance": 0,
+      "country": "EC",
+      "createdAt": 1765736536712,
+      "email": "elizabetharmijosbrayan@yahoo.com",
+      "kycData": {
+        "comments": "Documentos verificados manualmente.",
+        "status": "verified",
+        "verifiedAt": 1765738494052,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1765736536712,
+      "monthlyEarnings": 0,
+      "name": "Tania Elizabeth Atiencia Armijos ",
+      "phone": "0998084627",
+      "referralBonus": 0,
+      "referralCode": "CCMNT0YB",
+      "totalDeposits": 0,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "updatedAt": 1765738494052
+    },
+    "O9wKCF96YcaVYUlrSVlqRzRFzU52": {
+      "balance": 0,
+      "country": "US",
+      "createdAt": 1763661220716,
+      "email": "chuckutruck@gmail.com",
+      "kycStatus": "pending",
+      "name": "Bolivar Atiencia",
+      "phone": "0790790048",
+      "referralBonus": 0,
+      "referralCode": "VVBUFEVE",
+      "totalDeposits": 0,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "updatedAt": 1763661220716
+    },
+    "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72": {
+      "balance": 1990,
+      "country": "US",
+      "createdAt": 1764776955514,
+      "email": "gabrielyara2014@hotmail.com",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765911521334,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1767129890360,
+      "name": "Gabriel ",
+      "phone": "4849511601",
+      "referralBonus": 0,
+      "referralCode": "H29DI2MA",
+      "totalDeposits": 2000,
+      "totalEarnings": 167.46293315972224,
+      "totalReferrals": 0,
+      "totalWithdrawals": 10,
+      "updatedAt": 1767295679939
+    },
+    "V8AZORcquXcig8JP72ZIrrl6E6F3": {
+      "balance": 0,
+      "cardCount": 0,
+      "country": "US",
+      "createdAt": 1765380184963,
+      "email": "2@gmail.com",
+      "kycStatus": "pending",
+      "lastEarningsCalculation": 1765380184963,
+      "name": "Test",
+      "phone": "12345679",
+      "referralBonus": 0,
+      "referralCode": "C9AAGSQK",
+      "totalDeposits": 0,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "updatedAt": 1765380184963
+    },
+    "W7JSa2VgxAQloPRTnqrnAZkk2Cm1": {
+      "balance": 0,
+      "createdAt": 1767534994014,
+      "email": "vinicio@canadacoin.com",
+      "name": "vinicio",
+      "referralBonus": 0,
+      "referredBy": "8BY5XLY9",
+      "settings": {
+        "currency": "USD",
+        "emailNotifications": true,
+        "investmentUpdates": true,
+        "language": "en",
+        "lastUpdated": 1767644447525,
+        "securityAlerts": true,
+        "timezone": "UTC",
+        "transactionAlerts": true
+      },
+      "totalDeposits": 30000,
+      "totalEarnings": 0,
+      "totalReferrals": 0,
+      "totalWithdrawals": 0,
+      "updatedAt": 1767535192929
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "appData": {
+        "clients": [
+          {
+            "address": "Av. Principal 123",
+            "createdAt": 1765907490899,
+            "email": "juan@ejemplo.com",
+            "id": 1,
+            "name": "Juan Pérez",
+            "phone": "+1 (234) 567-8901"
+          },
+          {
+            "address": "Calle Secundaria 456",
+            "createdAt": 1765907490899,
+            "email": "maria@ejemplo.com",
+            "id": 2,
+            "name": "María García",
+            "phone": "+1 (234) 567-8902"
+          },
+          {
+            "address": "3sfaskvma",
+            "createdAt": 1765907683925,
+            "email": "1@gmailcom",
+            "id": 4,
+            "name": "Fabin",
+            "phone": "13215451"
+          }
+        ],
+        "credits": [
+          {
+            "balance": 5450,
+            "clientId": 1,
+            "clientName": "Juan Pérez",
+            "createdAt": 1765907490899,
+            "date": "2025-12-16T17:51:30.899Z",
+            "id": 1,
+            "interestRateAnnual": 12,
+            "interestRateMonthly": 1,
+            "principal": 5000,
+            "status": "active",
+            "term": 12,
+            "totalInterest": 600,
+            "totalPaid": 100
+          },
+          {
+            "balance": 11916.7,
+            "clientId": 2,
+            "clientName": "María García",
+            "createdAt": 1763315490899,
+            "date": "2025-11-16T17:51:30.899Z",
+            "id": 2,
+            "interestRateAnnual": 10,
+            "interestRateMonthly": 0.833,
+            "principal": 10000,
+            "status": "active",
+            "term": 24,
+            "totalInterest": 2000,
+            "totalPaid": 0
+          },
+          {
+            "balance": 3000,
+            "clientId": 3,
+            "clientName": "Fabin",
+            "createdAt": 1760723490900,
+            "date": "2025-10-17",
+            "id": 3,
+            "interestRateAnnual": 4,
+            "interestRateMonthly": 0.25,
+            "principal": 15000,
+            "status": "active",
+            "term": 24,
+            "totalInterest": 1200,
+            "totalPaid": 0
+          }
+        ],
+        "journalEntries": [
+          {
+            "amount": 5000,
+            "createdAt": 1765907490900,
+            "creditAccount": "101",
+            "date": "2025-12-16T17:51:30.899Z",
+            "debitAccount": "102",
+            "description": "Otorgamiento de crédito a Juan Pérez",
+            "id": 1,
+            "reference": "CREDIT-1"
+          },
+          {
+            "amount": 950,
+            "createdAt": 1765907490900,
+            "creditAccount": "102",
+            "date": "2025-12-01T17:51:30.900Z",
+            "debitAccount": "101",
+            "description": "Pago recibido de Juan Pérez",
+            "id": 2,
+            "reference": "PAYMENT-1"
+          },
+          {
+            "amount": 50,
+            "createdAt": 1765907490900,
+            "creditAccount": "401",
+            "date": "2025-12-01T17:51:30.900Z",
+            "debitAccount": "101",
+            "description": "Intereses recibidos de Juan Pérez",
+            "id": 3,
+            "reference": "PAYMENT-1"
+          },
+          {
+            "amount": 15000,
+            "createdAt": 1765907756081,
+            "creditAccount": "102",
+            "date": "2025-12-16",
+            "debitAccount": "101",
+            "description": "crdito",
+            "id": 4,
+            "reference": ""
+          }
+        ],
+        "lastSaved": 1765907756081,
+        "nextClientId": 5,
+        "nextCreditId": 4,
+        "nextJournalId": 5,
+        "nextPaymentId": 4
+      },
+      "balance": 299838.96904977463,
+      "cardCount": 1,
+      "country": "Canada",
+      "createdAt": 1763663106450,
+      "currentEarnings": 409.7330113371257,
+      "documentNumber": "2-2690580885",
+      "documentStatus": "under_review",
+      "documentType": "tax_id",
+      "documents": {
+        "address_proof": true,
+        "identification": true,
+        "income_proof": true,
+        "status": "under_review",
+        "submittedAt": 1765905718789
+      },
+      "email": "vinicio@geomira.se",
+      "ibanNumber": "MCRBRUMM-2H6",
+      "internationalBankName": "Банк Москвы",
+      "kycData": {
+        "comments": "Verificación aprobada",
+        "status": "verified",
+        "verifiedAt": 1765139036294,
+        "verifiedBy": "vinicio@geomira.se"
+      },
+      "kycStatus": "verified",
+      "lastEarningsCalculation": 1770746312064,
+      "lastEarningsUpdate": 1765190442159,
+      "lastLogin": 1767534871174,
+      "localBankInfo": {
+        "accountHolder": "YO MISMO",
+        "accountNumber": "1717171717",
+        "accountType": "savings",
+        "bankName": "Banco Pichincha",
+        "cedula": "2100293195",
+        "lastUpdated": 1767132354143
+      },
+      "name": "Bolivar Atiencia",
+      "phone": "",
+      "profile": {
+        "email": "vinicio@geomira.se",
+        "name": "Bolivar Atiencia",
+        "phone": "0790790048",
+        "updatedAt": "2025-12-16T17:31:55.271Z"
+      },
+      "referralBonus": 25,
+      "referralCode": "8BY5XLY9",
+      "referredBy": "UW2UOR8N",
+      "securitySettings": {
+        "twoFactorEnabled": true,
+        "twoFactorEnabledAt": 1767648702857,
+        "twoFactorMethod": "authy",
+        "twoFactorSecret": "TJEIGP5KQMPSKLMY"
+      },
+      "settings": {
+        "currency": "USD",
+        "emailNotifications": true,
+        "investmentUpdates": true,
+        "language": "en",
+        "lastUpdated": 1768236464559,
+        "securityAlerts": true,
+        "timezone": "UTC",
+        "transactionAlerts": true
+      },
+      "swiftCode": "KMBBRUMM",
+      "totalCredits": 0,
+      "totalDeposits": 407609,
+      "totalEarnings": 100301.60080935496,
+      "totalInterest": 0,
+      "totalPaid": 0,
+      "totalReferrals": 1,
+      "totalWithdrawals": 10625,
+      "updatedAt": 1770746384232
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "balance": 0,
+      "cardCount": 1,
+      "createdAt": 1767350791333,
+      "email": "2@gmail.com",
+      "name": "2",
+      "totalDeposits": 1600,
+      "totalEarnings": 0,
+      "totalWithdrawals": 500,
+      "updatedAt": 1767356789285
+    }
+  },
+  "withdrawals": {
+    "BVMyZqhyOPaeBkf9N56kwLky1ZZ2": {
+      "id_s5nnfhbge_mjbic2ky": {
+        "amount": 200,
+        "createdAt": 1766066398738,
+        "details": {
+          "accountHolder": "Marco Armijos ",
+          "accountNumber": "4374375100",
+          "accountType": "savings",
+          "bankName": "Pichincha "
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 195,
+        "status": "approved",
+        "updatedAt": 1766066398738,
+        "userEmail": "marquinhoarmijos81@icloud.com",
+        "userId": "BVMyZqhyOPaeBkf9N56kwLky1ZZ2",
+        "userName": "Marco Antonio Armijos Armijos"
+      }
+    },
+    "BfLcB8AN8seiAcTTZTGj77oU5Ov1": {
+      "id_t7mem3uow_mjvu9cut": {
+        "amount": 1000,
+        "createdAt": 1767295750997,
+        "details": {
+          "accountHolder": "Luis Fabian Atiencia Armijos",
+          "accountNumber": "1732412212",
+          "accountType": "savings",
+          "bankName": "Pichincha"
+        },
+        "fee": 20,
+        "method": "bank",
+        "netAmount": 980,
+        "status": "approved",
+        "updatedAt": 1767295750997,
+        "userEmail": "luisfabianatiencia@gmail.com",
+        "userId": "BfLcB8AN8seiAcTTZTGj77oU5Ov1",
+        "userName": "Luis Fabián "
+      }
+    },
+    "GHgzXUU9AHYeLZzGIBbChiwxOks1": {
+      "id_jq0btvg3n_mi7tmz0y": {
+        "amount": 1000,
+        "createdAt": 1763666736082,
+        "method": "bank",
+        "status": "approved"
+      },
+      "id_lieb9l5sp_mi8gstpp": {
+        "amount": 1000,
+        "createdAt": 1763705640301,
+        "method": "bank",
+        "status": "approved"
+      }
+    },
+    "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72": {
+      "id_3rmflope3_mjt3kexl": {
+        "amount": 100,
+        "createdAt": 1767129984921,
+        "details": {
+          "accountHolder": "Gabriel Atiencia ",
+          "accountNumber": "3431080104",
+          "accountType": "checking",
+          "bankName": "Pichincha"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "rejected",
+        "updatedAt": 1767129984921,
+        "userEmail": "gabrielyara2014@hotmail.com",
+        "userId": "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72",
+        "userName": "Gabriel "
+      },
+      "id_7vd5cy9ij_mjt3pg1y": {
+        "amount": 10,
+        "createdAt": 1767130219654,
+        "details": {
+          "accountHolder": "Gabriel Atiencia ",
+          "accountNumber": "3431080104",
+          "accountType": "checking",
+          "bankName": "Pichincha "
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 5,
+        "status": "approved",
+        "updatedAt": 1767130219654,
+        "userEmail": "gabrielyara2014@hotmail.com",
+        "userId": "R0Mj4R7y0JQ8WzGS8bofzzl9Aq72",
+        "userName": "Gabriel "
+      }
+    },
+    "cc0HEwLBZvhyx7OCPAthr3Opkaj2": {
+      "id_26hz9wwtn_mjt4z6vn": {
+        "amount": 10,
+        "createdAt": 1767132353940,
+        "details": {
+          "accountHolder": "YO MISMO",
+          "accountNumber": "1717171717",
+          "accountType": "savings",
+          "bankName": "Banco Pichincha",
+          "cedula": "2100293195"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 5,
+        "status": "rejected",
+        "updatedAt": 1767132353940,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia A."
+      },
+      "id_422cfrseq_mj2v139j": {
+        "amount": 2000,
+        "createdAt": 1765543525831,
+        "details": {
+          "accountHolder": "vinicio atinec",
+          "accountNumber": "3216513215",
+          "accountType": "checking",
+          "bankName": "Banco pichincha"
+        },
+        "fee": 40,
+        "method": "bank",
+        "netAmount": 1960,
+        "status": "approved",
+        "updatedAt": 1765543525831,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia"
+      },
+      "id_cvgryg02m_mju1azcy": {
+        "amount": 1023,
+        "createdAt": 1767186651778,
+        "details": {
+          "accountHolder": "asdfasdf",
+          "accountNumber": "asfas",
+          "accountType": "business",
+          "bankName": "asfas"
+        },
+        "fee": 20.46,
+        "method": "bank",
+        "netAmount": 1002.54,
+        "status": "approved",
+        "updatedAt": 1767186651778,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia A."
+      },
+      "id_k9w5orq96_mj8y92ci": {
+        "amount": 100,
+        "createdAt": 1765911733794,
+        "details": {
+          "accountHolder": "asdfasd",
+          "accountNumber": "215",
+          "accountType": "checking",
+          "bankName": "pichincha"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "approved",
+        "updatedAt": 1765911733794,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia A."
+      },
+      "id_mag8j19tq_mj8xw3y5": {
+        "amount": 1000,
+        "createdAt": 1765911129341,
+        "details": {
+          "accountHolder": "sadfsag",
+          "accountNumber": "123156",
+          "accountType": "checking",
+          "bankName": "sfa"
+        },
+        "fee": 20,
+        "method": "bank",
+        "netAmount": 980,
+        "status": "approved",
+        "updatedAt": 1765911129341,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia A."
+      },
+      "with_1767705630774": {
+        "amount": 500,
+        "createdAt": 1767705630774,
+        "details": {
+          "accountHolder": "andrea mdsi",
+          "accountNumber": "12316515",
+          "accountType": "savings",
+          "bankName": "pichincha"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 495,
+        "status": "approved",
+        "updatedAt": 1767705630774,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia"
+      },
+      "with_1769430493594": {
+        "amount": 1200,
+        "createdAt": 1769430493594,
+        "details": {
+          "accountHolder": "Bolivar Atiencia ",
+          "accountNumber": "6637740982",
+          "bankCountry": "US",
+          "bankName": "American Bank",
+          "routingNumber": "01012636",
+          "swiftCode": "BOFAUSA"
+        },
+        "fee": 20,
+        "method": "international",
+        "netAmount": 1180,
+        "status": "approved",
+        "updatedAt": 1769430493594,
+        "userEmail": "vinicio@geomira.se",
+        "userId": "cc0HEwLBZvhyx7OCPAthr3Opkaj2",
+        "userName": "Bolivar Atiencia"
+      }
+    },
+    "ugIbQO7dlXOGZg7UOlM9IcIvJaG2": {
+      "with_1767354945149": {
+        "amount": 100,
+        "createdAt": 1767354945149,
+        "details": {
+          "accountHolder": "2 TERS ASMASKD",
+          "accountNumber": "213215",
+          "bankCountry": "CA",
+          "bankName": "banco canada",
+          "routingNumber": "132151",
+          "swiftCode": "6513215"
+        },
+        "fee": 20,
+        "method": "international",
+        "netAmount": 80,
+        "status": "approved",
+        "updatedAt": 1767354945149,
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2"
+      },
+      "with_1767356709848": {
+        "amount": 100,
+        "createdAt": 1767356709848,
+        "details": {
+          "accountHolder": "asdfasd",
+          "accountNumber": "215",
+          "accountType": "checking",
+          "bankName": "pichincha"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 95,
+        "status": "approved",
+        "updatedAt": 1767356709848,
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2"
+      },
+      "with_1767356789243": {
+        "amount": 200,
+        "createdAt": 1767356789243,
+        "details": {
+          "accountHolder": "asdfasd",
+          "accountNumber": "215",
+          "accountType": "checking",
+          "bankName": "pichincha"
+        },
+        "fee": 5,
+        "method": "bank",
+        "netAmount": 195,
+        "status": "rejected",
+        "updatedAt": 1767356789243,
+        "userEmail": "2@gmail.com",
+        "userId": "ugIbQO7dlXOGZg7UOlM9IcIvJaG2",
+        "userName": "2"
+      }
+    }
+  }
+}
