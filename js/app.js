@@ -1,7 +1,7 @@
 /**
  * app.js - Módulo principal
  * Inicializa Firebase, maneja autenticación, navegación, temas y carga de vistas.
- * Versión 2.0 - Añadido soporte para Ventas y Clientes
+ * Versión 2.1 - Corregida carga de módulos Ventas y Clientes
  */
 
 const firebaseConfig = {
@@ -25,6 +25,7 @@ let configuraciones = {};
 let theme = localStorage.getItem('theme') || 'light';
 let charts = {};
 let loginModalMostrado = false;
+let modulosCargados = false;
 
 const sidebar = document.getElementById('sidebar');
 const menuToggle = document.getElementById('menuToggle');
@@ -79,6 +80,9 @@ auth.onAuthStateChanged(async user => {
                 nombre: data.nombre || user.email
             };
             
+            // Actualizar window.currentUser para otros módulos
+            window.currentUser = currentUser;
+            
             userInfo.textContent = currentUser.nombre;
             if (userAvatar) {
                 userAvatar.innerHTML = currentUser.nombre.charAt(0).toUpperCase();
@@ -92,13 +96,56 @@ auth.onAuthStateChanged(async user => {
             
             await cargarConfiguraciones();
             
-            // Cargar módulos en segundo plano
-            if (typeof cargarClientes === 'function') {
-                cargarClientes();
+            // ============================================================
+            // CARGA DE MÓDULOS - Corregida
+            // ============================================================
+            
+            // Verificar que los módulos estén disponibles
+            console.log('[app.js] Verificando módulos...');
+            console.log('[app.js] cargarClientes disponible:', typeof window.cargarClientes);
+            console.log('[app.js] cargarVentas disponible:', typeof window.cargarVentas);
+            
+            // Cargar clientes primero (dependencia de ventas)
+            if (typeof window.cargarClientes === 'function') {
+                console.log('[app.js] Cargando módulo Clientes...');
+                window.cargarClientes(() => {
+                    console.log('[app.js] Clientes cargados correctamente');
+                    // Después de cargar clientes, cargar ventas
+                    if (typeof window.cargarVentas === 'function') {
+                        console.log('[app.js] Cargando módulo Ventas...');
+                        window.cargarVentas();
+                    } else {
+                        console.warn('[app.js] cargarVentas no está disponible');
+                    }
+                });
+            } else {
+                console.warn('[app.js] cargarClientes no está disponible');
+                // Intentar cargar ventas directamente
+                if (typeof window.cargarVentas === 'function') {
+                    window.cargarVentas();
+                }
             }
-            if (typeof cargarVentas === 'function') {
-                cargarVentas();
-            }
+            
+            // Cargar otros módulos en segundo plano
+            setTimeout(() => {
+                if (typeof window.cargarAnimales === 'function') {
+                    window.cargarAnimales();
+                }
+                if (typeof window.cargarEventos === 'function') {
+                    window.cargarEventos();
+                }
+                if (typeof window.cargarReportes === 'function') {
+                    window.cargarReportes();
+                }
+                if (typeof window.cargarGenealogia === 'function') {
+                    window.cargarGenealogia();
+                }
+                if (typeof window.cargarConfiguracion === 'function') {
+                    window.cargarConfiguracion();
+                }
+            }, 1000);
+            
+            modulosCargados = true;
             
             mostrarVista('dashboard');
             
@@ -108,11 +155,16 @@ auth.onAuthStateChanged(async user => {
         }
     } else {
         currentUser = null;
+        window.currentUser = null;
         loginModalMostrado = false;
         console.log('[app.js] Usuario no autenticado, mostrando login');
         mostrarLoginModal();
     }
 });
+
+// ================================================================
+// FUNCIONES DE AUTH Y NAVEGACIÓN
+// ================================================================
 
 function mostrarLoginModal() {
     console.log('[app.js] mostrarLoginModal() llamado');
@@ -350,6 +402,10 @@ logoutBtn.addEventListener('click', () => {
     mostrarToast('Sesión cerrada', 'info');
 });
 
+// ================================================================
+// CONFIGURACIONES
+// ================================================================
+
 async function cargarConfiguraciones() {
     try {
         console.log('[app.js] Cargando configuraciones...');
@@ -425,7 +481,13 @@ async function crearConfiguracionesPorDefecto() {
     }
 }
 
+// ================================================================
+// NAVEGACIÓN - CORREGIDA
+// ================================================================
+
 function mostrarVista(viewName) {
+    console.log('[app.js] mostrarVista() llamado para:', viewName);
+    
     if (!currentUser) {
         console.log('[app.js] Usuario no autenticado, redirigiendo a login');
         mostrarLoginModal();
@@ -436,10 +498,6 @@ function mostrarVista(viewName) {
     
     // Verificar permisos para vistas administrativas
     if ((viewName === 'configuracion' || viewName === 'usuarios' || viewName === 'ventas' || viewName === 'clientes') && !isAdmin) {
-        if (viewName === 'configuracion') {
-            mostrarToast('Acceso restringido a administradores', 'warning');
-            return;
-        }
         mostrarToast('Acceso restringido a administradores', 'warning');
         return;
     }
@@ -469,45 +527,108 @@ function mostrarVista(viewName) {
             item.classList.toggle('active', item.dataset.view === viewName);
         });
         
+        // ============================================================
+        // CARGA DE VISTAS - CORREGIDA
+        // ============================================================
         switch (viewName) {
-            case 'dashboard': cargarDashboard(); break;
+            case 'dashboard': 
+                cargarDashboard(); 
+                break;
+                
             case 'animales': 
-                if (typeof window.cargarAnimales === 'function') window.cargarAnimales();
-                else mostrarToast('Módulo Animales no disponible', 'error');
+                if (typeof window.cargarAnimales === 'function') {
+                    window.cargarAnimales();
+                } else {
+                    mostrarToast('Módulo Animales no disponible', 'error');
+                    console.error('[app.js] window.cargarAnimales no es una función');
+                }
                 break;
+                
             case 'eventos':
-                if (typeof window.cargarEventos === 'function') window.cargarEventos();
-                else mostrarToast('Módulo Eventos no disponible', 'error');
+                if (typeof window.cargarEventos === 'function') {
+                    window.cargarEventos();
+                } else {
+                    mostrarToast('Módulo Eventos no disponible', 'error');
+                    console.error('[app.js] window.cargarEventos no es una función');
+                }
                 break;
+                
             case 'ventas':
-                if (typeof window.cargarVentas === 'function') window.cargarVentas();
-                else mostrarToast('Módulo Ventas no disponible', 'error');
+                console.log('[app.js] Cargando vista Ventas...');
+                if (typeof window.cargarVentas === 'function') {
+                    window.cargarVentas();
+                } else {
+                    console.error('[app.js] window.cargarVentas NO es una función');
+                    mostrarToast('Módulo Ventas no disponible', 'error');
+                    // Intentar cargar el módulo nuevamente
+                    setTimeout(() => {
+                        if (typeof window.cargarVentas === 'function') {
+                            window.cargarVentas();
+                        }
+                    }, 500);
+                }
                 break;
+                
             case 'clientes':
-                if (typeof window.cargarClientes === 'function') window.cargarClientes();
-                else mostrarToast('Módulo Clientes no disponible', 'error');
+                console.log('[app.js] Cargando vista Clientes...');
+                if (typeof window.cargarClientes === 'function') {
+                    window.cargarClientes();
+                } else {
+                    console.error('[app.js] window.cargarClientes NO es una función');
+                    mostrarToast('Módulo Clientes no disponible', 'error');
+                    setTimeout(() => {
+                        if (typeof window.cargarClientes === 'function') {
+                            window.cargarClientes();
+                        }
+                    }, 500);
+                }
                 break;
+                
             case 'reportes':
-                if (typeof window.cargarReportes === 'function') window.cargarReportes();
-                else mostrarToast('Módulo Reportes no disponible', 'error');
+                if (typeof window.cargarReportes === 'function') {
+                    window.cargarReportes();
+                } else {
+                    mostrarToast('Módulo Reportes no disponible', 'error');
+                }
                 break;
+                
             case 'genealogia':
-                if (typeof window.cargarGenealogia === 'function') window.cargarGenealogia();
-                else mostrarToast('Módulo Genealogía no disponible', 'error');
+                if (typeof window.cargarGenealogia === 'function') {
+                    window.cargarGenealogia();
+                } else {
+                    mostrarToast('Módulo Genealogía no disponible', 'error');
+                }
                 break;
+                
             case 'usuarios': 
-                if (typeof window.cargarUsuarios === 'function') window.cargarUsuarios();
-                else mostrarToast('Módulo Usuarios no disponible', 'error');
+                if (typeof window.cargarUsuarios === 'function') {
+                    window.cargarUsuarios();
+                } else {
+                    mostrarToast('Módulo Usuarios no disponible', 'error');
+                }
                 break;
+                
             case 'configuracion': 
-                if (typeof window.cargarConfiguracion === 'function') window.cargarConfiguracion();
-                else mostrarToast('Módulo Configuración no disponible', 'error');
+                if (typeof window.cargarConfiguracion === 'function') {
+                    window.cargarConfiguracion();
+                } else {
+                    mostrarToast('Módulo Configuración no disponible', 'error');
+                }
                 break;
+                
+            default:
+                console.warn('[app.js] Vista no reconocida:', viewName);
         }
         
         if (window.innerWidth <= 768) sidebar.classList.remove('open');
+    } else {
+        console.error('[app.js] Vista no encontrada:', viewName);
     }
 }
+
+// ================================================================
+// EVENTOS DEL MENÚ
+// ================================================================
 
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -533,6 +654,10 @@ menuToggle.addEventListener('click', () => {
     }
 });
 
+// ================================================================
+// TEMA
+// ================================================================
+
 function setTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     theme = themeName;
@@ -541,6 +666,10 @@ function setTheme(themeName) {
 }
 themeToggle.addEventListener('click', () => setTheme(theme === 'light' ? 'dark' : 'light'));
 setTheme(theme);
+
+// ================================================================
+// DASHBOARD
+// ================================================================
 
 async function cargarDashboard() {
     const container = document.getElementById('dashboardContent');
@@ -562,7 +691,6 @@ async function cargarDashboard() {
         const eventos = eventosSnap.val() || {};
         const listaEventos = Object.values(eventos).reverse();
 
-        // Obtener ventas y clientes para el dashboard
         const ventasSnap = await db.ref('ventas').once('value');
         const ventas = ventasSnap.val() || {};
         const listaVentas = Object.values(ventas);
@@ -790,6 +918,10 @@ async function cargarDashboard() {
     }
 }
 
+// ================================================================
+// USUARIOS
+// ================================================================
+
 async function cargarUsuarios() {
     const container = document.getElementById('usuariosContent');
     if (!container) return;
@@ -870,6 +1002,10 @@ async function cargarUsuarios() {
     }
 }
 
+// ================================================================
+// FUNCIONES GLOBALES PARA USUARIOS
+// ================================================================
+
 window.cambiarRolUsuario = async function(uid) {
     if (currentUser?.rol !== 'admin' && currentUser?.email !== 'vinicio@geomira.se') {
         mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
@@ -902,6 +1038,10 @@ window.eliminarUsuario = async function(uid) {
         mostrarToast('❌ Error: ' + error.message, 'error');
     }
 };
+
+// ================================================================
+// EXPOSICIÓN GLOBAL
+// ================================================================
 
 window.db = db;
 window.auth = auth;

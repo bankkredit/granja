@@ -1,7 +1,7 @@
 /**
  * ventas.js - Módulo completo de Ventas
  * Sistema avanzado de gestión de ventas con registro automático de eventos
- * Versión 1.1 - Corregido para exposición global
+ * Versión 1.2 - CORREGIDO: Sintaxis y funcionamiento completo
  */
 
 // ===== VARIABLES LOCALES =====
@@ -83,13 +83,11 @@ function esAdminVentas() {
 
 function obtenerClientePorIdVentas(id) {
     if (!id) return null;
-    // Usar clientesCache global de clientes.js si existe
     if (typeof clientesCache !== 'undefined' && clientesCache) {
         if (clientesCache[id]) return clientesCache[id];
         const cliente = Object.values(clientesCache).find(c => c.id === id || c.cedula === id);
         return cliente || null;
     }
-    // Buscar en cache local
     if (clientesCacheLocal[id]) return clientesCacheLocal[id];
     const cliente = Object.values(clientesCacheLocal).find(c => c.id === id || c.cedula === id);
     return cliente || null;
@@ -166,7 +164,6 @@ function cargarVentas() {
         </div>
     `;
 
-    // Cargar clientes primero
     if (typeof cargarClientes === 'function') {
         cargarClientes(() => {
             cargarDatosVentas();
@@ -182,7 +179,6 @@ function cargarVentas() {
 
 async function cargarDatosVentas() {
     try {
-        // Cargar clientes desde Firebase si no están disponibles
         if (typeof clientesCache === 'undefined' || !clientesCache || Object.keys(clientesCache).length === 0) {
             try {
                 const clientesSnap = await db.ref('clientes').once('value');
@@ -195,7 +191,6 @@ async function cargarDatosVentas() {
             clientesCacheLocal = clientesCache;
         }
 
-        // Configurar listener para ventas
         if (ventasListener) {
             try {
                 ventasListener.off();
@@ -246,7 +241,6 @@ function renderizarVentas() {
 
     const isAdmin = esAdminVentas();
 
-    // Obtener lista de clientes para el filtro
     const clientesLista = typeof clientesCache !== 'undefined' && clientesCache ? 
         Object.values(clientesCache) : 
         Object.values(clientesCacheLocal);
@@ -262,9 +256,6 @@ function renderizarVentas() {
                     </button>
                     <button class="btn btn-secondary btn-sm" onclick="exportarVentasExcel()">
                         <i class="fas fa-file-excel"></i> Excel
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="exportarVentasPDF()">
-                        <i class="fas fa-file-pdf"></i> PDF
                     </button>
                 </div>
             </div>
@@ -411,16 +402,10 @@ function renderizarVentas() {
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     ${isAdmin ? `
-                                        <button class="btn btn-sm btn-success" onclick="cambiarEstadoVenta('${v.id}')" title="Cambiar estado">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
                                         <button class="btn btn-sm btn-danger" onclick="eliminarVenta('${v.id}')" title="Eliminar">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     ` : ''}
-                                    <button class="btn btn-sm btn-purple" onclick="generarFactura('${v.id}')" title="Factura">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </button>
                                 </td>
                             </tr>
                         `).join('')}
@@ -586,13 +571,11 @@ async function abrirFormularioVenta(ventaId = null) {
         modoEdicionVenta = false;
     }
 
-    // Obtener lista de animales activos
     let animalesActivos = [];
     if (typeof animalesCache !== 'undefined' && animalesCache) {
         animalesActivos = Object.values(animalesCache).filter(a => a.status === 'activo');
     }
 
-    // Obtener lista de clientes
     let clientesLista = [];
     if (typeof clientesCache !== 'undefined' && clientesCache) {
         clientesLista = Object.values(clientesCache);
@@ -610,7 +593,6 @@ async function abrirFormularioVenta(ventaId = null) {
     const fechaValue = venta ? formatearFechaInput(venta.fecha) : new Date().toISOString().split('T')[0];
     const titulo = modoEdicionVenta ? '✏️ Editar Venta' : '💰 Nueva Venta';
 
-    // Crear select de animales
     let animalOptions = '<option value="">Seleccionar animal</option>';
     if (animalesActivos.length === 0) {
         animalOptions = '<option value="">No hay animales activos</option>';
@@ -621,7 +603,6 @@ async function abrirFormularioVenta(ventaId = null) {
         });
     }
 
-    // Crear select de clientes
     let clienteOptions = '<option value="">Seleccionar cliente</option>';
     if (clientesLista.length === 0) {
         clienteOptions = '<option value="">No hay clientes registrados</option>';
@@ -632,13 +613,11 @@ async function abrirFormularioVenta(ventaId = null) {
         });
     }
 
-    // Estado options
     const estadoOptions = Object.entries(ESTADOS_VENTA).map(([key, value]) => {
         const selected = venta && venta.estado === value ? 'selected' : '';
         return `<option value="${value}" ${selected}>${capitalize(value)}</option>`;
     }).join('');
 
-    // Método pago options
     const metodoOptions = Object.entries(METODOS_PAGO).map(([key, value]) => {
         const selected = venta && venta.metodoPago === value ? 'selected' : '';
         return `<option value="${value}" ${selected}>${capitalize(value)}</option>`;
@@ -654,7 +633,6 @@ async function abrirFormularioVenta(ventaId = null) {
                 <div class="form-group">
                     <label>Nº de Venta</label>
                     <input type="text" id="vNumero" value="${getVal('numero', '')}" class="form-control" placeholder="Auto-generado" readonly>
-                    <small style="color:var(--text-light);">Se genera automáticamente</small>
                 </div>
                 <div class="form-group">
                     <label>Cliente <span style="color:var(--color-danger);">*</span></label>
@@ -666,14 +644,12 @@ async function abrirFormularioVenta(ventaId = null) {
                             <i class="fas fa-user-plus"></i>
                         </button>
                     </div>
-                    <small style="color:var(--text-light);">Selecciona un cliente o crea uno nuevo</small>
                 </div>
                 <div class="form-group">
                     <label>Animal <span style="color:var(--color-danger);">*</span></label>
                     <select id="vAnimal" class="form-control" required>
                         ${animalOptions}
                     </select>
-                    <small style="color:var(--text-light);">El animal será marcado como vendido</small>
                 </div>
                 <div class="form-group">
                     <label>Cantidad</label>
@@ -686,7 +662,6 @@ async function abrirFormularioVenta(ventaId = null) {
                 <div class="form-group">
                     <label>Total <span style="color:var(--color-danger);">*</span></label>
                     <input type="number" id="vTotal" value="${getVal('total', '')}" class="form-control" step="0.01" min="0" required placeholder="0.00">
-                    <small style="color:var(--text-light);">Total = Precio Unitario × Cantidad</small>
                 </div>
                 <div class="form-group">
                     <label>Monto Pagado</label>
@@ -715,4 +690,407 @@ async function abrirFormularioVenta(ventaId = null) {
     `;
 
     await mostrarModal(titulo, html, {
-        confirmText: modoEdicionVenta ? '💾 Actualizar
+        confirmText: modoEdicionVenta ? '💾 Actualizar Venta' : '💾 Guardar Venta',
+        cancelText: '❌ Cancelar',
+        showConfirm: true,
+        showCancel: true,
+        onConfirm: async function () {
+            if (modoEdicionVenta) {
+                await actualizarVentaDesdeFormulario();
+            } else {
+                await guardarVentaDesdeFormulario();
+            }
+        }
+    });
+}
+
+async function guardarVentaDesdeFormulario() {
+    console.log('[ventas.js] guardarVentaDesdeFormulario() iniciado');
+
+    if (!currentUser) {
+        mostrarToast('⛔ Debes iniciar sesión.', 'error');
+        return false;
+    }
+
+    try {
+        const fecha = document.getElementById('vFecha')?.value;
+        const clienteId = document.getElementById('vCliente')?.value;
+        const animalId = document.getElementById('vAnimal')?.value;
+        const cantidad = parseFloat(document.getElementById('vCantidad')?.value) || 1;
+        const precioUnitario = parseFloat(document.getElementById('vPrecioUnitario')?.value) || 0;
+        const total = parseFloat(document.getElementById('vTotal')?.value) || 0;
+        const pagado = parseFloat(document.getElementById('vPagado')?.value) || 0;
+        const estado = document.getElementById('vEstado')?.value;
+        const metodoPago = document.getElementById('vMetodoPago')?.value;
+        const observaciones = document.getElementById('vObservaciones')?.value.trim() || '';
+
+        const errors = [];
+        if (!fecha) errors.push('La fecha es obligatoria');
+        if (!clienteId) errors.push('Selecciona un cliente');
+        if (!animalId) errors.push('Selecciona un animal');
+        if (precioUnitario <= 0) errors.push('El precio unitario debe ser mayor a 0');
+        if (total <= 0) errors.push('El total debe ser mayor a 0');
+        if (!estado) errors.push('Selecciona un estado');
+        if (!metodoPago) errors.push('Selecciona un método de pago');
+        if (pagado > total) errors.push('El monto pagado no puede ser mayor al total');
+
+        if (errors.length > 0) {
+            const msgDiv = document.getElementById('formMessageVenta');
+            if (msgDiv) {
+                msgDiv.style.display = 'block';
+                msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:12px;border-radius:8px;">
+                    <i class="fas fa-exclamation-circle"></i> ${errors.join('. ')}
+                </div>`;
+            }
+            mostrarToast('❌ ' + errors.join('. '), 'error');
+            return false;
+        }
+
+        const numero = await generarId('VEN');
+        const cliente = obtenerClientePorIdVentas(clienteId);
+        const clienteNombre = cliente ? cliente.nombre : 'N/A';
+
+        const ventaRef = db.ref('ventas').push();
+        await ventaRef.set({
+            id: ventaRef.key,
+            numero: numero,
+            fecha: fecha,
+            clienteId: clienteId,
+            clienteNombre: clienteNombre,
+            animalId: animalId,
+            cantidad: cantidad,
+            precioUnitario: precioUnitario,
+            total: total,
+            pagado: pagado,
+            estado: estado,
+            metodoPago: metodoPago,
+            observaciones: observaciones,
+            createdAt: Date.now(),
+            createdBy: currentUser?.uid || '',
+            createdByEmail: currentUser?.email || '',
+            updatedAt: Date.now(),
+            updatedBy: currentUser?.uid || '',
+            updatedByEmail: currentUser?.email || ''
+        });
+
+        // Marcar animal como vendido
+        try {
+            await db.ref(`animales/${animalId}`).update({
+                status: 'vendido',
+                updatedAt: Date.now(),
+                updatedBy: currentUser?.uid || '',
+                updatedByEmail: currentUser?.email || ''
+            });
+        } catch (e) {
+            console.warn('[ventas.js] No se pudo actualizar estado del animal:', e);
+        }
+
+        mostrarToast(`✅ Venta #${numero} registrada exitosamente`, 'success');
+        renderizarVentas();
+        return true;
+
+    } catch (error) {
+        console.error('[ventas.js] Error al guardar:', error);
+        mostrarToast('❌ Error al guardar la venta: ' + error.message, 'error');
+        return false;
+    }
+}
+
+async function actualizarVentaDesdeFormulario() {
+    console.log('[ventas.js] actualizarVentaDesdeFormulario() iniciado');
+
+    const ventaId = document.getElementById('ventaIdEdit')?.value;
+    if (!ventaId) {
+        mostrarToast('❌ ID de venta no encontrado', 'error');
+        return false;
+    }
+
+    if (!esAdminVentas()) {
+        mostrarToast('⛔ No autorizado.', 'error');
+        return false;
+    }
+
+    try {
+        const fecha = document.getElementById('vFecha')?.value;
+        const clienteId = document.getElementById('vCliente')?.value;
+        const animalId = document.getElementById('vAnimal')?.value;
+        const cantidad = parseFloat(document.getElementById('vCantidad')?.value) || 1;
+        const precioUnitario = parseFloat(document.getElementById('vPrecioUnitario')?.value) || 0;
+        const total = parseFloat(document.getElementById('vTotal')?.value) || 0;
+        const pagado = parseFloat(document.getElementById('vPagado')?.value) || 0;
+        const estado = document.getElementById('vEstado')?.value;
+        const metodoPago = document.getElementById('vMetodoPago')?.value;
+        const observaciones = document.getElementById('vObservaciones')?.value.trim() || '';
+
+        const errors = [];
+        if (!fecha) errors.push('La fecha es obligatoria');
+        if (!clienteId) errors.push('Selecciona un cliente');
+        if (!animalId) errors.push('Selecciona un animal');
+        if (precioUnitario <= 0) errors.push('El precio unitario debe ser mayor a 0');
+        if (total <= 0) errors.push('El total debe ser mayor a 0');
+        if (pagado > total) errors.push('El monto pagado no puede ser mayor al total');
+
+        if (errors.length > 0) {
+            const msgDiv = document.getElementById('formMessageVenta');
+            if (msgDiv) {
+                msgDiv.style.display = 'block';
+                msgDiv.innerHTML = `<div style="background:var(--color-danger);color:white;padding:12px;border-radius:8px;">
+                    <i class="fas fa-exclamation-circle"></i> ${errors.join('. ')}
+                </div>`;
+            }
+            mostrarToast('❌ ' + errors.join('. '), 'error');
+            return false;
+        }
+
+        const cliente = obtenerClientePorIdVentas(clienteId);
+        const clienteNombre = cliente ? cliente.nombre : 'N/A';
+
+        // Obtener animal anterior para restaurar estado si es necesario
+        const ventaActual = ventasCache[ventaId];
+        const animalAnterior = ventaActual?.animalId;
+
+        await db.ref(`ventas/${ventaId}`).update({
+            fecha: fecha,
+            clienteId: clienteId,
+            clienteNombre: clienteNombre,
+            animalId: animalId,
+            cantidad: cantidad,
+            precioUnitario: precioUnitario,
+            total: total,
+            pagado: pagado,
+            estado: estado,
+            metodoPago: metodoPago,
+            observaciones: observaciones,
+            updatedAt: Date.now(),
+            updatedBy: currentUser?.uid || '',
+            updatedByEmail: currentUser?.email || ''
+        });
+
+        // Si cambió el animal, actualizar estados
+        if (animalAnterior && animalAnterior !== animalId) {
+            try {
+                await db.ref(`animales/${animalAnterior}`).update({
+                    status: 'activo',
+                    updatedAt: Date.now()
+                });
+            } catch (e) {}
+            try {
+                await db.ref(`animales/${animalId}`).update({
+                    status: 'vendido',
+                    updatedAt: Date.now()
+                });
+            } catch (e) {}
+        }
+
+        mostrarToast(`✅ Venta #${ventaActual?.numero || 'N/A'} actualizada exitosamente`, 'success');
+        renderizarVentas();
+        return true;
+
+    } catch (error) {
+        console.error('[ventas.js] Error al actualizar:', error);
+        mostrarToast('❌ Error al actualizar la venta: ' + error.message, 'error');
+        return false;
+    }
+}
+
+// ============================================================
+// 7. VER DETALLE DE VENTA
+// ============================================================
+
+async function verDetalleVenta(ventaId) {
+    try {
+        const venta = ventasCache[ventaId];
+        if (!venta) {
+            mostrarToast('❌ Venta no encontrada', 'error');
+            return;
+        }
+
+        const cliente = obtenerClientePorIdVentas(venta.clienteId);
+        const animal = obtenerAnimalPorIdVentas(venta.animalId);
+        const nombreCliente = cliente ? cliente.nombre : venta.clienteNombre || 'N/A';
+        const nombreAnimal = animal ? `${animal.numero} - ${animal.nombre || 'Sin nombre'}` : venta.animalId || 'N/A';
+
+        const html = `
+            <div style="padding:10px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div style="background:var(--bg-primary);border-radius:8px;padding:16px;">
+                        <h4 style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                            <i class="fas fa-shopping-cart"></i> Venta #${venta.numero}
+                            <span class="badge" style="background:${COLORES_ESTADO[venta.estado] || '#3b82f6'};">${ICONOS_ESTADO[venta.estado] || '📋'} ${capitalize(venta.estado)}</span>
+                        </h4>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9rem;">
+                            <div><strong>Fecha:</strong> ${formatearFecha(venta.fecha)}</div>
+                            <div><strong>Cliente:</strong> ${escapeHTML(nombreCliente)}</div>
+                            <div><strong>Animal:</strong> ${escapeHTML(nombreAnimal)}</div>
+                            <div><strong>Cantidad:</strong> ${venta.cantidad || 1}</div>
+                            <div><strong>Precio Unitario:</strong> ${formatearMoneda(venta.precioUnitario || 0)}</div>
+                            <div><strong>Total:</strong> ${formatearMoneda(venta.total)}</div>
+                            <div><strong>Pagado:</strong> ${formatearMoneda(venta.pagado || 0)}</div>
+                            <div><strong>Pendiente:</strong> ${formatearMoneda((venta.total || 0) - (venta.pagado || 0))}</div>
+                            <div><strong>Método Pago:</strong> ${ICONOS_PAGO[venta.metodoPago] || '💵'} ${capitalize(venta.metodoPago || 'efectivo')}</div>
+                        </div>
+                        ${venta.observaciones ? `
+                            <div style="margin-top:12px;padding:8px;background:var(--bg-secondary);border-radius:var(--radius-sm);font-size:0.85rem;">
+                                <strong>Observaciones:</strong> ${escapeHTML(venta.observaciones)}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+                    <button class="btn btn-secondary btn-sm" onclick="cerrarModal()">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                    ${esAdminVentas() ? `
+                        <button class="btn btn-secondary btn-sm" onclick="abrirFormularioVenta('${ventaId}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        await mostrarModal(`📋 Detalle de Venta #${venta.numero}`, html, {
+            confirmText: 'Cerrar',
+            showConfirm: true,
+            showCancel: false
+        });
+
+    } catch (error) {
+        console.error('[ventas.js] Error al ver detalle:', error);
+        mostrarToast('❌ Error al cargar detalle: ' + error.message, 'error');
+    }
+}
+
+// ============================================================
+// 8. ELIMINAR VENTA
+// ============================================================
+
+window.eliminarVenta = async function(ventaId) {
+    if (!esAdminVentas()) {
+        mostrarToast('⛔ No autorizado. Solo administradores.', 'error');
+        return;
+    }
+
+    const venta = ventasCache[ventaId];
+    if (!venta) {
+        mostrarToast('❌ Venta no encontrada', 'error');
+        return;
+    }
+
+    const html = `
+        <div style="text-align:center;padding:20px;">
+            <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--color-danger);display:block;margin-bottom:12px;"></i>
+            <p style="font-size:1.1rem;font-weight:500;">¿Estás seguro de eliminar esta venta?</p>
+            <div style="background:var(--bg-primary);border-radius:8px;padding:16px;margin:16px 0;text-align:left;">
+                <p><strong>Nº Venta:</strong> #${venta.numero}</p>
+                <p><strong>Cliente:</strong> ${venta.clienteNombre || 'N/A'}</p>
+                <p><strong>Total:</strong> ${formatearMoneda(venta.total)}</p>
+                <p><strong>Estado:</strong> ${capitalize(venta.estado)}</p>
+            </div>
+            <p style="color:var(--text-danger);font-size:0.9rem;">⚠️ Esta acción no se puede deshacer. El animal volverá a estado activo.</p>
+        </div>
+    `;
+
+    const confirmar = await mostrarModal('⚠️ Confirmar eliminación', html, {
+        confirmText: '🗑️ Sí, eliminar',
+        cancelText: '❌ Cancelar',
+        showConfirm: true,
+        showCancel: true
+    });
+
+    if (!confirmar) return;
+
+    try {
+        // Restaurar animal a activo
+        if (venta.animalId) {
+            try {
+                await db.ref(`animales/${venta.animalId}`).update({
+                    status: 'activo',
+                    updatedAt: Date.now()
+                });
+            } catch (e) {}
+        }
+
+        await db.ref(`ventas/${ventaId}`).remove();
+        mostrarToast(`✅ Venta #${venta.numero} eliminada correctamente`, 'success');
+        renderizarVentas();
+    } catch (error) {
+        console.error('[ventas.js] Error al eliminar:', error);
+        mostrarToast('❌ Error al eliminar: ' + error.message, 'error');
+    }
+};
+
+// ============================================================
+// 9. EXPORTAR VENTAS
+// ============================================================
+
+function exportarVentasExcel() {
+    const ventasLista = Object.values(ventasCache);
+    if (ventasLista.length === 0) {
+        mostrarToast('No hay ventas para exportar', 'warning');
+        return;
+    }
+
+    const tabla = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+        <tr>
+            <th>Nº Venta</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Animal</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+            <th>Pagado</th>
+            <th>Pendiente</th>
+            <th>Estado</th>
+            <th>Método Pago</th>
+            <th>Observaciones</th>
+        </tr>
+    `;
+    const tbody = document.createElement('tbody');
+    ventasLista.forEach(v => {
+        const cliente = obtenerClientePorIdVentas(v.clienteId);
+        const animal = obtenerAnimalPorIdVentas(v.animalId);
+        tbody.innerHTML += `
+            <tr>
+                <td>${v.numero || ''}</td>
+                <td>${formatearFecha(v.fecha)}</td>
+                <td>${cliente ? cliente.nombre : v.clienteNombre || ''}</td>
+                <td>${animal ? animal.numero : v.animalId || ''}</td>
+                <td>${v.cantidad || 1}</td>
+                <td>${v.precioUnitario || 0}</td>
+                <td>${v.total || 0}</td>
+                <td>${v.pagado || 0}</td>
+                <td>${(v.total || 0) - (v.pagado || 0)}</td>
+                <td>${v.estado || ''}</td>
+                <td>${v.metodoPago || ''}</td>
+                <td>${v.observaciones || ''}</td>
+            </tr>
+        `;
+    });
+    tabla.appendChild(thead);
+    tabla.appendChild(tbody);
+
+    const nombreArchivo = `Ventas_${new Date().toISOString().split('T')[0]}`;
+    exportarExcel(tabla, nombreArchivo);
+}
+
+// ============================================================
+// 10. EXPOSICIÓN GLOBAL
+// ============================================================
+
+window.cargarVentas = cargarVentas;
+window.abrirFormularioVenta = abrirFormularioVenta;
+window.verDetalleVenta = verDetalleVenta;
+window.eliminarVenta = window.eliminarVenta;
+window.exportarVentasExcel = exportarVentasExcel;
+window.aplicarFiltrosVentasYRenderizar = aplicarFiltrosVentasYRenderizar;
+window.aplicarOrdenVentasYRenderizar = aplicarOrdenVentasYRenderizar;
+window.cambiarOrdenVentasDireccion = cambiarOrdenVentasDireccion;
+window.resetearFiltrosVentas = resetearFiltrosVentas;
+window.obtenerNombreClienteVentas = obtenerNombreClienteVentas;
+window.obtenerNumeroAnimalVentas = obtenerNumeroAnimalVentas;
+
+console.log('[ventas.js] Módulo de ventas v1.2 cargado correctamente');
